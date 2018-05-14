@@ -28,10 +28,10 @@ typedef enum {
 } QScadaObjectAxisPosition;
 
 struct QScadaObjectInfoImage {
-    QString normal = ":/QScadaResources/Leds/resources/grey_marker.png";
-    QString green = ":/QScadaResources/Leds/resources/green_marker.png";
-    QString yellow = ":/QScadaResources/Leds/resources/yellow_marker.png";
-    QString red = ":/QScadaResources/Leds/resources/red_marker.png";
+    QString normal = ":/images/resources/grey_marker.png";
+    QString green = ":/images/resources/green_marker.png";
+    QString yellow = ":/images/resources/yellow_marker.png";
+    QString red = ":/images/resources/red_marker.png";
 
     QString getImageNameForStatus(QScadaObjectStatus);
     void setImageNameForState(QString, QScadaObjectStatus);

@@ -35,6 +35,4 @@ FORMS    += $$PWD/QScadaObject/qscadaobjectinfodialog.ui
 
 INCLUDEPATH += $$PWD
 
-RESOURCES += \
-    $$PWD/qscadaresources.qrc \
-    $$PWD/com_indeema_QSimpleScada.qrc
+RESOURCES += $$PWD/com_indeema_QSimpleScada.qrc
