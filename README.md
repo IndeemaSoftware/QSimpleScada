@@ -1,5 +1,5 @@
 # QSimpleScada
-Qt based simple SCADA framework, with dashboard, static and dynamic components
+Qt/C++ based simple SCADA framework, with dashboard, static and dynamic components
 
 # Minimum requirements
 Qt 5.8
