@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/com/indeema/QSimpleScada">
-        <file>qmldir</file>
-    </qresource>
-    <qresource prefix="/images">
         <file>resources/yellow_marker.png</file>
         <file>resources/red_marker.png</file>
         <file>resources/grey_marker.png</file>
