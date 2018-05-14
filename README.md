@@ -9,4 +9,4 @@ Just use qpm (https://www.qpm.io/) to install QSimpleScada in your project. Run 
 
 Or Compile QSimpleScadata with QSimpleScada pro file, you will receive QSimpleScadaLib folder with compiled windows or macos libs.
 
-https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif
+<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
