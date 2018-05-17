@@ -167,7 +167,7 @@ void MainWindow::open()
 }
 ```
 
-# In action
+# Sample in action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
 
 ## Communication and Support
