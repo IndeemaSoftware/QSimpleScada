@@ -15,6 +15,34 @@ You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/
 
 # How to start
 
+Create editable QScadaBoard
+```cpp
+QScadaBoard *mBoard = new QScadaBoard(this);
+mBoard->setEditable(true);
+```
+
+You can connect to signals, to handle events
+```cpp
+signals:
+    void objectDoubleClicked(QScadaObject*);
+    void objectSelected(QScadaObject *);
+```
+
+So now you can create some default QScadaObject on the board
+```cpp
+mBoard->createNewObject();
+```
+Or create object with specific parameters
+```cpp
+QScadaObjectInfo *lInfo = new QScadaObjectInfo();
+lInfo->setId(2);
+lInfo->setBackGroundImage(":/resources/some_structure.png");
+lInfo->setShowBackgroundImage(true);
+lInfo->setShowMarkers(false);
+```
+
+Creating object with specific parameters could be useful when restoring dashboard from project file.
+
 # In action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
 
