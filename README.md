@@ -43,6 +43,130 @@ lInfo->setShowMarkers(false);
 
 Creating object with specific parameters could be useful when restoring dashboard from project file.
 
+Also you have possibility to send object to front or to back
+```cpp
+void MainWindow::bringToFront()
+{
+    if (!mBoard->getSeletedObjects().isEmpty()) {
+        QScadaObject *lObject = mBoard->getSeletedObjects().first();
+        mBoard->bringToFront(lObject);
+    }
+}
+
+void MainWindow::sendToBack()
+{
+    if (!mBoard->getSeletedObjects().isEmpty()) {
+        QScadaObject *lObject = mBoard->getSeletedObjects().first();
+        mBoard->sendToBack(lObject);
+    }
+}
+```
+
+Also save and open project file
+```cpp
+void MainWindow::save()
+{
+    QFileDialog lDialog(this);
+    lDialog.setFileMode(QFileDialog::AnyFile);
+    lDialog.setAcceptMode(QFileDialog::AcceptSave);
+    lDialog.setDirectory(QDir::currentPath());
+    lDialog.setWindowTitle(tr("Save Project"));
+    lDialog.setNameFilter(tr("iReDS Project (*.irp)"));
+
+    QScadaBoardInfo *lBoardInfo = new QScadaBoardInfo();
+    QScadaBoardController *lController = new QScadaBoardController();
+    QScadaDeviceInfo lDeviceInfo;
+
+    if (lDialog.exec() == QDialog::Accepted) {
+        QStringList lFiles = lDialog.selectedFiles();
+        if (lFiles.count() > 0) {
+            QString lFileName = lFiles.at(0);
+            if (!lFileName.contains(".irp")) {
+                lFileName.append(".irp");
+            }
+            QStringList lIps;
+            for (QScadaObject *object :*mBoard->objects()) {
+                lBoardInfo->appendObjectInfo(object->info());
+            }
+            QList<QScadaBoardInfo*> lBoardInfoList;
+            lBoardInfoList.append(lBoardInfo);
+
+            lController->initConnectedDevices(lBoardInfoList);
+
+            lDeviceInfo.setName("Test Device");
+            lDeviceInfo.setIp(QHostAddress("127.0.0.0"));
+            QList<QScadaDeviceInfo> lList;
+            lList.append(lDeviceInfo);
+            QString lDevices = VConnectedDeviceInfo::XMLFromDeviceInfo(lList, lController);   //<----;
+
+            //create xml for boards of each device
+
+            QFile lFile(lFileName);
+            if (lFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QTextStream lOut(&lFile);
+                lOut.setCodec("UTF-8");
+                lOut << lDevices;
+            } else {
+                QString lMessage(tr("Something went wrong while trying to create file"));
+                lMessage.append(" ").append(lFileName);
+
+                QMessageBox lMsgBox;
+                lMsgBox.setText(lMessage);
+                lMsgBox.exec();
+            }
+            lFile.close();
+            qDeleteAll(lBoardInfoList);
+        }
+    }
+    delete lController;
+    mBoard->setEditable(true);
+}
+
+void MainWindow::open()
+{
+    QString lFileName = QFileDialog::getOpenFileName(this,
+        tr("Open Project"), QDir::currentPath(), tr("iReDS Project (*.irp)"));
+
+    if (!lFileName.isEmpty()) {
+        mObjectInfoDialog->updateWithObjectInfo(nullptr);
+
+        for (QScadaObject *object : *mBoard->objects()) {
+                mBoard->deleteObject(object);
+        }
+
+        VConnectedDeviceInfo* lConnectedDevceInfo = new VConnectedDeviceInfo();
+        QByteArray lRawData;
+        QFile lFile(lFileName);
+        if (lFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream lStreamFileOut(&lFile);
+            lStreamFileOut.setCodec("UTF-8");
+            lRawData = lStreamFileOut.readAll().toUtf8();
+            lFile.close();
+
+            lConnectedDevceInfo->initFromXml(lRawData);
+
+            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); ++i) {
+                for (QScadaBoardInfo *boardInfo : lConnectedDevceInfo->connecteDeviceList.at(i)->boardList) {
+                    if (boardInfo != nullptr) {
+                        mBoard->setEditable(false);
+                        for (QScadaObjectInfo *info : boardInfo->objectList()) {
+                            mBoard->createNewObject(info);
+                        }
+                    }
+                }
+            }
+
+            mBoard->update();
+            mBoard->setEditable(true);
+        } else {
+            qDebug() << "       - Error open preferences file -> " << lFile.fileName();
+        }
+
+        delete lConnectedDevceInfo;
+    }
+}
+```
+
 # In action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
 
