@@ -20,7 +20,7 @@ You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/
 
 ## Communication and Support
 If you encounter an issue or you have any comments or propositions with using the QSimpleScada library then you can reach us in several different ways:
-- Having difficulties with using QPredix you can write at [Stackoverflow](https://stackoverflow.com/) or at [Qt forum](https://forum.qt.io). Don't forget about specifing the **QSimpleScada** tag. You will be helped by the community of this resource or our specialists will help you with an answer.
+- Having difficulties with using QSimpleScada you can write at [Stackoverflow](https://stackoverflow.com/) or at [Qt forum](https://forum.qt.io). Don't forget about specifing the **QSimpleScada** tag. You will be helped by the community of this resource or our specialists will help you with an answer.
 
 - If you find a bug and want to tell us about it - specify it in the section [Issues](https://github.com/IndeemaSoftware/QSimpleScada/issues).
 In this section, we only consider bugs and ignore any questions relating to the support.
