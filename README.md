@@ -13,6 +13,9 @@ Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScad
 
 You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
 
+# Sample in action
+<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
+
 # How to start
 
 Create editable QScadaBoard
@@ -166,9 +169,6 @@ void MainWindow::open()
     }
 }
 ```
-
-# Sample in action
-<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
 
 ## Communication and Support
 If you encounter an issue or you have any comments or propositions with using the QSimpleScada library then you can reach us in several different ways:
