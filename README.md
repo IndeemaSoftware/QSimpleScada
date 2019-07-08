@@ -20,8 +20,11 @@ You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/
 
 Create editable QScadaBoard
 ```cpp
-QScadaBoard *mBoard = new QScadaBoard(this);
-mBoard->setEditable(true);
+    QScadaBoardController *mController = new QScadaBoardController();
+    mController->initBoardForDeviceIp("127.0.0.0");
+    mController->setEditingMode(true);
+
+    QScadaBoard *mBoard = mController->getBoardListForDeviceIp("127.0.0.0").at(0);
 ```
 
 You can connect to signals, to handle events
@@ -69,6 +72,15 @@ Also save and open project file
 ```cpp
 void MainWindow::save()
 {
+   if (mBoard->objects()->count() == 0) {
+        QString lMessage(tr("Nothing to be saved"));
+
+        QMessageBox lMsgBox;
+        lMsgBox.setText(lMessage);
+        lMsgBox.exec();
+        return;
+    }
+
     QFileDialog lDialog(this);
     lDialog.setFileMode(QFileDialog::AnyFile);
     lDialog.setAcceptMode(QFileDialog::AcceptSave);
@@ -76,9 +88,11 @@ void MainWindow::save()
     lDialog.setWindowTitle(tr("Save Project"));
     lDialog.setNameFilter(tr("iReDS Project (*.irp)"));
 
-    QScadaBoardInfo *lBoardInfo = new QScadaBoardInfo();
-    QScadaBoardController *lController = new QScadaBoardController();
     QScadaDeviceInfo lDeviceInfo;
+    lDeviceInfo.setName("Test Device");
+    lDeviceInfo.setIp(QHostAddress("127.0.0.0"));
+    QList<QScadaDeviceInfo> lList;
+    lList.append(lDeviceInfo);
 
     if (lDialog.exec() == QDialog::Accepted) {
         QStringList lFiles = lDialog.selectedFiles();
@@ -87,20 +101,8 @@ void MainWindow::save()
             if (!lFileName.contains(".irp")) {
                 lFileName.append(".irp");
             }
-            QStringList lIps;
-            for (QScadaObject *object :*mBoard->objects()) {
-                lBoardInfo->appendObjectInfo(object->info());
-            }
-            QList<QScadaBoardInfo*> lBoardInfoList;
-            lBoardInfoList.append(lBoardInfo);
 
-            lController->initConnectedDevices(lBoardInfoList);
-
-            lDeviceInfo.setName("Test Device");
-            lDeviceInfo.setIp(QHostAddress("127.0.0.0"));
-            QList<QScadaDeviceInfo> lList;
-            lList.append(lDeviceInfo);
-            QString lDevices = VConnectedDeviceInfo::XMLFromDeviceInfo(lList, lController);   //<----;
+            QString lDevices = VConnectedDeviceInfo::XMLFromDeviceInfo(lList, mController);   //<----;
 
             //create xml for boards of each device
 
@@ -118,10 +120,9 @@ void MainWindow::save()
                 lMsgBox.exec();
             }
             lFile.close();
-            qDeleteAll(lBoardInfoList);
         }
     }
-    delete lController;
+
     mBoard->setEditable(true);
 }
 
