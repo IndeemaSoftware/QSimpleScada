@@ -138,7 +138,7 @@ void MainWindow::open()
                 mBoard->deleteObject(object);
         }
 
-        VConnectedDeviceInfo* lConnectedDevceInfo = new VConnectedDeviceInfo();
+        QConnectedDeviceInfo* lConnectedDevceInfo = new QConnectedDeviceInfo();
         QByteArray lRawData;
         QFile lFile(lFileName);
         if (lFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -149,11 +149,14 @@ void MainWindow::open()
 
             lConnectedDevceInfo->initFromXml(lRawData);
 
-            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); ++i) {
+            QScadaObjectInfo *info;
+            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); i++) {
                 for (QScadaBoardInfo *boardInfo : lConnectedDevceInfo->connecteDeviceList.at(i)->boardList) {
                     if (boardInfo != nullptr) {
                         mBoard->setEditable(false);
-                        for (QScadaObjectInfo *info : boardInfo->objectList()) {
+                        //reading all objects in reverce to have in correct layers
+                        for (int j = boardInfo->objectList().count()-1; j >=0; j--) {
+                            info = boardInfo->objectList().at(j);
                             mBoard->createNewObject(info);
                         }
                     }
