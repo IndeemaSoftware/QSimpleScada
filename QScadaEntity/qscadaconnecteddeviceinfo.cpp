@@ -9,39 +9,39 @@
 #include <QDebug>
 #include <QFile>
 
-const QString VConnectedDeviceInfo::tag_devices = QString("devices");
-const QString VConnectedDeviceInfo::tag_device = QString("device");
-const QString VConnectedDeviceInfo::tag_device_name = QString("name");
-const QString VConnectedDeviceInfo::tag_device_ip = QString("ip");
-const QString VConnectedDeviceInfo::tag_device_ip_v6 = QString("ip_v6");
-const QString VConnectedDeviceInfo::tag_device_host = QString("host");
-const QString VConnectedDeviceInfo::tag_device_domain = QString("domain");
+const QString QConnectedDeviceInfo::tag_devices = QString("devices");
+const QString QConnectedDeviceInfo::tag_device = QString("device");
+const QString QConnectedDeviceInfo::tag_device_name = QString("name");
+const QString QConnectedDeviceInfo::tag_device_ip = QString("ip");
+const QString QConnectedDeviceInfo::tag_device_ip_v6 = QString("ip_v6");
+const QString QConnectedDeviceInfo::tag_device_host = QString("host");
+const QString QConnectedDeviceInfo::tag_device_domain = QString("domain");
 
-const QString VConnectedDeviceInfo::tag_boards = QString("boards");
-const QString VConnectedDeviceInfo::tag_board = QString("board");
-const QString VConnectedDeviceInfo::tag_object = QString("object");
-const QString VConnectedDeviceInfo::tag_title = QString("title");
-const QString VConnectedDeviceInfo::tag_show_background = QString("show_background");//new
-const QString VConnectedDeviceInfo::tag_show_background_image = QString("show_background_image"); //
-const QString VConnectedDeviceInfo::tag_show_marker = QString("show_marker");//new
-const QString VConnectedDeviceInfo::tag_background_image = QString("background_image");//new
-const QString VConnectedDeviceInfo::tag_id = QString("id");
-const QString VConnectedDeviceInfo::tag_is_dynamic = QString("is_dynamic");
-const QString VConnectedDeviceInfo::tag_geometry_x = QString("geometry_x");
-const QString VConnectedDeviceInfo::tag_geometry_y = QString("geometry_y");
-const QString VConnectedDeviceInfo::tag_geometry_width = QString("geometry_width");
-const QString VConnectedDeviceInfo::tag_geometry_height = QString("geometry_height");
-const QString VConnectedDeviceInfo::tag_axis_enabled = QString("axis_enabled");
-const QString VConnectedDeviceInfo::tag_axis_position = QString("axis_position");//new
-const QString VConnectedDeviceInfo::tag_axis_x = QString("axis_x");
-const QString VConnectedDeviceInfo::tag_axis_y = QString("axis_y");
-const QString VConnectedDeviceInfo::tag_axis_z = QString("axis_z");
+const QString QConnectedDeviceInfo::tag_boards = QString("boards");
+const QString QConnectedDeviceInfo::tag_board = QString("board");
+const QString QConnectedDeviceInfo::tag_object = QString("object");
+const QString QConnectedDeviceInfo::tag_title = QString("title");
+const QString QConnectedDeviceInfo::tag_show_background = QString("show_background");//new
+const QString QConnectedDeviceInfo::tag_show_background_image = QString("show_background_image"); //
+const QString QConnectedDeviceInfo::tag_show_marker = QString("show_marker");//new
+const QString QConnectedDeviceInfo::tag_background_image = QString("background_image");//new
+const QString QConnectedDeviceInfo::tag_id = QString("id");
+const QString QConnectedDeviceInfo::tag_is_dynamic = QString("is_dynamic");
+const QString QConnectedDeviceInfo::tag_geometry_x = QString("geometry_x");
+const QString QConnectedDeviceInfo::tag_geometry_y = QString("geometry_y");
+const QString QConnectedDeviceInfo::tag_geometry_width = QString("geometry_width");
+const QString QConnectedDeviceInfo::tag_geometry_height = QString("geometry_height");
+const QString QConnectedDeviceInfo::tag_axis_enabled = QString("axis_enabled");
+const QString QConnectedDeviceInfo::tag_axis_position = QString("axis_position");//new
+const QString QConnectedDeviceInfo::tag_axis_x = QString("axis_x");
+const QString QConnectedDeviceInfo::tag_axis_y = QString("axis_y");
+const QString QConnectedDeviceInfo::tag_axis_z = QString("axis_z");
 
-VConnectedDeviceInfo::VConnectedDeviceInfo(QObject *parent):
+QConnectedDeviceInfo::QConnectedDeviceInfo(QObject *parent):
     QScadaBasePrefEntity(parent) {
 }
 
-QString VConnectedDeviceInfo::formTag(QString tag, bool isClosing, bool newLine, int numOfTabs)
+QString QConnectedDeviceInfo::formTag(QString tag, bool isClosing, bool newLine, int numOfTabs)
 {
     QString lReturn;
 
@@ -65,7 +65,7 @@ QString VConnectedDeviceInfo::formTag(QString tag, bool isClosing, bool newLine,
     return lReturn;
 }
 
-QString VConnectedDeviceInfo::formTagValue(QString tag, QString value, bool newLine, int numOfTabs)
+QString QConnectedDeviceInfo::formTagValue(QString tag, QString value, bool newLine, int numOfTabs)
 {
     QString lReturn;
 
@@ -75,7 +75,7 @@ QString VConnectedDeviceInfo::formTagValue(QString tag, QString value, bool newL
     return lReturn;
 }
 
-void VConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
+void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
     QXmlStreamReader lXmlStreamReader(QString::fromStdString(xmlData.toStdString()));
 
     QScadaDeviceConfig *lDeviceConfig = nullptr;
@@ -180,7 +180,7 @@ void VConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
     }
 }
 
-void VConnectedDeviceInfo::saveXmlToFile(const QString &filePath)
+void QConnectedDeviceInfo::saveXmlToFile(const QString &filePath)
 {
     qDebug() << __FUNCTION__;
     QFile lFile(filePath);
@@ -210,10 +210,10 @@ void VConnectedDeviceInfo::saveXmlToFile(const QString &filePath)
     }
 }
 
-QString VConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceList, QScadaBoardController *boardController)
+QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceList, QScadaBoardController *boardController)
 {
     //create xml for devices
-    VConnectedDeviceInfo i;
+    QConnectedDeviceInfo i;
     QString rDevices = i.formTag(tag_devices, false, true, 0);//"<devices>\n";
     for (QScadaDeviceInfo info: deviceList) {
         rDevices += i.formTag(tag_device, false, true, 1);//"\t<device>\n";

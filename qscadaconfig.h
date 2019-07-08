@@ -24,7 +24,7 @@ typedef enum {
     QScadaMachineryClass4
 } QScadaMachineryClass;
 
-enum VUpdateMode {
+enum QUpdateMode {
     VUpdateModeFromTo,
     VUpdateMode24Hours,
     VUpdateModeDaysCount

@@ -10,8 +10,6 @@
 #include <QList>
 #include <QHostAddress>
 
-class VConnectedDeviceInfo;
-
 struct QScadaDeviceConfig {
     QString			name;
     QString			domain;
@@ -21,7 +19,7 @@ struct QScadaDeviceConfig {
     QList<QScadaBoardInfo*> boardList;
 };
 
-class VConnectedDeviceInfo : public QScadaBasePrefEntity
+class QConnectedDeviceInfo : public QScadaBasePrefEntity
 {
 public:
     static const QString tag_devices;
@@ -53,7 +51,7 @@ public:
     static const QString tag_axis_z;
 
 public:
-    VConnectedDeviceInfo(QObject *parent = 0);
+    QConnectedDeviceInfo(QObject *parent = 0);
 
     static QString formTag(QString tag, bool isClosing, bool newLine, int numOfTabs); //so if formTag("device", false, true, 1) the result will be "\t<device>"
     static QString formTagValue(QString tag, QString value, bool newLine, int numOfTabs);
