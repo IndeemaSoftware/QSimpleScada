@@ -1,6 +1,12 @@
 # QSimpleScada
 Qt/C++ based simple SCADA framework, with dashboard, static and dynamic components. By using QSimpleScada framework you can build complex SCADA UIs for your needs.
 
+You can create, edit, save and open your scada boards.
+
+Plans:
+Creating set of different widgets
+Creating engine to create QML UI widgets
+
 # Minimum requirements
 Qt 5.8
 
