@@ -11,7 +11,11 @@ Creating engine to create QML UI widgets
 Qt 5.8
 
 # Installing with qpm
-Just use qpm (https://www.qpm.io/) to install QSimpleScada in your project. Run qpm install com.indeema.qsimplescada . in *.pro file include(vendor/Vendor.pri)
+Just use qpm (https://www.qpm.io/) to install QSimpleScada in your project. Run 
+
+qpm install com.indeema.qsimplescada 
+
+inside your project directory and in *.pro file include(vendor/Vendor.pri)
 
 latest release v0.5.2
 
