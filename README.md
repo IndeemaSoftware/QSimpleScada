@@ -7,6 +7,8 @@ Qt 5.8
 # Installing with qpm
 Just use qpm (https://www.qpm.io/) to install QSimpleScada in your project. Run qpm install com.indeema.QSimpleScada . in *.pro file include(vendor/Vendor.pri)
 
+latest release v0.5.2
+
 Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScadaLib folder with compiled windows or macos libs.
 
 # Sample
@@ -72,7 +74,7 @@ Also save and open project file
 ```cpp
 void MainWindow::save()
 {
-   if (mBoard->objects()->count() == 0) {
+    if (mBoard->objects()->count() == 0) {
         QString lMessage(tr("Nothing to be saved"));
 
         QMessageBox lMsgBox;
@@ -102,7 +104,7 @@ void MainWindow::save()
                 lFileName.append(".irp");
             }
 
-            QString lDevices = VConnectedDeviceInfo::XMLFromDeviceInfo(lList, mController);   //<----;
+            QString lDevices = QConnectedDeviceInfo::XMLFromDeviceInfo(lList, mController);   //<----;
 
             //create xml for boards of each device
 
@@ -149,16 +151,10 @@ void MainWindow::open()
 
             lConnectedDevceInfo->initFromXml(lRawData);
 
-            QScadaObjectInfo *info;
-            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); i++) {
+            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); ++i) {
                 for (QScadaBoardInfo *boardInfo : lConnectedDevceInfo->connecteDeviceList.at(i)->boardList) {
                     if (boardInfo != nullptr) {
-                        mBoard->setEditable(false);
-                        //reading all objects in reverce to have in correct layers
-                        for (int j = boardInfo->objectList().count()-1; j >=0; j--) {
-                            info = boardInfo->objectList().at(j);
-                            mBoard->createNewObject(info);
-                        }
+                        mBoard->initBoard(boardInfo);
                     }
                 }
             }
