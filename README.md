@@ -49,6 +49,7 @@ lInfo->setId(2);
 lInfo->setBackGroundImage(":/resources/some_structure.png");
 lInfo->setShowBackgroundImage(true);
 lInfo->setShowMarkers(false);
+mBoard->createNewObject(lInfo);
 ```
 
 Creating object with specific parameters could be useful when restoring dashboard from project file.
