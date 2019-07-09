@@ -171,6 +171,25 @@ void MainWindow::open()
     }
 }
 ```
+and let's some randomly changed statuses
+```cpp
+    mTimer = new QTimer(this);
+    connect(mTimer, SIGNAL(timeout()), this, SLOT(updateStatus()));
+    mTimer->start(1000);
+    
+void MainWindow::updateStatus()
+{
+    int lNumber = 3;
+    int lRandomValue = qrand() % lNumber;
+    mBoard->updateStatusWithId(0, static_cast<QScadaObjectStatus>(lRandomValue));
+    lRandomValue = qrand() % lNumber;
+    mBoard->updateStatusWithId(1, static_cast<QScadaObjectStatus>(lRandomValue));
+    lRandomValue = qrand() % lNumber;
+    mBoard->updateStatusWithId(3, static_cast<QScadaObjectStatus>(lRandomValue));
+    lRandomValue = qrand() % lNumber;
+    mBoard->updateStatusWithId(4, static_cast<QScadaObjectStatus>(lRandomValue));
+}
+```
 
 ## Communication and Support
 If you encounter an issue or you have any comments or propositions with using the QSimpleScada library then you can reach us in several different ways:
