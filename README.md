@@ -15,6 +15,8 @@ Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScad
 
 You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
 
+Also read [Wiki](https://github.com/IndeemaSoftware/QSimpleScada/wiki) for more details - 
+
 # Sample in action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
 
