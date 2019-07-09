@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/com/indeema/QSimpleScada">
+    <qresource prefix="/com/indeema/qsimplescada">
         <file>resources/yellow_marker.png</file>
         <file>resources/red_marker.png</file>
         <file>resources/grey_marker.png</file>
