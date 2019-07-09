@@ -7,7 +7,8 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     mIsDynamic{false},
     mTitle{"Noname"},
     mAxiesEnabled{false},
-    mAxisPosition{VObjectAxisPositionLeft},
+    mAxisPosition{QObjectAxisPositionLeft},
+    mOrderLevel{0},
     mShowBackgroundImage{false},
     mShowBackground{true},
     mShowMarkers{true}
@@ -22,6 +23,7 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mTitle{o->title()},
     mAxiesEnabled{o->axiesEnabled()},
     mAxisPosition{o->axisPosition()},
+    mOrderLevel{o->orderLevel()},
     mImageName{o->infoImage()},
     mBackGroundImage{o->backGroundImage()},
     mShowBackgroundImage{o->showBackgroundImage()},
@@ -159,6 +161,29 @@ void QScadaObjectInfo::setShowBackgroundImage(bool showBackgroundImage)
     mShowBackgroundImage = showBackgroundImage;
 }
 
+int QScadaObjectInfo::orderLevel() const
+{
+    return mOrderLevel;
+}
+
+void QScadaObjectInfo::setOrderLevel(int value)
+{
+    mOrderLevel = value;
+}
+
+void QScadaObjectInfo::urderUp()
+{
+    mOrderLevel--;
+    if (mOrderLevel < 0) {
+        mOrderLevel = 0;
+    }
+}
+
+void QScadaObjectInfo::orderDown()
+{
+    mOrderLevel++;
+}
+
 //implementations for VObjectInfoImage
 
 QString QScadaObjectInfoImage::getImageNameForStatus(QScadaObjectStatus status)
@@ -166,16 +191,16 @@ QString QScadaObjectInfoImage::getImageNameForStatus(QScadaObjectStatus status)
     QString rValue;
     
     switch(status) {
-    case VObjectStatusNone:
+    case QObjectStatusNone:
         rValue = normal;
         break;
-    case VObjectStatusGreen:
+    case QObjectStatusGreen:
         rValue = green;
         break;
-    case VObjectStatusYellow:
+    case QObjectStatusYellow:
         rValue = yellow;
         break;
-    case VObjectStatusRed:
+    case QObjectStatusRed:
         rValue = red;
         break;
     }
@@ -186,16 +211,16 @@ QString QScadaObjectInfoImage::getImageNameForStatus(QScadaObjectStatus status)
 void QScadaObjectInfoImage::setImageNameForState(QString name, QScadaObjectStatus status)
 {
     switch(status) {
-    case VObjectStatusNone:
+    case QObjectStatusNone:
         normal = name;
         break;
-    case VObjectStatusGreen:
+    case QObjectStatusGreen:
         green = name;
         break;
-    case VObjectStatusYellow:
+    case QObjectStatusYellow:
         yellow = name;
         break;
-    case VObjectStatusRed:
+    case QObjectStatusRed:
         red = name;
         break;
     }

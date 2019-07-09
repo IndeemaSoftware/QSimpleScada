@@ -36,6 +36,7 @@ const QString QConnectedDeviceInfo::tag_axis_position = QString("axis_position")
 const QString QConnectedDeviceInfo::tag_axis_x = QString("axis_x");
 const QString QConnectedDeviceInfo::tag_axis_y = QString("axis_y");
 const QString QConnectedDeviceInfo::tag_axis_z = QString("axis_z");
+const QString QConnectedDeviceInfo::order_level = QString("order_level");
 
 QConnectedDeviceInfo::QConnectedDeviceInfo(QObject *parent):
     QScadaBasePrefEntity(parent) {
@@ -168,6 +169,8 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
             } else if (lXmlStreamReader.name() == tag_axis_z) {
                 lAxis.setZ((QScadaObjectInfoAxisDirrection)lXmlStreamReader.readElementText().toInt());
                 lObjectInfo->setAxis(lAxis);
+            } else if (lXmlStreamReader.name() == order_level) {
+                lObjectInfo->setOrderLevel(lXmlStreamReader.readElementText().toInt());
             }
 
         } else if (tokenType == QXmlStreamReader::EndElement) {
@@ -214,37 +217,38 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
 {
     //create xml for devices
     QConnectedDeviceInfo i;
-    QString rDevices = i.formTag(tag_devices, false, true, 0);//"<devices>\n";
+    QString rDevices = i.formTag(tag_devices, false, true, 0);
     for (QScadaDeviceInfo info: deviceList) {
-        rDevices += i.formTag(tag_device, false, true, 1);//"\t<device>\n";
-        rDevices += i.formTagValue(tag_device_name, info.name(), true, 2);//"\t\t<name>" + info.name() + "</name>\n";
-        rDevices += i.formTagValue(tag_device_ip, info.ip().toString(), true, 2);//"\t\t<ip>" + info.ip().toString() + "</ip>\n";
-        rDevices += i.formTagValue(tag_device_ip_v6, info.ipv6().toString(), true, 2);//"\t\t<ip_v6>" + info.ipv6().toString() + "</ip_v6>\n";
-        rDevices += i.formTagValue(tag_device_host, info.host(), true, 2);//"\t\t<host>" + info.host() + "</host>\n";
-        rDevices += i.formTagValue(tag_device_domain, info.domain(), true, 2);//"\t\t<domain>" + info.domain() + "</domain>\n";
+        rDevices += i.formTag(tag_device, false, true, 1);
+        rDevices += i.formTagValue(tag_device_name, info.name(), true, 2);
+        rDevices += i.formTagValue(tag_device_ip, info.ip().toString(), true, 2);
+        rDevices += i.formTagValue(tag_device_ip_v6, info.ipv6().toString(), true, 2);
+        rDevices += i.formTagValue(tag_device_host, info.host(), true, 2);
+        rDevices += i.formTagValue(tag_device_domain, info.domain(), true, 2);
         rDevices += i.formTag(tag_device, true, true, 1);//"\t</device>\n";
 
-        rDevices += i.formTag(tag_boards, false, true, 1);//"\t<boards>\n";
+        rDevices += i.formTag(tag_boards, false, true, 1);
         for(QScadaBoard *board : boardController->getBoardListForDeviceIp(info.ip().toString())) {
-            rDevices += i.formTag(tag_board, false, true, 2);//"\t\t<board>\n";
+            rDevices += i.formTag(tag_board, false, true, 2);
             for (QScadaObject *object : *board->objects()) {
-                rDevices += i.formTag(tag_object, false, true, 3);//"\t\t\t<object>\n";
-                rDevices += i.formTagValue(tag_title, object->info()->title(), true, 4);//"\t\t\t\t<title>"+ object->info()->title() + "</title>\n";
-                rDevices += i.formTagValue(tag_id, QString::number(object->info()->id()), true, 4);//"\t\t\t\t<id>"+ QString::number(object->info()->id()) + "</id>\n";
-                rDevices += i.formTagValue(tag_is_dynamic, QString::number(object->info()->isDynamic()), true, 4);//"\t\t\t\t<is_dynamic>"+ QString::number(object->info()->isDynamic()) + "</is_dynamic>\n";
+                rDevices += i.formTag(tag_object, false, true, 3);
+                rDevices += i.formTagValue(tag_title, object->info()->title(), true, 4);
+                rDevices += i.formTagValue(tag_id, QString::number(object->info()->id()), true, 4);
+                rDevices += i.formTagValue(tag_is_dynamic, QString::number(object->info()->isDynamic()), true, 4);
                 rDevices += i.formTagValue(tag_show_background, QString::number(object->info()->showBackground()), true, 4);
                 rDevices += i.formTagValue(tag_show_background_image, QString::number(object->info()->showBackgroundImage()), true, 4);
                 rDevices += i.formTagValue(tag_show_marker, QString::number(object->info()->showMarkers()), true, 4);
                 rDevices += i.formTagValue(tag_background_image, object->info()->backGroundImage(), true, 4);
-                rDevices += i.formTagValue(tag_geometry_x, QString::number(object->info()->geometry().x()), true, 4);//"\t\t\t\t<geometry_x>"+ QString::number(object->info()->geometry().x()) + "</geometry_x>\n";
-                rDevices += i.formTagValue(tag_geometry_y, QString::number(object->info()->geometry().y()), true, 4);//"\t\t\t\t<geometry_y>"+ QString::number(object->info()->geometry().y()) + "</geometry_y>\n";
-                rDevices += i.formTagValue(tag_geometry_width, QString::number(object->info()->geometry().width()), true, 4);//"\t\t\t\t<geometry_width>"+ QString::number(object->info()->geometry().width()) + "</geometry_width>\n";
-                rDevices += i.formTagValue(tag_geometry_height, QString::number(object->info()->geometry().height()), true, 4);//"\t\t\t\t<geometry_height>"+ QString::number(object->info()->geometry().height()) + "</geometry_height>\n";
-                rDevices += i.formTagValue(tag_axis_enabled, QString::number(object->info()->axiesEnabled()), true, 4);//"\t\t\t\t<axis_enabled>"+ QString::number(object->info()->axiesEnabled()) + "</axis_enabled>\n";
+                rDevices += i.formTagValue(tag_geometry_x, QString::number(object->info()->geometry().x()), true, 4);
+                rDevices += i.formTagValue(tag_geometry_y, QString::number(object->info()->geometry().y()), true, 4);
+                rDevices += i.formTagValue(tag_geometry_width, QString::number(object->info()->geometry().width()), true, 4);
+                rDevices += i.formTagValue(tag_geometry_height, QString::number(object->info()->geometry().height()), true, 4);
+                rDevices += i.formTagValue(tag_axis_enabled, QString::number(object->info()->axiesEnabled()), true, 4);
                 rDevices += i.formTagValue(tag_axis_position, QString::number(object->info()->axisPosition()), true, 4);
-                rDevices += i.formTagValue(tag_axis_x, QString::number(object->info()->axis().getX()), true, 4);//"\t\t\t\t<axis_x>"+ QString::number(object->info()->axis().getX()) + "</axis_x>\n";
-                rDevices += i.formTagValue(tag_axis_y, QString::number(object->info()->axis().getY()), true, 4);//"\t\t\t\t<axis_y>"+ QString::number(object->info()->axis().getY()) + "</axis_y>\n";
-                rDevices += i.formTagValue(tag_axis_z, QString::number(object->info()->axis().getZ()), true, 4);//"\t\t\t\t<axis_z>"+ QString::number(object->info()->axis().getZ()) + "</axis_z>\n";
+                rDevices += i.formTagValue(tag_axis_x, QString::number(object->info()->axis().getX()), true, 4);
+                rDevices += i.formTagValue(tag_axis_y, QString::number(object->info()->axis().getY()), true, 4);
+                rDevices += i.formTagValue(tag_axis_z, QString::number(object->info()->axis().getZ()), true, 4);
+                rDevices += i.formTagValue(order_level, QString::number(object->info()->orderLevel()), true, 4);
                 rDevices += i.formTag(tag_object, true, true, 3);//"\t\t\t</object>\n";
             }
             rDevices += i.formTag(tag_board, true, true, 2);//"\t\t</board>\n";

@@ -7,14 +7,19 @@
 #include <QList>
 
 class QScadaObjectInfo;
+class QScadaBoardInfo;
 
 class QScadaBoard : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QScadaBoard(QWidget *parent = 0);
+    explicit QScadaBoard(QWidget *parent = nullptr);
+    QScadaBoard(QScadaBoardInfo *);
     ~QScadaBoard();
 
+    void initBoard(QScadaBoardInfo *);
+
+    QScadaObject *initNewObject(QScadaObjectInfo *);
     void createNewObject();
     void createNewObject(QScadaObjectInfo *);
     void createNewObject(int id);
@@ -38,6 +43,9 @@ public:
     QList<QScadaObject*> getSeletedObjects();
 
     void resetGridPixmap();
+
+private:
+    void orderObject(QScadaObject *o);
 
 public slots:
     //objects order

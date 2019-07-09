@@ -49,6 +49,7 @@ public:
     static const QString tag_axis_x;
     static const QString tag_axis_y;
     static const QString tag_axis_z;
+    static const QString order_level;
 
 public:
     QConnectedDeviceInfo(QObject *parent = 0);

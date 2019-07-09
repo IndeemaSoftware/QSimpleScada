@@ -9,22 +9,22 @@
 
 
 typedef enum {
-    VObjectActionNone,
-    VObjectActionMove,
-    VObjectActionResize
+    QObjectActionNone,
+    QObjectActionMove,
+    QObjectActionResize
 } QScadaObjectAction;
 
 typedef enum {
-    VObjectStatusNone,
-    VObjectStatusRed,
-    VObjectStatusYellow,
-    VObjectStatusGreen
+    QObjectStatusNone,
+    QObjectStatusRed,
+    QObjectStatusYellow,
+    QObjectStatusGreen
 } QScadaObjectStatus;
 
 
 typedef enum {
-    VObjectAxisPositionLeft,
-    VObjectAxisPositionRight
+    QObjectAxisPositionLeft,
+    QObjectAxisPositionRight
 } QScadaObjectAxisPosition;
 
 struct QScadaObjectInfoImage {
@@ -81,6 +81,11 @@ public:
     bool showBackgroundImage() const;
     void setShowBackgroundImage(bool showBackgroundImage);
 
+    int orderLevel() const;
+    void setOrderLevel(int value);
+    void urderUp();
+    void orderDown();
+
 signals:
     void infoChanged(QScadaObjectInfo *info);
     void geometryChanged(QScadaObjectInfo *info);
@@ -94,6 +99,7 @@ private:
     QScadaObjectInfoAxis mAxis;
     bool mAxiesEnabled;
     QScadaObjectAxisPosition mAxisPosition;
+    int mOrderLevel;
 
     QScadaObjectInfoImage mImageName;
     QString mBackGroundImage;

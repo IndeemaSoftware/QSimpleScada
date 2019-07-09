@@ -1,4 +1,6 @@
 #include "qscadaboard.h"
+#include "qscadaboardinfo.h"
+#include "../QScadaObject/qscadaobjectinfo.h"
 
 #include <QApplication>
 #include <QPainter>
@@ -21,10 +23,46 @@ QScadaBoard::QScadaBoard(QWidget *parent) :
     resetGridPixmap();
 }
 
+QScadaBoard::QScadaBoard(QScadaBoardInfo *boardInfo)
+{
+    this->initBoard(boardInfo);
+}
+
 QScadaBoard::~QScadaBoard()
 {
     qDeleteAll(*mObjects);
     delete mObjects;
+}
+
+void QScadaBoard::initBoard(QScadaBoardInfo *boardInfo)
+{
+    if (boardInfo != nullptr) {
+        this->setEditable(false);
+
+        for (int i=boardInfo->objectList().count()-1; i>=0; i--) {
+            for (QScadaObjectInfo *info : boardInfo->objectList()) {
+                if (info->orderLevel() == i) {
+                   QScadaObject *lObject = this->initNewObject(info);
+                }
+            }
+        }
+    }
+}
+
+QScadaObject *QScadaBoard::initNewObject(QScadaObjectInfo *info)
+{
+    QScadaObject *rObject = new QScadaObject(this);
+    rObject->setInfo(info);
+    rObject->setIsEditable(mEditable);
+    connect(rObject, SIGNAL(objectDoubleClicked(QScadaObject*)), this , SIGNAL(objectDoubleClicked(QScadaObject*)));
+    connect(rObject, SIGNAL(objectSelected(int)), this , SLOT(newObjectSelected(int)));
+    connect(rObject, SIGNAL(objectMove(int,int)), this , SLOT(objectMove(int,int)));
+    connect(rObject, SIGNAL(objectResize(int,int)), this , SLOT(objectResize(int,int)));
+    rObject->show();
+    rObject->update();
+    mObjects->append(rObject);
+
+    return rObject;
 }
 
 void QScadaBoard::createNewObject()
@@ -34,20 +72,9 @@ void QScadaBoard::createNewObject()
 
 void QScadaBoard::createNewObject(QScadaObjectInfo *info)
 {
-    QScadaObject *lObject = new QScadaObject(this);
-    lObject->setInfo(info);
-    //rize object if it's dynamic so general image will be on background
-    if (info->isDynamic()) {
-        bringToFront(lObject);
-    }
-    lObject->setIsEditable(mEditable);
-    connect(lObject, SIGNAL(objectDoubleClicked(QScadaObject*)), this , SIGNAL(objectDoubleClicked(QScadaObject*)));
-    connect(lObject, SIGNAL(objectSelected(int)), this , SLOT(newObjectSelected(int)));
-    connect(lObject, SIGNAL(objectMove(int,int)), this , SLOT(objectMove(int,int)));
-    connect(lObject, SIGNAL(objectResize(int,int)), this , SLOT(objectResize(int,int)));
-    lObject->show();
-    lObject->update();
-    mObjects->append(lObject);
+    QScadaObject *lObject = this->initNewObject(info);
+
+    bringToFront(lObject);
 }
 
 void QScadaBoard::createNewObject(int id)
@@ -124,6 +151,7 @@ void QScadaBoard::newObjectSelected(int id)
         if (id != object->info()->id()) {
             object->setSelected(false);
         } else {
+            this->bringToFront(object);
             emit objectSelected(object);
         }
     }
@@ -163,8 +191,48 @@ void QScadaBoard::resetGridPixmap()
     mUpdateGridPixmap = true;
 }
 
+#include <QDebug>
+void QScadaBoard::orderObject(QScadaObject *o)
+{
+    bool lIsNew = false;
+    for (int i=0;i<mObjects->count();i++) {
+        if (mObjects->at(i)->info()->orderLevel() == o->info()->orderLevel()
+                && mObjects->at(i)->info()->id() != o->info()->id()) {
+            lIsNew = true;
+        }
+    }
+
+    qDebug() << "Old Order";
+    if (lIsNew){
+        for (int i=0;i<mObjects->count();i++) {
+            qDebug() << mObjects->at(i)->info()->orderLevel();
+            mObjects->at(i)->info()->orderDown();
+
+            if (mObjects->at(i)->info()->orderLevel() >= mObjects->count()) {
+                mObjects->at(i)->info()->setOrderLevel(mObjects->count()-1);
+            }
+        }
+    } else {
+        for (int i=0;i<mObjects->count();i++) {
+            qDebug() << mObjects->at(i)->info()->orderLevel();
+
+            if (mObjects->at(i)->info()->orderLevel() < o->info()->orderLevel()) {
+                mObjects->at(i)->info()->orderDown();
+            }
+        }
+    }
+
+    o->info()->setOrderLevel(0);
+
+    qDebug() << "New order";
+    for (int i=0;i<mObjects->count();i++) {
+        qDebug() << mObjects->at(i)->info()->orderLevel();
+    }
+}
+
 void QScadaBoard::bringToFront(QScadaObject *o)
 {
+    orderObject(o);
     o->raise();
 }
 

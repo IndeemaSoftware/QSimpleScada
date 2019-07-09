@@ -42,7 +42,7 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
         //axies
         QScadaObjectInfoAxis lAxis = mLatestObject->axis();
         enableAxis(info->axiesEnabled());
-        ui->comboBoxAxisPosition->setCurrentText(info->axisPosition() == VObjectAxisPositionLeft? "Left" : "Right");
+        ui->comboBoxAxisPosition->setCurrentText(info->axisPosition() == QObjectAxisPositionLeft? "Left" : "Right");
         ui->comboBoxX->setCurrentText(lAxis.getStringX());
         ui->comboBoxY->setCurrentText(lAxis.getStringY());
         ui->comboBoxZ->setCurrentText(lAxis.getStringZ());
@@ -120,7 +120,7 @@ void QScadaObjectInfoDialog::on_pushButton_2_pressed()
         //axies
 
         mLatestObject->setAxiesEnabled(ui->checkBoxAxis->isChecked());//status
-        mLatestObject->setAxisPosition(ui->comboBoxAxisPosition->currentText() == "Left" ? VObjectAxisPositionLeft : VObjectAxisPositionRight);
+        mLatestObject->setAxisPosition(ui->comboBoxAxisPosition->currentText() == "Left" ? QObjectAxisPositionLeft : QObjectAxisPositionRight);
         QScadaObjectInfoAxis lAxis;
         lAxis.setX(lAxis.axisFromString(ui->comboBoxX->currentText()));
         lAxis.setY(lAxis.axisFromString(ui->comboBoxY->currentText()));

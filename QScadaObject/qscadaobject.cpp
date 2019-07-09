@@ -14,7 +14,7 @@ QScadaObject::QScadaObject(QWidget *parent) :
     QWidget(parent),
     mInfo{new QScadaObjectInfo(this)},
     mEffect{new QGraphicsDropShadowEffect},
-    mStatus{VObjectStatusNone}
+    mStatus{QObjectStatusNone}
 {
     setGeometry(100, 100, 100, 100);
     if (info()->showBackground()) {
@@ -27,7 +27,7 @@ QScadaObject::QScadaObject(QWidget *parent) :
 
     dynamicStatusChanged(mInfo);
 
-    setAction(VObjectActionNone);
+    setAction(QObjectActionNone);
     setMouseTracking(true);//this not mouseMoveEven is called everytime mouse is moved
 
     connect(mInfo, SIGNAL(dynamicStatusChanged(QScadaObjectInfo *)), this, SLOT(dynamicStatusChanged(QScadaObjectInfo *)));
@@ -59,15 +59,15 @@ void QScadaObject::mouseMoveEvent(QMouseEvent *event)
 {
     if (mIsEditable) {
         switch (action()) {
-        case VObjectActionMove:{
+        case QObjectActionMove:{
             move(event->x(), event->y());
             break;
         }
-        case VObjectActionResize:{
+        case QObjectActionResize:{
             resize(event->x(), event->y());
             break;
         }
-        case VObjectActionNone: {
+        case QObjectActionNone: {
             if (RESIZE_AREA(event->x(), event->y())) {
                 QApplication::setOverrideCursor(Qt::SizeFDiagCursor);
             } else if (underMouse()) {
@@ -88,11 +88,11 @@ void QScadaObject::mousePressEvent(QMouseEvent *event)
             int lY = event->y();
 
             if (RESIZE_AREA(lX, lY)) {
-                setAction(VObjectActionResize);
+                setAction(QObjectActionResize);
             } else {
                 setSelected(true);
                 QApplication::setOverrideCursor(Qt::ClosedHandCursor);
-                setAction(VObjectActionMove);
+                setAction(QObjectActionMove);
 
                 mPosition.setX(lX);
                 mPosition.setY(lY);
@@ -107,7 +107,7 @@ void QScadaObject::mouseReleaseEvent(QMouseEvent *event)
 {
     if (mIsEditable) {
         (void)event;
-        setAction(VObjectActionNone);
+        setAction(QObjectActionNone);
         QApplication::setOverrideCursor(Qt::ArrowCursor);
     } else {
         QWidget::mouseReleaseEvent(event);
@@ -140,10 +140,10 @@ void QScadaObject::paintEvent(QPaintEvent *e)
         //draw axies
 
         switch(info()->axisPosition()) {
-        case VObjectAxisPositionLeft:
+        case QObjectAxisPositionLeft:
             lX = 12;
             break;
-        case VObjectAxisPositionRight:
+        case QObjectAxisPositionRight:
             lX = geometry().width() - 30;
             break;
         }
@@ -210,16 +210,16 @@ void QScadaObject::paintEvent(QPaintEvent *e)
 
     if (info()->isDynamic()) {
         switch(mStatus) {
-        case VObjectStatusNone:
+        case QObjectStatusNone:
             lLinepen.setColor(Qt::darkGray);
             break;
-        case VObjectStatusRed:
+        case QObjectStatusRed:
             lLinepen.setColor(QColor(171, 27, 227, 255));
             break;
-        case VObjectStatusYellow:
+        case QObjectStatusYellow:
             lLinepen.setColor(QColor(228, 221, 29, 255));
             break;
-        case VObjectStatusGreen:
+        case QObjectStatusGreen:
             lLinepen.setColor(QColor(14, 121, 7, 255));
             break;
         }
@@ -240,16 +240,16 @@ void QScadaObject::dynamicStatusChanged(QScadaObjectInfo*)
 {
     if (info()->isDynamic()) {
         switch(mStatus) {
-        case VObjectStatusNone:
+        case QObjectStatusNone:
             setPalette(QPalette(Qt::lightGray));
             break;
-        case VObjectStatusRed:
+        case QObjectStatusRed:
             setPalette(QPalette(Qt::red));
             break;
-        case VObjectStatusYellow:
+        case QObjectStatusYellow:
             setPalette(QPalette(Qt::yellow));
             break;
-        case VObjectStatusGreen:
+        case QObjectStatusGreen:
             setPalette(QPalette(Qt::green));
             break;
         }
@@ -309,7 +309,6 @@ void QScadaObject::setSelected(bool selected)
         emit objectSelected(mInfo->id());
 
         mEffect->setBlurRadius(50);
-        raise();
     } else {
         mEffect->setBlurRadius(10);
     }
