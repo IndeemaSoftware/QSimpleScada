@@ -42,7 +42,7 @@ void QScadaBoard::initBoard(QScadaBoardInfo *boardInfo)
         for (int i=boardInfo->objectList().count()-1; i>=0; i--) {
             for (QScadaObjectInfo *info : boardInfo->objectList()) {
                 if (info->orderLevel() == i) {
-                   QScadaObject *lObject = this->initNewObject(info);
+                   this->initNewObject(info);
                 }
             }
         }
