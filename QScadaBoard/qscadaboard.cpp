@@ -108,6 +108,8 @@ void QScadaBoard::createQMLObject(int id, QString path)
     lInfo->setShowBackground(true);
     lInfo->setShowBackgroundImage(false);
     lInfo->setIsDynamic(true);
+    lInfo->setFrom(0);
+    lInfo->setTo(100);
     lInfo->setType(QScadaObjectTypeQML);
     lInfo->setUIResourcePath(path);
 

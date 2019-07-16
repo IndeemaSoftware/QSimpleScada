@@ -42,6 +42,7 @@ void QScadaObject::setGeometry(int x, int y, int width, int height)
 void QScadaObject::setGeometry(const QRect &r)
 {
     info()->setGeometry(r);
+
     QWidget::setGeometry(r);
 }
 
@@ -152,6 +153,16 @@ void QScadaObject::paintEvent(QPaintEvent *e)
 
 void QScadaObject::dynamicStatusChanged(QScadaObjectInfo*)
 {
+}
+
+qreal QScadaObject::value() const
+{
+    return mValue;
+}
+
+void QScadaObject::setValue(const qreal &value)
+{
+    mValue = value;
 }
 
 QScadaObjectStatus QScadaObject::status() const

@@ -11,7 +11,10 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     mOrderLevel{0},
     mShowBackgroundImage{false},
     mShowBackground{true},
-    mShowMarkers{true}
+    mShowMarkers{true},
+    mFrom{0},
+    mTo{100},
+    mUIResourcePath{""}
 {
     setGeometry(QRect(100, 100, 100, 100));
 }
@@ -28,7 +31,10 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mBackGroundImage{o->backGroundImage()},
     mShowBackgroundImage{o->showBackgroundImage()},
     mShowBackground{o->showBackground()},
-    mShowMarkers{o->showMarkers()}
+    mShowMarkers{o->showMarkers()},
+    mFrom{0},
+    mTo{100},
+    mUIResourcePath{""}
 {
 
 }
@@ -202,6 +208,26 @@ QString QScadaObjectInfo::uiResourcePath() const
 void QScadaObjectInfo::setUIResourcePath(const QString &uIResourcePath)
 {
     mUIResourcePath = uIResourcePath;
+}
+
+qreal QScadaObjectInfo::from() const
+{
+    return mFrom;
+}
+
+void QScadaObjectInfo::setFrom(const qreal &from)
+{
+    mFrom = from;
+}
+
+qreal QScadaObjectInfo::to() const
+{
+    return mTo;
+}
+
+void QScadaObjectInfo::setTo(const qreal &to)
+{
+    mTo = to;
 }
 
 //implementations for VObjectInfoImage

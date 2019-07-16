@@ -97,6 +97,12 @@ public:
     QString uiResourcePath() const;
     void setUIResourcePath(const QString &uIResourcePath);
 
+    qreal from() const;
+    void setFrom(const qreal &from);
+
+    qreal to() const;
+    void setTo(const qreal &to);
+
 signals:
     void infoChanged(QScadaObjectInfo *info);
     void geometryChanged(QScadaObjectInfo *info);
@@ -117,6 +123,9 @@ private:
     bool mShowBackgroundImage;
     bool mShowBackground;
     bool mShowMarkers;
+
+    qreal mFrom;
+    qreal mTo;
 
     QString mUIResourcePath;
     QScadaObjectType mType;

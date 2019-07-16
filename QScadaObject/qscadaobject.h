@@ -35,16 +35,19 @@ public:
     QScadaObjectStatus status() const;
     void setStatus(const QScadaObjectStatus &status);
 
+    qreal value() const;
+    void setValue(const qreal &value);
+
 private:
     QScadaObjectAction action() const;
     void setAction(const QScadaObjectAction &action);
 
     void move(int x, int y);
-    void resize(int x, int y);
 
     void initUI();
 
 protected:
+    virtual void resize(int x, int y);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -69,6 +72,8 @@ private:
     QScadaObjectInfo *mInfo;
     QGraphicsDropShadowEffect* mEffect;
     bool mSelected;
+
+    qreal mValue;
 
     QScadaObjectStatus mStatus;// default is VObjectStatusNone
 };
