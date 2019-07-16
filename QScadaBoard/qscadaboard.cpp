@@ -1,6 +1,8 @@
 #include "qscadaboard.h"
 #include "qscadaboardinfo.h"
 #include "../QScadaObject/qscadaobjectinfo.h"
+#include "../QScadaObject/qscadaobjectwidget.h"
+#include "../QScadaObject/qscadaobjectqml.h"
 
 #include <QApplication>
 #include <QPainter>
@@ -52,7 +54,15 @@ void QScadaBoard::initBoard(QScadaBoardInfo *boardInfo)
 QScadaObject *QScadaBoard::initNewObject(QScadaObjectInfo *info)
 {
     QScadaObject *rObject = new QScadaObject(this);
-    rObject->setInfo(info);
+
+    switch(info->type()){
+    case QScadaObjectTypeWidget:
+        rObject = new QScadaObjectWidget(info, this);
+        break;
+    case QScadaObjectTypeQML:
+        rObject = new QScadaObjectQML(info, this);
+        break;
+    }
     rObject->setIsEditable(mEditable);
     connect(rObject, SIGNAL(objectDoubleClicked(QScadaObject*)), this , SIGNAL(objectDoubleClicked(QScadaObject*)));
     connect(rObject, SIGNAL(objectSelected(int)), this , SLOT(newObjectSelected(int)));
@@ -85,8 +95,28 @@ void QScadaBoard::createNewObject(int id)
     lInfo->setShowBackground(true);
     lInfo->setShowBackgroundImage(false);
     lInfo->setIsDynamic(true);
+    lInfo->setType(QScadaObjectTypeWidget);
 
     createNewObject(lInfo);
+}
+
+void QScadaBoard::createQMLObject(int id, QString path)
+{
+    QScadaObjectInfo *lInfo = new QScadaObjectInfo();
+    lInfo->setId(id);
+    lInfo->setShowMarkers(true);
+    lInfo->setShowBackground(true);
+    lInfo->setShowBackgroundImage(false);
+    lInfo->setIsDynamic(true);
+    lInfo->setType(QScadaObjectTypeQML);
+    lInfo->setUIResourcePath(path);
+
+    createNewObject(lInfo);
+}
+
+void QScadaBoard::createQMLObject(QString path)
+{
+    this->createQMLObject(mObjects->count(), path);
 }
 
 void QScadaBoard::mouseMoveEvent(QMouseEvent *event)

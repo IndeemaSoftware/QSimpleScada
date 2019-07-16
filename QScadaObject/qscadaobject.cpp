@@ -16,21 +16,16 @@ QScadaObject::QScadaObject(QWidget *parent) :
     mEffect{new QGraphicsDropShadowEffect},
     mStatus{QObjectStatusNone}
 {
-    setGeometry(100, 100, 100, 100);
-    if (info()->showBackground()) {
-        setPalette(QPalette(Qt::transparent));
-        setAutoFillBackground(true);
-    }
+    this->initUI();
+}
 
-    mEffect->setOffset(0);
-    setGraphicsEffect(mEffect);
-
-    dynamicStatusChanged(mInfo);
-
-    setAction(QObjectActionNone);
-    setMouseTracking(true);//this not mouseMoveEven is called everytime mouse is moved
-
-    connect(mInfo, SIGNAL(dynamicStatusChanged(QScadaObjectInfo *)), this, SLOT(dynamicStatusChanged(QScadaObjectInfo *)));
+QScadaObject::QScadaObject(QScadaObjectInfo *info, QWidget *parent):
+    QWidget(parent),
+    mInfo{new QScadaObjectInfo(info)},
+    mEffect{new QGraphicsDropShadowEffect},
+    mStatus{QObjectStatusNone}
+{
+    this->initUI();
 }
 
 QScadaObject::~QScadaObject()
@@ -131,48 +126,10 @@ void QScadaObject::paintEvent(QPaintEvent *e)
     lPainter.setRenderHint(QPainter::Antialiasing,true);
     lPainter.setPen(lLinepen);
 
-    //draw object title
-    lPainter.drawText(QPoint(10, 20), mInfo->title());
     int lX;
     int lY;
 
-    if (info()->axiesEnabled()) {
-        //draw axies
-
-        switch(info()->axisPosition()) {
-        case QObjectAxisPositionLeft:
-            lX = 12;
-            break;
-        case QObjectAxisPositionRight:
-            lX = geometry().width() - 30;
-            break;
-        }
-        lY = geometry().height() - 10;
-        int lWidth = 10;
-        int lInner = 4;
-
-        lPainter.drawEllipse(lX-lInner/2,
-                             lY-lInner/2,
-                             lInner,
-                             lInner);
-        lPainter.drawText(QPoint(lX - 10, geometry().height()-2), info()->axis().insideAxisString());//inside position
-
-        lPainter.drawLine(lX, lY,
-                          lX, lY -lWidth);
-        lPainter.drawLine(lX, lY -lWidth-1,
-                          lX-3, lY -lWidth+3);
-        lPainter.drawLine(lX, lY -lWidth-1,
-                          lX+3, lY -lWidth+3);
-        lPainter.drawText(QPoint(lX - 3, lY -lWidth-3), info()->axis().upsideAxisString());//up possibtion
-
-        lPainter.drawLine(lX, lY,
-                          lX + lWidth, lY);
-        lPainter.drawLine(lX + lWidth+1, lY,
-                          lX + lWidth-3, lY-3);
-        lPainter.drawLine(lX + lWidth+1, lY,
-                          lX + lWidth-3, lY+3);
-        lPainter.drawText(QPoint(lX + lWidth + 3, lY+3), info()->axis().asideAxisString());//aside position
-    }
+#warning resize dots are not drown yet when widget is based on QML, should be fixed
 
     //draw resize dots
     lX = geometry().width()-RESIZE_FIELD_SIZE;
@@ -190,76 +147,11 @@ void QScadaObject::paintEvent(QPaintEvent *e)
         }
     }
 
-    if (info()->showMarkers()) {
-        QSize lSize = lMarkerPixmap.size();
-        lPainter.drawPixmap(QRect((width() - lSize.width()) /2,
-                                  (height() - lSize.height()) / 2,
-                                  lSize.width(),
-                                  lSize.height()),
-                            lMarkerPixmap);
-    }
-
-    if (info()->showBackgroundImage()) {
-        lPainter.drawPixmap(QRect(0,
-                                  0,
-                                  width(),
-                                  height()),
-                            lBackgroundPixmap.scaled(width(), height(),
-                                                     Qt::KeepAspectRatioByExpanding));
-    }
-
-    if (info()->isDynamic()) {
-        switch(mStatus) {
-        case QObjectStatusNone:
-            lLinepen.setColor(Qt::darkGray);
-            break;
-        case QObjectStatusRed:
-            lLinepen.setColor(QColor(171, 27, 227, 255));
-            break;
-        case QObjectStatusYellow:
-            lLinepen.setColor(QColor(228, 221, 29, 255));
-            break;
-        case QObjectStatusGreen:
-            lLinepen.setColor(QColor(14, 121, 7, 255));
-            break;
-        }
-    } else {
-        lLinepen.setColor(Qt::black);
-    }
-
-    if (info()->showBackground()) {
-        lLinepen.setWidth(2);
-        lPainter.setPen(lLinepen);
-        lPainter.drawRoundedRect(0,0,width(), height(),3,3);
-    }
-
     QWidget::paintEvent(e);
 }
 
 void QScadaObject::dynamicStatusChanged(QScadaObjectInfo*)
 {
-    if (info()->isDynamic()) {
-        switch(mStatus) {
-        case QObjectStatusNone:
-            setPalette(QPalette(Qt::lightGray));
-            break;
-        case QObjectStatusRed:
-            setPalette(QPalette(Qt::red));
-            break;
-        case QObjectStatusYellow:
-            setPalette(QPalette(Qt::yellow));
-            break;
-        case QObjectStatusGreen:
-            setPalette(QPalette(Qt::green));
-            break;
-        }
-    } else {
-        setPalette(QPalette(Qt::white));
-    }
-
-    if (!info()->showBackground()) {
-        setPalette(QPalette(Qt::transparent));
-    }
 }
 
 QScadaObjectStatus QScadaObject::status() const
@@ -321,7 +213,6 @@ QScadaObjectInfo *QScadaObject::info() const
 
 void QScadaObject::setInfo(QScadaObjectInfo *info)
 {
-    setGeometry(info->geometry());
     mInfo = info;
 }
 
@@ -365,4 +256,23 @@ void QScadaObject::resize(int x, int y)
     if (x != 0 && y != 0) {
         emit objectResize(lX, lY);
     }
+}
+
+void QScadaObject::initUI()
+{
+    setGeometry(100, 100, 100, 100);
+    if (info()->showBackground()) {
+        setPalette(QPalette(Qt::transparent));
+        setAutoFillBackground(true);
+    }
+
+    mEffect->setOffset(0);
+    setGraphicsEffect(mEffect);
+
+    setAction(QObjectActionNone);
+    setMouseTracking(true);//this not mouseMoveEven is called everytime mouse is moved
+
+    connect(mInfo, SIGNAL(dynamicStatusChanged(QScadaObjectInfo *)), this, SLOT(dynamicStatusChanged(QScadaObjectInfo *)));
+
+    setGeometry(info()->geometry());
 }

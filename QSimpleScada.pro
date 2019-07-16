@@ -8,16 +8,16 @@ QT += widgets network
 
 TARGET = QSimpleScada
 TEMPLATE = lib
-VERSION = 0.5.3
+VERSION = 0.5.0
 
 include(com_indeema_QSimpleScada.pri)
 
 win32 {
-    DLLDESTDIR +=../QSimpleScadaLib/lib
+    DLLDESTDIR +=../QSimpleScadaLib/
 }
 
 mac {
-    DESTDIR +=../QSimpleScadaLib/lib
+    DESTDIR +=../QSimpleScadaLib/
 }
 
 unix {

@@ -37,6 +37,11 @@ struct QScadaObjectInfoImage {
     void setImageNameForState(QString, QScadaObjectStatus);
 };
 
+typedef enum {
+    QScadaObjectTypeWidget,
+    QScadaObjectTypeQML
+} QScadaObjectType;
+
 class QScadaObjectInfo : public QObject
 {
     Q_OBJECT
@@ -86,6 +91,12 @@ public:
     void urderUp();
     void orderDown();
 
+    QScadaObjectType type() const;
+    void setType(const QScadaObjectType &type);
+
+    QString uiResourcePath() const;
+    void setUIResourcePath(const QString &uIResourcePath);
+
 signals:
     void infoChanged(QScadaObjectInfo *info);
     void geometryChanged(QScadaObjectInfo *info);
@@ -106,6 +117,9 @@ private:
     bool mShowBackgroundImage;
     bool mShowBackground;
     bool mShowMarkers;
+
+    QString mUIResourcePath;
+    QScadaObjectType mType;
 };
 
 #endif // VOBJECTINFO_H

@@ -184,6 +184,26 @@ void QScadaObjectInfo::orderDown()
     mOrderLevel++;
 }
 
+QScadaObjectType QScadaObjectInfo::type() const
+{
+    return mType;
+}
+
+void QScadaObjectInfo::setType(const QScadaObjectType &type)
+{
+    mType = type;
+}
+
+QString QScadaObjectInfo::uiResourcePath() const
+{
+    return mUIResourcePath;
+}
+
+void QScadaObjectInfo::setUIResourcePath(const QString &uIResourcePath)
+{
+    mUIResourcePath = uIResourcePath;
+}
+
 //implementations for VObjectInfoImage
 
 QString QScadaObjectInfoImage::getImageNameForStatus(QScadaObjectStatus status)

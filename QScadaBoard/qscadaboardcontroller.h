@@ -21,11 +21,10 @@ public:
     explicit QScadaBoardController(QWidget *parent = 0);
     ~QScadaBoardController();
 
-    void initConnectedDevices(const QList<QScadaBoardInfo*>list);
-
     void clearBoard(QScadaBoard*);
     void clearAllBoards();
 
+    void initConnectedDevices(const QList<QScadaBoardInfo*>list);
     void initBoardForDeviceIp(QString);
     void updateBoardForDeviceIp(QString);
     QList<QScadaBoard*> getBoardList();

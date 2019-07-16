@@ -1,6 +1,6 @@
 {
-  "name": "com.indeema.qsimplescada",
-  "description": "Qt based simple SCADA framework, with dashboard, static and dynamic components and XML project files",
+  "name": "com.indeema.QSimpleScada",
+  "description": "Qt based simple SCADA framework, with dashboard, static and dynamic components",
   "author": {
     "name": "Indeema Software Inc.",
     "email": "support@indeema.com"
@@ -10,7 +10,7 @@
     "url": "https://github.com/IndeemaSoftware/QSimpleScada.git"
   },
   "version": {
-    "label": "0.5.3",
+    "label": "0.5.2",
     "revision": "",
     "fingerprint": ""
   },

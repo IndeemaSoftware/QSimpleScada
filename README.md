@@ -1,5 +1,5 @@
 # QSimpleScada
-Qt/C++ based simple SCADA framework, with dashboard, static and dynamic components. By using QSimpleScada framework you can build complex SCADA UIs for your needs.
+Qt/C++ based simple SCADA framework, with dashboard, static and dynamic components. By using QSimpleScada framework you can build complex SCADA uis for your needs.
 
 # Minimum requirements
 Qt 5.8
@@ -7,15 +7,11 @@ Qt 5.8
 # Installing with qpm
 Just use qpm (https://www.qpm.io/) to install QSimpleScada in your project. Run qpm install com.indeema.QSimpleScada . in *.pro file include(vendor/Vendor.pri)
 
-latest release v0.5.2
-
 Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScadaLib folder with compiled windows or macos libs.
 
 # Sample
 
 You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
-
-Also read [Wiki](https://github.com/IndeemaSoftware/QSimpleScada/wiki) for more details - 
 
 # Sample in action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
@@ -76,7 +72,7 @@ Also save and open project file
 ```cpp
 void MainWindow::save()
 {
-    if (mBoard->objects()->count() == 0) {
+   if (mBoard->objects()->count() == 0) {
         QString lMessage(tr("Nothing to be saved"));
 
         QMessageBox lMsgBox;
@@ -106,7 +102,7 @@ void MainWindow::save()
                 lFileName.append(".irp");
             }
 
-            QString lDevices = QConnectedDeviceInfo::XMLFromDeviceInfo(lList, mController);   //<----;
+            QString lDevices = VConnectedDeviceInfo::XMLFromDeviceInfo(lList, mController);   //<----;
 
             //create xml for boards of each device
 
@@ -153,10 +149,16 @@ void MainWindow::open()
 
             lConnectedDevceInfo->initFromXml(lRawData);
 
-            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); ++i) {
+            QScadaObjectInfo *info;
+            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); i++) {
                 for (QScadaBoardInfo *boardInfo : lConnectedDevceInfo->connecteDeviceList.at(i)->boardList) {
                     if (boardInfo != nullptr) {
-                        mBoard->initBoard(boardInfo);
+                        mBoard->setEditable(false);
+                        //reading all objects in reverce to have in correct layers
+                        for (int j = boardInfo->objectList().count()-1; j >=0; j--) {
+                            info = boardInfo->objectList().at(j);
+                            mBoard->createNewObject(info);
+                        }
                     }
                 }
             }

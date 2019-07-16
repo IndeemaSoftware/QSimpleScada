@@ -14,7 +14,9 @@ SOURCES += \
     $$PWD/QScadaBoard/qscadaboardmanager.cpp \
     $$PWD/QScadaEntity/qscadaconnecteddeviceinfo.cpp \
     $$PWD/QScadaEntity/qscadabaseprefentity.cpp \
-    $$PWD/QScadaDevice/qscadadeviceinfo.cpp
+    $$PWD/QScadaDevice/qscadadeviceinfo.cpp \
+    $$PWD/QScadaObject/qscadaobjectqml.cpp \
+    $$PWD/QScadaObject/qscadaobjectwidget.cpp
 
 HEADERS  += \
     $$PWD/QScadaObject/qscadaobject.h \
@@ -28,6 +30,8 @@ HEADERS  += \
     $$PWD/QScadaEntity/qscadaconnecteddeviceinfo.h \
     $$PWD/QScadaEntity/qscadabaseprefentity.h \
     $$PWD/QScadaDevice/qscadadeviceinfo.h \
+    $$PWD/QScadaObject/qscadaobjectqml.h \
+    $$PWD/QScadaObject/qscadaobjectwidget.h \
     $$PWD/qscadaconfig.h
 
 FORMS    += $$PWD/QScadaObject/qscadaobjectinfodialog.ui

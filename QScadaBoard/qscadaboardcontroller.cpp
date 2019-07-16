@@ -33,21 +33,6 @@ QScadaBoardController::~QScadaBoardController()
     delete mBoard;
 }
 
-void QScadaBoardController::initConnectedDevices(const QList<QScadaBoardInfo *> list)
-{
-    qDebug() << __FUNCTION__;
-    for (QScadaBoardInfo *boardInfo : list) {
-        if (boardInfo != nullptr) {
-            mBoard->setEditable(false);
-            for (QScadaObjectInfo *info : boardInfo->objectList()) {
-                QScadaObjectInfo *lInfo = new QScadaObjectInfo(info);
-                mBoard->createNewObject(lInfo);
-            }
-        }
-    }
-    mBoard->update();
-}
-
 void QScadaBoardController::clearBoard(QScadaBoard* board)
 {
     qDebug() << __FUNCTION__;
@@ -64,6 +49,21 @@ void QScadaBoardController::clearAllBoards()
     for (QScadaBoard *board:mBoardManager->getBoardList()) {
         clearBoard(board);
     }
+}
+
+void QScadaBoardController::initConnectedDevices(const QList<QScadaBoardInfo *> list)
+{
+    qDebug() << __FUNCTION__;
+    for (QScadaBoardInfo *boardInfo : list) {
+        if (boardInfo != nullptr) {
+            mBoard->setEditable(false);
+            for (QScadaObjectInfo *info : boardInfo->objectList()) {
+                QScadaObjectInfo *lInfo = new QScadaObjectInfo(info);
+                mBoard->createNewObject(lInfo);
+            }
+        }
+    }
+    mBoard->update();
 }
 
 void QScadaBoardController::initBoardForDeviceIp(QString ip)

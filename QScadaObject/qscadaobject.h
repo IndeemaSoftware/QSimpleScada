@@ -13,7 +13,8 @@ class QScadaObject : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QScadaObject(QWidget *parent = 0);
+    explicit QScadaObject(QWidget *parent = nullptr);
+    QScadaObject(QScadaObjectInfo *, QWidget *parent = nullptr);
     ~QScadaObject();
 
     void setGeometry(int x, int y, int width, int height);
@@ -41,6 +42,8 @@ private:
     void move(int x, int y);
     void resize(int x, int y);
 
+    void initUI();
+
 protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -55,7 +58,7 @@ signals:
     void objectMove(int x, int y);
     void objectResize(int x, int y);
 
-private slots:
+protected slots:
     void dynamicStatusChanged(QScadaObjectInfo*);
 
 private:

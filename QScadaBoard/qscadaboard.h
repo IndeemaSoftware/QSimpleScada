@@ -24,6 +24,9 @@ public:
     void createNewObject(QScadaObjectInfo *);
     void createNewObject(int id);
 
+    void createQMLObject(int id, QString path);
+    void createQMLObject(QString path);
+
     bool editable() const;
     void setEditable(bool editable);
 
