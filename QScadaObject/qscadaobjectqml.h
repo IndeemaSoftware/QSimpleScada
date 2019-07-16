@@ -19,6 +19,8 @@ public:
     qreal value() const;
     void setValue(const qreal &value);
 
+    void update();
+
     QQuickItem *QMLObject() const;
     void setQMLObject(QQuickItem *qMLObject);
 

@@ -8,6 +8,8 @@ class QScadaObjectWidget : public QScadaObject
 public:
     explicit QScadaObjectWidget(QScadaObjectInfo *, QWidget *parent = nullptr);
 
+    void update();
+
 protected:
     void paintEvent(QPaintEvent *e);
 

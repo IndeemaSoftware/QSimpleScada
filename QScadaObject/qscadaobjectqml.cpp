@@ -15,6 +15,7 @@ QScadaObjectQML::QScadaObjectQML(QScadaObjectInfo *info, QWidget *parent) : QSca
 {
 
     QQuickWidget *lQmlWidget = new QQuickWidget();
+    lQmlWidget->setClearColor(Qt::transparent);
     lQmlWidget->setSource(QUrl::fromLocalFile(info->uiResourcePath()));
     lQmlWidget->show();
 
@@ -39,6 +40,13 @@ void QScadaObjectQML::setValue(const qreal &value)
     mQMLObject->setProperty(QScadaObjectQML::tagValue, QVariant(value));
 }
 
+void QScadaObjectQML::update()
+{
+    QScadaObject::update();
+
+    this->updateQMLGeometry();
+}
+
 QQuickItem *QScadaObjectQML::QMLObject() const
 {
     return mQMLObject;
@@ -47,13 +55,6 @@ QQuickItem *QScadaObjectQML::QMLObject() const
 void QScadaObjectQML::setQMLObject(QQuickItem *QMLObject)
 {
     mQMLObject = QMLObject;
-}
-
-void QScadaObjectQML::resize(int x, int y)
-{
-    QScadaObject::resize(x, y);
-
-    this->updateQMLGeometry();
 }
 
 void QScadaObjectQML::updateQMLGeometry()

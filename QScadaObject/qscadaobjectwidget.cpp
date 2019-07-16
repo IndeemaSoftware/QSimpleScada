@@ -7,6 +7,11 @@ QScadaObjectWidget::QScadaObjectWidget(QScadaObjectInfo *info, QWidget *parent):
 
 }
 
+void QScadaObjectWidget::update()
+{
+    QScadaObject::update();
+}
+
 void QScadaObjectWidget::dynamicStatusChanged(QScadaObjectInfo*)
 {
     if (info()->isDynamic() && info()->type() == QScadaObjectTypeWidget) {
@@ -35,6 +40,8 @@ void QScadaObjectWidget::dynamicStatusChanged(QScadaObjectInfo*)
 
 void QScadaObjectWidget::paintEvent(QPaintEvent *e)
 {
+    QScadaObject::paintEvent(e);
+
     QPainter lPainter(this);
     QPixmap lMarkerPixmap(info()->imageName(this->status()));
     QPixmap lBackgroundPixmap(info()->backGroundImage());
@@ -121,12 +128,6 @@ void QScadaObjectWidget::paintEvent(QPaintEvent *e)
         }
     } else {
         lLinepen.setColor(Qt::black);
-    }
-
-    if (info()->showBackground()) {
-        lLinepen.setWidth(2);
-        lPainter.setPen(lLinepen);
-        lPainter.drawRoundedRect(0,0,width(), height(),3,3);
     }
 
     QWidget::paintEvent(e);

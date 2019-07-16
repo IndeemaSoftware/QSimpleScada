@@ -148,6 +148,12 @@ void QScadaObject::paintEvent(QPaintEvent *e)
         }
     }
 
+    if (info()->showBackground()) {
+        lLinepen.setWidth(2);
+        lPainter.setPen(lLinepen);
+        lPainter.drawRoundedRect(0,0,width(), height(),3,3);
+    }
+
     QWidget::paintEvent(e);
 }
 
@@ -188,12 +194,15 @@ void QScadaObject::setIsEditable(bool isEditable)
 
 void QScadaObject::update()
 {
+    QWidget::update();
+
     if (info()->showBackground()) {
+        setPalette(QPalette(Qt::white));
+        setAutoFillBackground(true);
+    } else {
         setPalette(QPalette(Qt::transparent));
         setAutoFillBackground(true);
     }
-
-    QWidget::update();
 
     setGeometry(info()->geometry());
     dynamicStatusChanged(info());

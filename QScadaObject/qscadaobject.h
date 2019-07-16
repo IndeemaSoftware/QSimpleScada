@@ -30,7 +30,7 @@ public:
     bool isEditable() const;
     void setIsEditable(bool isEditable);
 
-    void update();
+    virtual void update();
 
     QScadaObjectStatus status() const;
     void setStatus(const QScadaObjectStatus &status);
@@ -47,7 +47,7 @@ private:
     void initUI();
 
 protected:
-    virtual void resize(int x, int y);
+    void resize(int x, int y);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
