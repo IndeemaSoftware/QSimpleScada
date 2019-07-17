@@ -1,7 +1,79 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define MIN_PAUSE_TIME 5
+#include <QList>
+#include <QStringList>
+#include <QDirIterator>
+#include <QDebug>
+
+#define DEFAULT_QML_PATH ":/com/indeema/eeiot/EEIoT/"
+
+struct QMLWidgetsConfig {
+    QString title = "";
+    bool isValid = false;
+
+    QMLWidgetsConfig(QString path){
+        if (!path.isEmpty()) {
+            QDir directory(path);
+
+            // Load all files with the *.PNG extension
+            // (you can modify this to suit your needs.
+            QStringList lQMLList = directory.entryList(QStringList("*.qml"));
+            for (QString file : lQMLList) {
+                qDebug() << file;
+            }
+
+            if (lQMLList.count() > 0) {
+                mQMLWidgets = lQMLList;
+                QString lTmpTitle = path.split('/').last();
+                //let secure from having / at end or not having
+                if (lTmpTitle.isEmpty()) {
+                    title = path.split('/').at(path.split('/').count()-2);
+                } else {
+                    title = lTmpTitle;
+                }
+            }
+
+//            QDirIterator it("path", QDirIterator::Subdirectories);
+//            while (it.hasNext()) {
+//                qDebug() << it.next();
+//            }
+        }
+    }
+
+private:
+    QStringList mQMLWidgets;
+};
+
+class QMLConfig
+{
+    private:
+        QMLConfig() {
+            appendQMLPath(DEFAULT_QML_PATH);
+        }
+        QMLConfig(const QMLConfig&) {}
+        QMLConfig& instance(const QMLConfig&) {
+            return *this;
+        }
+
+    public:
+        static QMLConfig & instance() {
+            static QMLConfig * _instance = nullptr;
+            if (_instance == nullptr) {
+                _instance = new QMLConfig();
+            }
+            return *_instance;
+        }
+
+        void appendQMLPath(QString path) {
+            mQMLPaths.append(path);
+            mQMLWidgets.append(QMLWidgetsConfig(path));
+        }
+
+private:
+    QStringList mQMLPaths;
+    QList<QMLWidgetsConfig> mQMLWidgets;
+};
 
 enum QScadaStatus {
     QScadaStatusDefault,
@@ -10,50 +82,5 @@ enum QScadaStatus {
     QScadaStatusYellow,
     QScadaStatusRed
 };
-
-enum QScadaUnitStatus{
-    QScadaUnitStatusNotConfigured = -1,
-    QScadaUnitStatusConfigured,
-    QScadaUnitStatusNotConnected
-} ;
-
-typedef enum {
-    QScadaMachineryClass1 = 1,
-    QScadaMachineryClass2,
-    QScadaMachineryClass3,
-    QScadaMachineryClass4
-} QScadaMachineryClass;
-
-enum QUpdateMode {
-    VUpdateModeFromTo,
-    VUpdateMode24Hours,
-    VUpdateModeDaysCount
-};
-
-enum QScadaTrendPaintMode {
-    QScadaTrendPaintModeDefault,
-    QScadaTrendPaintModeHours,
-    QScadaTrendPaintModeDays
-};
-
-inline double GetRealRecordingPeriod(QList<int>& recordingDurations, double&& pauseTime = 0, int&& totalRecordingTime = 0)
-{
-    totalRecordingTime = 0;
-    pauseTime = 0;
-
-    for(const int& value : recordingDurations) {
-        totalRecordingTime += value;
-    }
-
-    pauseTime = totalRecordingTime * 0.5;
-
-    if(pauseTime < (double)MIN_PAUSE_TIME) {
-        pauseTime = (double)MIN_PAUSE_TIME;
-    }
-
-    double rRecordingPeriod = (double)totalRecordingTime + pauseTime;
-
-    return rRecordingPeriod;
-}
 
 #endif // CONFIG_H

@@ -130,8 +130,6 @@ void QScadaObject::paintEvent(QPaintEvent *e)
     int lX;
     int lY;
 
-#warning resize dots are not drown yet when widget is based on QML, should be fixed
-
     //draw resize dots
     lX = geometry().width()-RESIZE_FIELD_SIZE;
     lY = geometry().height();
