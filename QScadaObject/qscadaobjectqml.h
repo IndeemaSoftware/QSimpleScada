@@ -31,6 +31,9 @@ private:
     void setFrom(qreal);
     void setTo(qreal);
 
+protected slots:
+    void dynamicStatusChanged(QScadaObjectInfo*);
+
 private:
     QQuickItem *mQMLObject;
 };

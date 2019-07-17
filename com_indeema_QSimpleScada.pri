@@ -16,7 +16,7 @@ SOURCES += \
     $$PWD/QScadaEntity/qscadabaseprefentity.cpp \
     $$PWD/QScadaDevice/qscadadeviceinfo.cpp \
     $$PWD/QScadaObject/qscadaobjectqml.cpp \
-    $$PWD/QScadaObject/qscadaobjectwidget.cpp
+    $$PWD/QScadaWidgets/qledindicator.cpp
 
 HEADERS  += \
     $$PWD/QScadaObject/qscadaobject.h \
@@ -31,7 +31,7 @@ HEADERS  += \
     $$PWD/QScadaEntity/qscadabaseprefentity.h \
     $$PWD/QScadaDevice/qscadadeviceinfo.h \
     $$PWD/QScadaObject/qscadaobjectqml.h \
-    $$PWD/QScadaObject/qscadaobjectwidget.h \
+    $$PWD/QScadaWidgets/qledindicator.h \
     $$PWD/qscadaconfig.h
 
 FORMS    += $$PWD/QScadaObject/qscadaobjectinfodialog.ui

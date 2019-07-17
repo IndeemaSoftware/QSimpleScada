@@ -1,44 +1,18 @@
-#include "qscadaobjectwidget.h"
+#include "qledindicator.h"
 
 #include <QPainter>
 
-QScadaObjectWidget::QScadaObjectWidget(QScadaObjectInfo *info, QWidget *parent): QScadaObject(info, parent)
+QLedIndicator::QLedIndicator(QScadaObjectInfo *info, QWidget *parent): QScadaObject(info, parent)
 {
 
 }
 
-void QScadaObjectWidget::update()
+void QLedIndicator::update()
 {
     QScadaObject::update();
 }
 
-void QScadaObjectWidget::dynamicStatusChanged(QScadaObjectInfo*)
-{
-    if (info()->isDynamic() && info()->type() == QScadaObjectTypeWidget) {
-        switch(status()) {
-        case QObjectStatusNone:
-            setPalette(QPalette(Qt::lightGray));
-            break;
-        case QObjectStatusRed:
-            setPalette(QPalette(Qt::red));
-            break;
-        case QObjectStatusYellow:
-            setPalette(QPalette(Qt::yellow));
-            break;
-        case QObjectStatusGreen:
-            setPalette(QPalette(Qt::green));
-            break;
-        }
-    } else {
-        setPalette(QPalette(Qt::white));
-    }
-
-    if (!info()->showBackground()) {
-        setPalette(QPalette(Qt::transparent));
-    }
-}
-
-void QScadaObjectWidget::paintEvent(QPaintEvent *e)
+void QLedIndicator::paintEvent(QPaintEvent *e)
 {
     QScadaObject::paintEvent(e);
 
@@ -131,4 +105,30 @@ void QScadaObjectWidget::paintEvent(QPaintEvent *e)
     }
 
     QWidget::paintEvent(e);
+}
+
+void QLedIndicator::dynamicStatusChanged(QScadaObjectInfo*)
+{
+    if (info()->isDynamic() && info()->type() == QScadaObjectTypeWidget) {
+        switch(status()) {
+        case QObjectStatusNone:
+            setPalette(QPalette(Qt::lightGray));
+            break;
+        case QObjectStatusRed:
+            setPalette(QPalette(Qt::red));
+            break;
+        case QObjectStatusYellow:
+            setPalette(QPalette(Qt::yellow));
+            break;
+        case QObjectStatusGreen:
+            setPalette(QPalette(Qt::green));
+            break;
+        }
+    } else {
+        setPalette(QPalette(Qt::white));
+    }
+
+    if (!info()->showBackground()) {
+        setPalette(QPalette(Qt::transparent));
+    }
 }

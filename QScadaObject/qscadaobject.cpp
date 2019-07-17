@@ -157,10 +157,6 @@ void QScadaObject::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 }
 
-void QScadaObject::dynamicStatusChanged(QScadaObjectInfo*)
-{
-}
-
 qreal QScadaObject::value() const
 {
     return mValue;
@@ -179,7 +175,6 @@ QScadaObjectStatus QScadaObject::status() const
 void QScadaObject::setStatus(const QScadaObjectStatus &status)
 {
     mStatus = status;
-    dynamicStatusChanged(mInfo);
 }
 
 bool QScadaObject::isEditable() const

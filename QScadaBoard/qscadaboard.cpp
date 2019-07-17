@@ -1,8 +1,8 @@
 #include "qscadaboard.h"
 #include "qscadaboardinfo.h"
 #include "../QScadaObject/qscadaobjectinfo.h"
-#include "../QScadaObject/qscadaobjectwidget.h"
 #include "../QScadaObject/qscadaobjectqml.h"
+#include "../QScadaWidgets/qledindicator.h"
 
 #include <QApplication>
 #include <QPainter>
@@ -53,11 +53,11 @@ void QScadaBoard::initBoard(QScadaBoardInfo *boardInfo)
 
 QScadaObject *QScadaBoard::initNewObject(QScadaObjectInfo *info)
 {
-    QScadaObject *rObject = new QScadaObject(this);
+    QScadaObject *rObject;
 
     switch(info->type()){
     case QScadaObjectTypeWidget:
-        rObject = new QScadaObjectWidget(info, this);
+        rObject = new QLedIndicator(info, this);
         break;
     case QScadaObjectTypeQML:
         rObject = new QScadaObjectQML(info, this);
@@ -234,10 +234,8 @@ void QScadaBoard::orderObject(QScadaObject *o)
         }
     }
 
-    qDebug() << "Old Order";
     if (lIsNew){
         for (int i=0;i<mObjects->count();i++) {
-            qDebug() << mObjects->at(i)->info()->orderLevel();
             mObjects->at(i)->info()->orderDown();
 
             if (mObjects->at(i)->info()->orderLevel() >= mObjects->count()) {
@@ -246,8 +244,6 @@ void QScadaBoard::orderObject(QScadaObject *o)
         }
     } else {
         for (int i=0;i<mObjects->count();i++) {
-            qDebug() << mObjects->at(i)->info()->orderLevel();
-
             if (mObjects->at(i)->info()->orderLevel() < o->info()->orderLevel()) {
                 mObjects->at(i)->info()->orderDown();
             }
@@ -255,11 +251,6 @@ void QScadaBoard::orderObject(QScadaObject *o)
     }
 
     o->info()->setOrderLevel(0);
-
-    qDebug() << "New order";
-    for (int i=0;i<mObjects->count();i++) {
-        qDebug() << mObjects->at(i)->info()->orderLevel();
-    }
 }
 
 void QScadaBoard::bringToFront(QScadaObject *o)

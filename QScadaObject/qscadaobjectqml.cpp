@@ -75,3 +75,8 @@ void QScadaObjectQML::setTo(qreal to)
 {
     mQMLObject->setProperty(QScadaObjectQML::tagTo, QVariant(to));
 }
+
+void QScadaObjectQML::dynamicStatusChanged(QScadaObjectInfo *)
+{
+
+}

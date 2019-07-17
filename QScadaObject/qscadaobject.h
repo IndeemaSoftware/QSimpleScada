@@ -62,7 +62,7 @@ signals:
     void objectResize(int x, int y);
 
 protected slots:
-    void dynamicStatusChanged(QScadaObjectInfo*);
+    virtual void dynamicStatusChanged(QScadaObjectInfo*) = 0;
 
 private:
     QPoint mPosition;
