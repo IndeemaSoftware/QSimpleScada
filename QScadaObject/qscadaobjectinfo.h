@@ -58,14 +58,8 @@ public:
     QString uiResourcePath() const;
     void setUIResourcePath(const QString &uIResourcePath);
 
-    qreal from() const;
-    void setFrom(const qreal &from);
-
-    qreal to() const;
-    void setTo(const qreal &to);
-
-    QMLInfo qMLInfo() const;
-    void setQMLInfo(const QMLInfo &qMLInfo);
+    QMultiMap<QString, QVariant> UIProperties() const;
+    void setUIProperties(const QMultiMap<QString, QVariant> &qMLProperties);
 
 signals:
     void infoChanged(QScadaObjectInfo *info);
@@ -83,10 +77,7 @@ private:
     bool mShowBackgroundImage;
     bool mShowBackground;
 
-    qreal mFrom;
-    qreal mTo;
-
-    QMLInfo mQMLInfo;
+    QMultiMap<QString, QVariant> mUIProperties;
 
     QScadaObjectType mType;
     QString mUIResourcePath;

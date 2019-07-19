@@ -9,8 +9,6 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     mOrderLevel{0},
     mShowBackgroundImage{false},
     mShowBackground{true},
-    mFrom{0},
-    mTo{100},
     mType{QScadaObjectTypeWidget},
     mUIResourcePath{""}
 {
@@ -26,10 +24,8 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mBackGroundImage{o->backGroundImage()},
     mShowBackgroundImage{o->showBackgroundImage()},
     mShowBackground{o->showBackground()},
-    mFrom{0},
-    mTo{100},
     mType{o->type()},
-    mUIResourcePath{""}
+    mUIResourcePath{o->uiResourcePath()}
 {
 
 }
@@ -150,32 +146,12 @@ void QScadaObjectInfo::setUIResourcePath(const QString &uIResourcePath)
     mUIResourcePath = uIResourcePath;
 }
 
-qreal QScadaObjectInfo::from() const
+QMultiMap<QString, QVariant> QScadaObjectInfo::UIProperties() const
 {
-    return mFrom;
+    return mUIProperties;
 }
 
-void QScadaObjectInfo::setFrom(const qreal &from)
+void QScadaObjectInfo::setUIProperties(const QMultiMap<QString, QVariant> &qMLProperties)
 {
-    mFrom = from;
-}
-
-qreal QScadaObjectInfo::to() const
-{
-    return mTo;
-}
-
-void QScadaObjectInfo::setTo(const qreal &to)
-{
-    mTo = to;
-}
-
-QMLInfo QScadaObjectInfo::qMLInfo() const
-{
-    return mQMLInfo;
-}
-
-void QScadaObjectInfo::setQMLInfo(const QMLInfo &qMLInfo)
-{
-    mQMLInfo = qMLInfo;
+    mUIProperties = qMLProperties;
 }

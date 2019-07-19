@@ -9,6 +9,7 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QFile>
+#include <QVariant>
 
 const QString QConnectedDeviceInfo::tag_devices = QString("devices");
 const QString QConnectedDeviceInfo::tag_device = QString("device");
@@ -38,6 +39,7 @@ const QString QConnectedDeviceInfo::tag_axis_x = QString("axis_x");
 const QString QConnectedDeviceInfo::tag_axis_y = QString("axis_y");
 const QString QConnectedDeviceInfo::tag_axis_z = QString("axis_z");
 const QString QConnectedDeviceInfo::order_level = QString("order_level");
+const QString QConnectedDeviceInfo::tag_ui_resource = QString("tag_ui_resource");
 const QString QConnectedDeviceInfo::properties = QString("properties");
 
 QConnectedDeviceInfo::QConnectedDeviceInfo(QObject *parent):
@@ -169,6 +171,25 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
                 lObjectInfo->setGeometry(lRect);
             } else if (lXmlStreamReader.name() == order_level) {
                 lObjectInfo->setOrderLevel(lXmlStreamReader.readElementText().toInt());
+            } else if (lXmlStreamReader.name() == tag_ui_resource) {
+                lObjectInfo->setUIResourcePath(lXmlStreamReader.readElementText());
+            }
+            //parsing qml parameters
+            else if (lXmlStreamReader.name() == properties) {
+                int lStart = 1;
+                QMultiMap<QString, QVariant> lProperties;
+                while (lStart > 0) {
+                    if (QXmlStreamReader::StartElement == lXmlStreamReader.readNext()) {
+                        lProperties.insert(lXmlStreamReader.name().toString(), QVariant::fromValue<QString>(lXmlStreamReader.readElementText()));
+                        lStart++;
+                    }
+
+                    if (QXmlStreamReader::EndElement == lXmlStreamReader.tokenType()) {
+                        lStart--;
+                    }
+                }
+
+                lObjectInfo->setUIProperties(lProperties);
             }
 
         } else if (tokenType == QXmlStreamReader::EndElement) {
@@ -241,6 +262,7 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
                 rDevices += i.formTagValue(tag_geometry_width, QString::number(object->info()->geometry().width()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_height, QString::number(object->info()->geometry().height()), true, 4);
                 rDevices += i.formTagValue(order_level, QString::number(object->info()->orderLevel()), true, 4);
+                rDevices += i.formTagValue(tag_ui_resource, object->info()->uiResourcePath(), true, 4);
                 if (object->info()->type() == QScadaObjectTypeQML) {
                     rDevices += QConnectedDeviceInfo::formProperties(static_cast<QScadaObjectQML*>(object)->QMLProperties());
                 }

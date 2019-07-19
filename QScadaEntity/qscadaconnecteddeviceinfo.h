@@ -50,6 +50,7 @@ public:
     static const QString tag_axis_y;
     static const QString tag_axis_z;
     static const QString order_level;
+    static const QString tag_ui_resource;
     static const QString properties;
 
 public:
@@ -57,8 +58,9 @@ public:
 
     static QString formTag(QString tag, bool isClosing, bool newLine, int numOfTabs); //so if formTag("device", false, true, 1) the result will be "\t<device>"
     static QString formTagValue(QString tag, QString value, bool newLine, int numOfTabs);
-    static QString formProperties(QMultiMap<QString, QVariant>);
 
+    static QString formProperties(QMultiMap<QString, QVariant>);
+//    QMultiMap<QString, QVariant> parseProperties();
 
     QList<QScadaDeviceConfig *> connecteDeviceList;
 
