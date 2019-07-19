@@ -13,8 +13,7 @@
 QScadaObject::QScadaObject(QWidget *parent) :
     QWidget(parent),
     mInfo{new QScadaObjectInfo(this)},
-    mEffect{new QGraphicsDropShadowEffect},
-    mStatus{QObjectStatusNone}
+    mEffect{new QGraphicsDropShadowEffect}
 {
     this->initUI();
 }
@@ -22,8 +21,7 @@ QScadaObject::QScadaObject(QWidget *parent) :
 QScadaObject::QScadaObject(QScadaObjectInfo *info, QWidget *parent):
     QWidget(parent),
     mInfo{new QScadaObjectInfo(info)},
-    mEffect{new QGraphicsDropShadowEffect},
-    mStatus{QObjectStatusNone}
+    mEffect{new QGraphicsDropShadowEffect}
 {
     this->initUI();
 }
@@ -120,7 +118,6 @@ void QScadaObject::mouseDoubleClickEvent(QMouseEvent *e)
 void QScadaObject::paintEvent(QPaintEvent *e)
 {
     QPainter lPainter(this);
-    QPixmap lMarkerPixmap(info()->imageName(mStatus));
     QPixmap lBackgroundPixmap(info()->backGroundImage());
     QPen lLinepen(Qt::black);
     lLinepen.setCapStyle(Qt::RoundCap);
@@ -153,26 +150,6 @@ void QScadaObject::paintEvent(QPaintEvent *e)
     }
 
     QWidget::paintEvent(e);
-}
-
-qreal QScadaObject::value() const
-{
-    return mValue;
-}
-
-void QScadaObject::setValue(const qreal &value)
-{
-    mValue = value;
-}
-
-QScadaObjectStatus QScadaObject::status() const
-{
-    return mStatus;
-}
-
-void QScadaObject::setStatus(const QScadaObjectStatus &status)
-{
-    mStatus = status;
 }
 
 bool QScadaObject::isEditable() const

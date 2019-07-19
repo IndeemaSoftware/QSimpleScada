@@ -10,34 +10,29 @@ const char *QScadaObjectQML::tagFrom = "from";
 const char *QScadaObjectQML::tagTo = "to";
 const char *QScadaObjectQML::tagValue = "value";
 
-
-QScadaObjectQML::QScadaObjectQML(QScadaObjectInfo *info, QWidget *parent) : QScadaObject(info, parent)
+QScadaObjectQML::QScadaObjectQML(QScadaObjectInfo *info, QWidget *parent) :
+    QScadaObject(info, parent),
+    mQMLObject{nullptr}
 {
-
-    QQuickWidget *lQmlWidget = new QQuickWidget();
-    lQmlWidget->setClearColor(Qt::transparent);
-    lQmlWidget->setSource(QUrl::fromLocalFile(info->uiResourcePath()));
-    lQmlWidget->show();
-
-    mQMLObject = static_cast<QQuickItem*>(lQmlWidget->rootObject());
-
-    QVBoxLayout *lLayout = new QVBoxLayout(this);
-    lLayout->setContentsMargins(0, 0, 0, 0);
-    lLayout->addWidget(lQmlWidget);
-
-    this->updateQMLGeometry();
+    initFromQML(info);
 }
 
-qreal QScadaObjectQML::value() const
+void QScadaObjectQML::setProperty(QString key, QVariant value)
 {
-    return QScadaObject::value();
+    setProperty(key.toLocal8Bit().data(), value);
 }
 
-void QScadaObjectQML::setValue(const qreal &value)
+void QScadaObjectQML::setProperty(char *key, QVariant value)
 {
-    QScadaObject::setValue(value);
+    mQMLObject->setProperty(key, value);
+}
 
-    mQMLObject->setProperty(QScadaObjectQML::tagValue, QVariant(value));
+void QScadaObjectQML::updateValue(QVariant value)
+{
+    QVariant rReturn;
+    QMetaObject::invokeMethod(mQMLObject, "update",
+        Q_RETURN_ARG(QVariant, rReturn),
+        Q_ARG(QVariant, value));
 }
 
 void QScadaObjectQML::update()
@@ -76,7 +71,31 @@ void QScadaObjectQML::setTo(qreal to)
     mQMLObject->setProperty(QScadaObjectQML::tagTo, QVariant(to));
 }
 
+void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
+{
+    QQuickWidget *lQmlWidget = new QQuickWidget();
+    lQmlWidget->setClearColor(Qt::transparent);
+    lQmlWidget->setSource(QUrl::fromLocalFile(info->uiResourcePath()));
+    lQmlWidget->show();
+
+    mQMLObject = static_cast<QQuickItem*>(lQmlWidget->rootObject());
+
+    QVBoxLayout *lLayout = new QVBoxLayout(this);
+    lLayout->setContentsMargins(0, 0, 0, 0);
+    lLayout->addWidget(lQmlWidget);
+
+    this->updateQMLGeometry();
+
+    mMetaData = mQMLObject->property("metaData").toStringList();
+    qDebug() << mMetaData;
+}
+
 void QScadaObjectQML::dynamicStatusChanged(QScadaObjectInfo *)
 {
 
+}
+
+QStringList QScadaObjectQML::metaData() const
+{
+    return mMetaData;
 }

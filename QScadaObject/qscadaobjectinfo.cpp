@@ -6,8 +6,6 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     QObject(parent),
     mIsDynamic{false},
     mTitle{"Noname"},
-    mAxiesEnabled{false},
-    mAxisPosition{QObjectAxisPositionLeft},
     mOrderLevel{0},
     mShowBackgroundImage{false},
     mShowBackground{true},
@@ -24,10 +22,7 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mGeometry{o->geometry()},
     mId{o->id()},
     mTitle{o->title()},
-    mAxiesEnabled{o->axiesEnabled()},
-    mAxisPosition{o->axisPosition()},
     mOrderLevel{o->orderLevel()},
-    mImageName{o->infoImage()},
     mBackGroundImage{o->backGroundImage()},
     mShowBackgroundImage{o->showBackgroundImage()},
     mShowBackground{o->showBackground()},
@@ -59,26 +54,6 @@ void QScadaObjectInfo::setTitle(const QString &title)
     mTitle = title;
 }
 
-QScadaObjectInfoAxis QScadaObjectInfo::axis()
-{
-    return mAxis;
-}
-
-void QScadaObjectInfo::setAxis(const QScadaObjectInfoAxis &axis)
-{
-    mAxis = axis;
-}
-
-bool QScadaObjectInfo::axiesEnabled() const
-{
-    return mAxiesEnabled;
-}
-
-void QScadaObjectInfo::setAxiesEnabled(bool axiesEnabled)
-{
-    mAxiesEnabled = axiesEnabled;
-}
-
 QRect QScadaObjectInfo::geometry() const
 {
     return mGeometry;
@@ -102,21 +77,6 @@ void QScadaObjectInfo::setIsDynamic(bool isDynamic)
     emit dynamicStatusChanged(this);
 }
 
-QScadaObjectInfoImage QScadaObjectInfo::infoImage()
-{
-    return mImageName;
-}
-
-QString QScadaObjectInfo::imageName(QScadaObjectStatus status)
-{
-    return mImageName.getImageNameForStatus(status);
-}
-
-void QScadaObjectInfo::setImageName(QString imageName, QScadaObjectStatus status)
-{
-    mImageName.setImageNameForState(imageName, status);
-}
-
 bool QScadaObjectInfo::showBackground() const
 {
     return mShowBackground;
@@ -135,16 +95,6 @@ bool QScadaObjectInfo::showMarkers() const
 void QScadaObjectInfo::setShowMarkers(bool showMarkers)
 {
     mShowMarkers = showMarkers;
-}
-
-QScadaObjectAxisPosition QScadaObjectInfo::axisPosition() const
-{
-    return mAxisPosition;
-}
-
-void QScadaObjectInfo::setAxisPosition(const QScadaObjectAxisPosition &axisPosition)
-{
-    mAxisPosition = axisPosition;
 }
 
 QString QScadaObjectInfo::backGroundImage() const
@@ -230,44 +180,12 @@ void QScadaObjectInfo::setTo(const qreal &to)
     mTo = to;
 }
 
-//implementations for VObjectInfoImage
-
-QString QScadaObjectInfoImage::getImageNameForStatus(QScadaObjectStatus status)
+QMLInfo QScadaObjectInfo::qMLInfo() const
 {
-    QString rValue;
-    
-    switch(status) {
-    case QObjectStatusNone:
-        rValue = normal;
-        break;
-    case QObjectStatusGreen:
-        rValue = green;
-        break;
-    case QObjectStatusYellow:
-        rValue = yellow;
-        break;
-    case QObjectStatusRed:
-        rValue = red;
-        break;
-    }
-
-    return rValue;
+    return mQMLInfo;
 }
 
-void QScadaObjectInfoImage::setImageNameForState(QString name, QScadaObjectStatus status)
+void QScadaObjectInfo::setQMLInfo(const QMLInfo &qMLInfo)
 {
-    switch(status) {
-    case QObjectStatusNone:
-        normal = name;
-        break;
-    case QObjectStatusGreen:
-        green = name;
-        break;
-    case QObjectStatusYellow:
-        yellow = name;
-        break;
-    case QObjectStatusRed:
-        red = name;
-        break;
-    }
+    mQMLInfo = qMLInfo;
 }

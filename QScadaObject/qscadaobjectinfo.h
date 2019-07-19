@@ -1,7 +1,7 @@
 #ifndef VOBJECTINFO_H
 #define VOBJECTINFO_H
 
-#include "qscadaobjectinfoaxis.h"
+#include "../qscadaconfig.h"
 
 #include <QObject>
 #include <QColor>
@@ -15,29 +15,6 @@ typedef enum {
 } QScadaObjectAction;
 
 typedef enum {
-    QObjectStatusNone,
-    QObjectStatusRed,
-    QObjectStatusYellow,
-    QObjectStatusGreen
-} QScadaObjectStatus;
-
-
-typedef enum {
-    QObjectAxisPositionLeft,
-    QObjectAxisPositionRight
-} QScadaObjectAxisPosition;
-
-struct QScadaObjectInfoImage {
-    QString normal = ":/com/indeema/QSimpleScada/resources/green_marker.png";
-    QString green = ":/com/indeema/QSimpleScada/resources/green_marker.png";
-    QString yellow = ":/com/indeema/QSimpleScada/resources/yellow_marker.png";
-    QString red = ":/com/indeema/QSimpleScada/resources/red_marker.png";
-
-    QString getImageNameForStatus(QScadaObjectStatus);
-    void setImageNameForState(QString, QScadaObjectStatus);
-};
-
-typedef enum {
     QScadaObjectTypeWidget,
     QScadaObjectTypeQML
 } QScadaObjectType;
@@ -46,7 +23,7 @@ class QScadaObjectInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit QScadaObjectInfo(QObject *parent = 0);
+    explicit QScadaObjectInfo(QObject *parent = nullptr);
     QScadaObjectInfo(QScadaObjectInfo*);
 
     int id() const;
@@ -55,30 +32,17 @@ public:
     QString title() const;
     void setTitle(const QString &title);
 
-    QScadaObjectInfoAxis axis();
-    void setAxis(const QScadaObjectInfoAxis &axis);
-
-    bool axiesEnabled() const;
-    void setAxiesEnabled(bool axiesEnabled);
-
     QRect geometry() const;
     void setGeometry(const QRect &geometry);
 
     bool isDynamic() const;
     void setIsDynamic(bool isDynamic);
 
-    QScadaObjectInfoImage infoImage();
-    QString imageName(QScadaObjectStatus);
-    void setImageName(QString imageName, QScadaObjectStatus);
-
     bool showBackground() const;
     void setShowBackground(bool showBackground);
 
     bool showMarkers() const;
     void setShowMarkers(bool showMarkers);
-
-    QScadaObjectAxisPosition axisPosition() const;
-    void setAxisPosition(const QScadaObjectAxisPosition &axisPosition);
 
     QString backGroundImage() const;
     void setBackGroundImage(const QString &backGroundImage);
@@ -103,6 +67,9 @@ public:
     qreal to() const;
     void setTo(const qreal &to);
 
+    QMLInfo qMLInfo() const;
+    void setQMLInfo(const QMLInfo &qMLInfo);
+
 signals:
     void infoChanged(QScadaObjectInfo *info);
     void geometryChanged(QScadaObjectInfo *info);
@@ -113,12 +80,8 @@ private:
     QRect mGeometry;
     int mId;
     QString mTitle;
-    QScadaObjectInfoAxis mAxis;
-    bool mAxiesEnabled;
-    QScadaObjectAxisPosition mAxisPosition;
     int mOrderLevel;
 
-    QScadaObjectInfoImage mImageName;
     QString mBackGroundImage;
     bool mShowBackgroundImage;
     bool mShowBackground;
@@ -126,6 +89,8 @@ private:
 
     qreal mFrom;
     qreal mTo;
+
+    QMLInfo mQMLInfo;
 
     QString mUIResourcePath;
     QScadaObjectType mType;

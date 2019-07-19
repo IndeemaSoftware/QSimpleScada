@@ -31,12 +31,8 @@ public:
     void setIsEditable(bool isEditable);
 
     virtual void update();
-
-    QScadaObjectStatus status() const;
-    void setStatus(const QScadaObjectStatus &status);
-
-    qreal value() const;
-    void setValue(const qreal &value);
+    virtual void setProperty(char*, QVariant) = 0;
+    virtual void updateValue(QVariant) = 0;
 
 private:
     QScadaObjectAction action() const;
@@ -72,10 +68,6 @@ private:
     QScadaObjectInfo *mInfo;
     QGraphicsDropShadowEffect* mEffect;
     bool mSelected;
-
-    qreal mValue;
-
-    QScadaObjectStatus mStatus;// default is VObjectStatusNone
 };
 
 #endif // VOBJECT_H

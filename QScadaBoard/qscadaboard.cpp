@@ -2,7 +2,6 @@
 #include "qscadaboardinfo.h"
 #include "../QScadaObject/qscadaobjectinfo.h"
 #include "../QScadaObject/qscadaobjectqml.h"
-#include "../QScadaWidgets/qledindicator.h"
 
 #include <QApplication>
 #include <QPainter>
@@ -53,16 +52,8 @@ void QScadaBoard::initBoard(QScadaBoardInfo *boardInfo)
 
 QScadaObject *QScadaBoard::initNewObject(QScadaObjectInfo *info)
 {
-    QScadaObject *rObject;
+    QScadaObject *rObject = new QScadaObjectQML(info, this);
 
-    switch(info->type()){
-    case QScadaObjectTypeWidget:
-        rObject = new QLedIndicator(info, this);
-        break;
-    case QScadaObjectTypeQML:
-        rObject = new QScadaObjectQML(info, this);
-        break;
-    }
     rObject->setIsEditable(mEditable);
     connect(rObject, SIGNAL(objectDoubleClicked(QScadaObject*)), this , SIGNAL(objectDoubleClicked(QScadaObject*)));
     connect(rObject, SIGNAL(objectSelected(int)), this , SLOT(newObjectSelected(int)));
@@ -223,7 +214,6 @@ void QScadaBoard::resetGridPixmap()
     mUpdateGridPixmap = true;
 }
 
-#include <QDebug>
 void QScadaBoard::orderObject(QScadaObject *o)
 {
     bool lIsNew = false;
@@ -299,11 +289,21 @@ void QScadaBoard::updateObjectWithId(int id)
     }
 }
 
-void QScadaBoard::updateStatusWithId(int id, QScadaObjectStatus status)
+void QScadaBoard::updateValue(int id, QVariant value)
 {
     for (QScadaObject *object : *mObjects) {
         if (id == object->info()->id()) {
-            object->setStatus(status);
+            object->updateValue(value);
+            object->update();
+        }
+    }
+}
+
+void QScadaBoard::setPropertyWithId(int id, QString property, QVariant value)
+{
+    for (QScadaObject *object : *mObjects) {
+        if (id == object->info()->id()) {
+            object->setProperty(property.toLocal8Bit().data(), value);
             object->update();
         }
     }
@@ -311,13 +311,11 @@ void QScadaBoard::updateStatusWithId(int id, QScadaObjectStatus status)
 
 bool QScadaBoard::showGrid() const
 {
-    qDebug() << __FUNCTION__;
     return mShowGrid;
 }
 
 void QScadaBoard::setShowGrid(bool showGrid)
 {
-    qDebug() << __FUNCTION__;
     mShowGrid = showGrid;
 
     repaint();
@@ -325,13 +323,11 @@ void QScadaBoard::setShowGrid(bool showGrid)
 
 bool QScadaBoard::editable() const
 {
-    qDebug() << __FUNCTION__;
     return mEditable;
 }
 
 void QScadaBoard::setEditable(bool editable)
 {
-    qDebug() << __FUNCTION__;
     mEditable = editable;
 
     for (QScadaObject *object : *mObjects) {

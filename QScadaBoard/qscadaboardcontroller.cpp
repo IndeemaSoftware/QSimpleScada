@@ -168,17 +168,6 @@ void QScadaBoardController::updateSavedObject(QScadaObjectInfo *info)
     }
 }
 
-void QScadaBoardController::updateStatus()
-{
-    qDebug() << __FUNCTION__;
-
-    int lNumber = 3;
-    int lRandomValue = qrand() % lNumber;
-    mBoard->updateStatusWithId(0, (QScadaObjectStatus)lRandomValue);
-    lRandomValue = qrand() % lNumber;
-    mBoard->updateStatusWithId(1, (QScadaObjectStatus)lRandomValue);
-}
-
 void QScadaBoardController::objectDoubleClickedHandler(QScadaObject *o)
 {
     emit objectDoubleClicked(o);
@@ -204,26 +193,6 @@ QList<QScadaBoard *> QScadaBoardController::getBoardListForDeviceIp(QString ip)
     rList.append(mBoardManager->getBoardForDeviceWithIp(ip));
 
     return rList;
-}
-
-void QScadaBoardController::updateStatus(QString id, int objectId, QScadaObjectStatus status)
-{
-    qDebug() << __FUNCTION__;
-
-    QScadaBoard *lBoard = mBoardManager->getBoardForDeviceWithIp(id);
-
-    for (QScadaObject *object :*lBoard->objects()) {
-        if (object->info()->id() == objectId) {
-            object->setStatus(status);
-        }
-    }
-}
-
-void QScadaBoardController::updateStatus(QStringList device, QList<int> objectId, QList<QScadaObjectStatus> status)
-{
-    for (int i=0; i< device.count(); i++) {
-        updateStatus(device.at(i), objectId.at(i), status.at(i));
-    }
 }
 
 void QScadaBoardController::setEditingMode(bool editing)

@@ -82,7 +82,6 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
     QScadaDeviceConfig *lDeviceConfig = nullptr;
     QScadaBoardInfo *lBoard = nullptr;
     QScadaObjectInfo *lObjectInfo = nullptr;
-    QScadaObjectInfoAxis lAxis;
 
     while (!lXmlStreamReader.atEnd() && !lXmlStreamReader.hasError()) {
         QXmlStreamReader::TokenType tokenType = lXmlStreamReader.readNext();
@@ -156,19 +155,6 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
                               lXmlStreamReader.readElementText().toInt());
 
                 lObjectInfo->setGeometry(lRect);
-            } else if (lXmlStreamReader.name() == tag_axis_enabled) {
-                lObjectInfo->setAxiesEnabled((bool)lXmlStreamReader.readElementText().toInt());//-----------------
-            } else if (lXmlStreamReader.name() == tag_axis_position) {
-                lObjectInfo->setAxisPosition((QScadaObjectAxisPosition)lXmlStreamReader.readElementText().toInt());//new
-            } else if (lXmlStreamReader.name() == tag_axis_x) {
-                lAxis.setX((QScadaObjectInfoAxisDirrection)lXmlStreamReader.readElementText().toInt());//-----------
-                lObjectInfo->setAxis(lAxis);
-            } else if (lXmlStreamReader.name() == tag_axis_y) {
-                lAxis.setY((QScadaObjectInfoAxisDirrection)lXmlStreamReader.readElementText().toInt());
-                lObjectInfo->setAxis(lAxis);
-            } else if (lXmlStreamReader.name() == tag_axis_z) {
-                lAxis.setZ((QScadaObjectInfoAxisDirrection)lXmlStreamReader.readElementText().toInt());
-                lObjectInfo->setAxis(lAxis);
             } else if (lXmlStreamReader.name() == order_level) {
                 lObjectInfo->setOrderLevel(lXmlStreamReader.readElementText().toInt());
             }
@@ -243,11 +229,6 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
                 rDevices += i.formTagValue(tag_geometry_y, QString::number(object->info()->geometry().y()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_width, QString::number(object->info()->geometry().width()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_height, QString::number(object->info()->geometry().height()), true, 4);
-                rDevices += i.formTagValue(tag_axis_enabled, QString::number(object->info()->axiesEnabled()), true, 4);
-                rDevices += i.formTagValue(tag_axis_position, QString::number(object->info()->axisPosition()), true, 4);
-                rDevices += i.formTagValue(tag_axis_x, QString::number(object->info()->axis().getX()), true, 4);
-                rDevices += i.formTagValue(tag_axis_y, QString::number(object->info()->axis().getY()), true, 4);
-                rDevices += i.formTagValue(tag_axis_z, QString::number(object->info()->axis().getZ()), true, 4);
                 rDevices += i.formTagValue(order_level, QString::number(object->info()->orderLevel()), true, 4);
                 rDevices += i.formTag(tag_object, true, true, 3);//"\t\t\t</object>\n";
             }

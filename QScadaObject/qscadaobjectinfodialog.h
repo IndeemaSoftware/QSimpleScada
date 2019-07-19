@@ -14,15 +14,11 @@ class QScadaObjectInfoDialog : public QWidget
     Q_OBJECT
 
 public:
-    explicit QScadaObjectInfoDialog(QWidget *parent = 0);
+    explicit QScadaObjectInfoDialog(QWidget *parent = nullptr);
     ~QScadaObjectInfoDialog();
 
 public slots:
     void updateWithObjectInfo(QScadaObjectInfo *info);
-
-private:
-    void enableAxis(bool);
-    void initAxiesList();
 
 private slots:
     void geometryUpdated(QScadaObjectInfo*);

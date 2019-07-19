@@ -8,10 +8,20 @@
 
 #define DEFAULT_QML_PATH ":/com/indeema/eeiot/EEIoT/"
 
+struct QMLInfo {
+    QString groupTitle = "";
+    QString groupPath = "";
+};
+
 struct QMLWidgetsConfig {
-    QString title = "";
+    QMLInfo info;
     bool isValid = false;
 
+    QStringList widgets() {
+        return mQMLWidgets;
+    }
+
+    QMLWidgetsConfig(){}
     QMLWidgetsConfig(QString path){
         if (!path.isEmpty()) {
             QDir directory(path);
@@ -19,25 +29,19 @@ struct QMLWidgetsConfig {
             // Load all files with the *.PNG extension
             // (you can modify this to suit your needs.
             QStringList lQMLList = directory.entryList(QStringList("*.qml"));
-            for (QString file : lQMLList) {
-                qDebug() << file;
-            }
 
             if (lQMLList.count() > 0) {
                 mQMLWidgets = lQMLList;
+                info.groupPath = path;
+
                 QString lTmpTitle = path.split('/').last();
                 //let secure from having / at end or not having
                 if (lTmpTitle.isEmpty()) {
-                    title = path.split('/').at(path.split('/').count()-2);
+                    info.groupTitle = path.split('/').at(path.split('/').count()-2);
                 } else {
-                    title = lTmpTitle;
+                    info.groupTitle = lTmpTitle;
                 }
             }
-
-//            QDirIterator it("path", QDirIterator::Subdirectories);
-//            while (it.hasNext()) {
-//                qDebug() << it.next();
-//            }
         }
     }
 
@@ -66,12 +70,37 @@ class QMLConfig
         }
 
         void appendQMLPath(QString path) {
-            mQMLPaths.append(path);
-            mQMLWidgets.append(QMLWidgetsConfig(path));
+            QMLWidgetsConfig lConf = QMLWidgetsConfig(path);
+
+            if (lConf.isValid) {
+                //check if QML group is unique.
+                //if it's already in list, it will be replaced with new
+                for (int i=0; i < mQMLWidgets.count(); i++) {
+                    QMLWidgetsConfig tmpConf = mQMLWidgets.at(i);
+                    if (tmpConf.info.groupTitle == lConf.info.groupTitle) {
+                        mQMLWidgets.removeAt(i);
+                    }
+                }
+                mQMLWidgets.append(lConf);
+            }
         }
 
+        QMLWidgetsConfig qmlWidgetConfForGroup(QString qmlGroupTitle) {
+            QMLWidgetsConfig rConf;
+
+            for (QMLWidgetsConfig tmpConf : mQMLWidgets) {
+                if (qmlGroupTitle == tmpConf.info.groupTitle) {
+                    rConf = tmpConf;
+                }
+            }
+
+            return rConf;
+        }
+
+        QList<QMLWidgetsConfig> QMLWidgets(){
+            return mQMLWidgets;
+        }
 private:
-    QStringList mQMLPaths;
     QList<QMLWidgetsConfig> mQMLWidgets;
 };
 

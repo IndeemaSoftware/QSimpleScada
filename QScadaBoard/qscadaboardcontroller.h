@@ -30,9 +30,6 @@ public:
     QList<QScadaBoard*> getBoardList();
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);
 
-    void updateStatus(QString device, int objectId, QScadaObjectStatus status);
-    void updateStatus(QStringList device, QList<int> objectId, QList<QScadaObjectStatus> status);
-
     void setEditingMode(bool);
 
 signals:
@@ -47,7 +44,6 @@ private slots:
     void updateObjectInfoDialog(QScadaObject *);
     void deleteObject(QScadaObjectInfo *);
     void updateSavedObject(QScadaObjectInfo *);
-    void updateStatus();
     void objectDoubleClickedHandler(QScadaObject*);
 
 protected:

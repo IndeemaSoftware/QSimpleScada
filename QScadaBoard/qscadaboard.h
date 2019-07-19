@@ -39,7 +39,9 @@ public:
     void deleteObjectWithId(int);
     void deleteObject(QScadaObject*);
     void updateObjectWithId(int);
-    void updateStatusWithId(int, QScadaObjectStatus);
+
+    void updateValue(int id, QVariant value);
+    void setPropertyWithId(int id, QString property, QVariant value);
 
     QList<QScadaObject *> *objects() const;
 

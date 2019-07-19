@@ -16,13 +16,16 @@ public:
 
     explicit QScadaObjectQML(QScadaObjectInfo *,QWidget *parent = nullptr);
 
-    qreal value() const;
-    void setValue(const qreal &value);
+    void setProperty(QString, QVariant);
+    void setProperty(char*, QVariant);
+    void updateValue(QVariant);
 
     void update();
 
     QQuickItem *QMLObject() const;
     void setQMLObject(QQuickItem *qMLObject);
+
+    QStringList metaData() const;
 
 private:
     void resize(int, int);
@@ -32,10 +35,12 @@ private:
     void setTo(qreal);
 
 protected slots:
+    void initFromQML(QScadaObjectInfo *info);
     void dynamicStatusChanged(QScadaObjectInfo*);
 
 private:
     QQuickItem *mQMLObject;
+    QStringList mMetaData;
 };
 
 #endif // QSCADAOBJECTQML_H
