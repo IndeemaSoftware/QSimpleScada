@@ -13,6 +13,8 @@ struct QMLInfo {
     QString groupPath = "";
 };
 
+Q_DECLARE_METATYPE(QMLInfo)
+
 struct QMLWidgetsConfig {
     QMLInfo info;
     bool isValid = false;
@@ -21,8 +23,8 @@ struct QMLWidgetsConfig {
         return mQMLWidgets;
     }
 
-    QMLWidgetsConfig(){}
-    QMLWidgetsConfig(QString path){
+    QMLWidgetsConfig() {}
+    QMLWidgetsConfig(QString path) {
         if (!path.isEmpty()) {
             QDir directory(path);
 
@@ -33,6 +35,7 @@ struct QMLWidgetsConfig {
             if (lQMLList.count() > 0) {
                 mQMLWidgets = lQMLList;
                 info.groupPath = path;
+                isValid = true;
 
                 QString lTmpTitle = path.split('/').last();
                 //let secure from having / at end or not having
@@ -48,6 +51,8 @@ struct QMLWidgetsConfig {
 private:
     QStringList mQMLWidgets;
 };
+
+Q_DECLARE_METATYPE(QMLWidgetsConfig)
 
 class QMLConfig
 {
@@ -70,7 +75,7 @@ class QMLConfig
         }
 
         void appendQMLPath(QString path) {
-            QMLWidgetsConfig lConf = QMLWidgetsConfig(path);
+            QMLWidgetsConfig lConf(path);
 
             if (lConf.isValid) {
                 //check if QML group is unique.

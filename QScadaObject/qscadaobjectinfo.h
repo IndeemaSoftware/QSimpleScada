@@ -41,9 +41,6 @@ public:
     bool showBackground() const;
     void setShowBackground(bool showBackground);
 
-    bool showMarkers() const;
-    void setShowMarkers(bool showMarkers);
-
     QString backGroundImage() const;
     void setBackGroundImage(const QString &backGroundImage);
 
@@ -85,7 +82,6 @@ private:
     QString mBackGroundImage;
     bool mShowBackgroundImage;
     bool mShowBackground;
-    bool mShowMarkers;
 
     qreal mFrom;
     qreal mTo;

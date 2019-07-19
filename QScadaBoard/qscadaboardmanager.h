@@ -10,7 +10,7 @@ class QScadaBoardManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit QScadaBoardManager(QObject *parent = 0);
+    explicit QScadaBoardManager(QObject *parent = nullptr);
 
     QScadaBoard* getBoardForDeviceWithIp(QString);
 

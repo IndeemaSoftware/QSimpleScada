@@ -14,7 +14,7 @@ QScadaBoard::QScadaBoard(QWidget *parent) :
     mEditable{false},
     mShowGrid{true},
     mGrid{10},
-    mPixmap{nullptr}
+    mGridPixmap{nullptr}
 {
     setPalette(QPalette(Qt::transparent));
     setAutoFillBackground(true);
@@ -82,7 +82,6 @@ void QScadaBoard::createNewObject(int id)
 {
     QScadaObjectInfo *lInfo = new QScadaObjectInfo();
     lInfo->setId(id);
-    lInfo->setShowMarkers(true);
     lInfo->setShowBackground(true);
     lInfo->setShowBackgroundImage(false);
     lInfo->setIsDynamic(true);
@@ -95,7 +94,6 @@ void QScadaBoard::createQMLObject(int id, QString path)
 {
     QScadaObjectInfo *lInfo = new QScadaObjectInfo();
     lInfo->setId(id);
-    lInfo->setShowMarkers(true);
     lInfo->setShowBackground(true);
     lInfo->setShowBackgroundImage(false);
     lInfo->setIsDynamic(true);
@@ -128,19 +126,19 @@ void QScadaBoard::mousePressEvent(QMouseEvent *event)
 
 void QScadaBoard::paintEvent(QPaintEvent *e)
 {
-    if (mPixmap == nullptr) {
+    if (mGridPixmap == nullptr) {
         resetGridPixmap();
     }
 
-    if ((mPixmap->width() != this->width())
-            || (mPixmap->height() != this->height())) {
-        delete mPixmap;
+    if ((mGridPixmap->width() != this->width())
+            || (mGridPixmap->height() != this->height())) {
+        delete mGridPixmap;
         resetGridPixmap();
     }
 
     if (mUpdateGridPixmap) {
-        QPainter lPainter(mPixmap);
-        mPixmap->fill(Qt::white);
+        QPainter lPainter(mGridPixmap);
+        mGridPixmap->fill(Qt::white);
         QPen lLinepen(Qt::darkGray);
         lLinepen.setCapStyle(Qt::RoundCap);
         lLinepen.setWidth(1);
@@ -150,8 +148,8 @@ void QScadaBoard::paintEvent(QPaintEvent *e)
         int lX = this->width();
         int lY = this->height();
 
-        mPixmap->scaledToWidth(lX);
-        mPixmap->scaledToHeight(lY);
+        mGridPixmap->scaledToWidth(lX);
+        mGridPixmap->scaledToHeight(lY);
 
         for (int i=0; i<=lX; i++) {
             for (int j=1; j<=lY; j++) {
@@ -163,7 +161,7 @@ void QScadaBoard::paintEvent(QPaintEvent *e)
     }
 
     QPainter lPainter(this);
-    lPainter.drawPixmap(0, 0, mPixmap->width(), mPixmap->height(), *mPixmap);
+    lPainter.drawPixmap(0, 0, mGridPixmap->width(), mGridPixmap->height(), *mGridPixmap);
 
     QWidget::paintEvent(e);
 }
@@ -210,7 +208,7 @@ QList<QScadaObject*> QScadaBoard::getSeletedObjects()
 
 void QScadaBoard::resetGridPixmap()
 {
-    mPixmap = new QPixmap(this->width(), this->height());
+    mGridPixmap = new QPixmap(this->width(), this->height());
     mUpdateGridPixmap = true;
 }
 

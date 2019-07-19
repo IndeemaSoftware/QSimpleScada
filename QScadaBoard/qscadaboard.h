@@ -76,7 +76,7 @@ private:
     bool mEditable; //default value false
     bool mShowGrid; //default value true
     int mGrid; //default value 10
-    QPixmap *mPixmap;
+    QPixmap *mGridPixmap;
     bool mUpdateGridPixmap;
 };
 

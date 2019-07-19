@@ -35,8 +35,6 @@ QScadaBoardController::~QScadaBoardController()
 
 void QScadaBoardController::clearBoard(QScadaBoard* board)
 {
-    qDebug() << __FUNCTION__;
-
     for (QScadaObject *object : *board->objects()) {
         board->deleteObject(object);
     }
@@ -45,7 +43,6 @@ void QScadaBoardController::clearBoard(QScadaBoard* board)
 
 void QScadaBoardController::clearAllBoards()
 {
-    qDebug() << __FUNCTION__;
     for (QScadaBoard *board:mBoardManager->getBoardList()) {
         clearBoard(board);
     }
@@ -53,7 +50,6 @@ void QScadaBoardController::clearAllBoards()
 
 void QScadaBoardController::initConnectedDevices(const QList<QScadaBoardInfo *> list)
 {
-    qDebug() << __FUNCTION__;
     for (QScadaBoardInfo *boardInfo : list) {
         if (boardInfo != nullptr) {
             mBoard->setEditable(false);
@@ -68,7 +64,6 @@ void QScadaBoardController::initConnectedDevices(const QList<QScadaBoardInfo *> 
 
 void QScadaBoardController::initBoardForDeviceIp(QString ip)
 {
-    qDebug() << __FUNCTION__;
     if (mBoard != nullptr
             && mBoard->isVisible()) {
         mBoard->hide();
@@ -152,8 +147,6 @@ void QScadaBoardController::updateObjectInfoDialog(QScadaObject *object)
 
 void QScadaBoardController::deleteObject(QScadaObjectInfo *info)
 {
-    qDebug() << __FUNCTION__;
-
     if (info != nullptr) {
         mBoard->deleteObjectWithId(info->id());
     }
@@ -161,8 +154,6 @@ void QScadaBoardController::deleteObject(QScadaObjectInfo *info)
 
 void QScadaBoardController::updateSavedObject(QScadaObjectInfo *info)
 {
-    qDebug() << __FUNCTION__;
-
     if (info != nullptr) {
         mBoard->updateObjectWithId(info->id());
     }
@@ -175,8 +166,6 @@ void QScadaBoardController::objectDoubleClickedHandler(QScadaObject *o)
 
 void QScadaBoardController::resizeEvent(QResizeEvent*)
 {
-    qDebug() << __FUNCTION__;
-
     if (mBoard != nullptr) {
         mBoard->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
     }

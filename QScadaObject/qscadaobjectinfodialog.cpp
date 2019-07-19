@@ -32,7 +32,6 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
         ui->checkBoxDynamic->setChecked(info->isDynamic());
         ui->spinBoxId->setValue(info->id());
         ui->checkBoxShowBackground->setChecked(info->showBackground());
-        ui->checkBoxShowMarkers->setChecked(info->showMarkers());
         ui->checkBoxShowBackGroundImage->setChecked(mLatestObject->showBackgroundImage());
 
         mMarkerImage = mLatestObject->backGroundImage();
@@ -75,7 +74,6 @@ void QScadaObjectInfoDialog::on_pushButton_2_pressed()
 
         mLatestObject->setGeometry(QRect(lX, lY, lWidth, lHeight));
         mLatestObject->setShowBackground(ui->checkBoxShowBackground->isChecked());
-        mLatestObject->setShowMarkers(ui->checkBoxShowMarkers->isChecked());
         mLatestObject->setShowBackgroundImage(ui->checkBoxShowBackGroundImage->isChecked());
         //axies
 

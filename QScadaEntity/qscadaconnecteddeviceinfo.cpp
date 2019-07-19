@@ -117,8 +117,6 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
                 lObjectInfo->setShowBackground((bool)lXmlStreamReader.readElementText().toInt());//new
             }  else if (lXmlStreamReader.name() == tag_show_background_image) {
                 lObjectInfo->setShowBackgroundImage((bool)lXmlStreamReader.readElementText().toInt());//new
-            }  else if (lXmlStreamReader.name() == tag_show_marker) {
-                lObjectInfo->setShowMarkers((bool)lXmlStreamReader.readElementText().toInt());//new
             } else if (lXmlStreamReader.name() == tag_background_image) {
                 lObjectInfo->setBackGroundImage(lXmlStreamReader.readElementText());//new
             } else if (lXmlStreamReader.name() == tag_is_dynamic) {
@@ -223,7 +221,6 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
                 rDevices += i.formTagValue(tag_is_dynamic, QString::number(object->info()->isDynamic()), true, 4);
                 rDevices += i.formTagValue(tag_show_background, QString::number(object->info()->showBackground()), true, 4);
                 rDevices += i.formTagValue(tag_show_background_image, QString::number(object->info()->showBackgroundImage()), true, 4);
-                rDevices += i.formTagValue(tag_show_marker, QString::number(object->info()->showMarkers()), true, 4);
                 rDevices += i.formTagValue(tag_background_image, object->info()->backGroundImage(), true, 4);
                 rDevices += i.formTagValue(tag_geometry_x, QString::number(object->info()->geometry().x()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_y, QString::number(object->info()->geometry().y()), true, 4);

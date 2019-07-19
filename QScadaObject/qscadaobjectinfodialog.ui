@@ -30,8 +30,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>360</width>
-        <height>727</height>
+        <width>368</width>
+        <height>658</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -78,13 +78,6 @@
         <widget class="QCheckBox" name="checkBoxShowBackground">
          <property name="text">
           <string>Show Backgound</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="checkBoxShowMarkers">
-         <property name="text">
-          <string>Show Markers</string>
          </property>
         </widget>
        </item>

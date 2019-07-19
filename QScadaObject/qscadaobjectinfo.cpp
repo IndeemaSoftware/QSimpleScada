@@ -9,7 +9,6 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     mOrderLevel{0},
     mShowBackgroundImage{false},
     mShowBackground{true},
-    mShowMarkers{true},
     mFrom{0},
     mTo{100},
     mUIResourcePath{""}
@@ -26,7 +25,6 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mBackGroundImage{o->backGroundImage()},
     mShowBackgroundImage{o->showBackgroundImage()},
     mShowBackground{o->showBackground()},
-    mShowMarkers{o->showMarkers()},
     mFrom{0},
     mTo{100},
     mUIResourcePath{""}
@@ -85,16 +83,6 @@ bool QScadaObjectInfo::showBackground() const
 void QScadaObjectInfo::setShowBackground(bool showBackground)
 {
     mShowBackground = showBackground;
-}
-
-bool QScadaObjectInfo::showMarkers() const
-{
-    return mShowMarkers;
-}
-
-void QScadaObjectInfo::setShowMarkers(bool showMarkers)
-{
-    mShowMarkers = showMarkers;
 }
 
 QString QScadaObjectInfo::backGroundImage() const
