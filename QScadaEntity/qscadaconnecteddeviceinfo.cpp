@@ -3,6 +3,7 @@
 #include "qscadaconnecteddeviceinfo.h"
 
 #include "../QScadaObject/qscadaobject.h"
+#include "../QScadaObject/qscadaobjectqml.h"
 #include "../QScadaBoard/qscadaboard.h"
 
 #include <QByteArray>
@@ -37,6 +38,7 @@ const QString QConnectedDeviceInfo::tag_axis_x = QString("axis_x");
 const QString QConnectedDeviceInfo::tag_axis_y = QString("axis_y");
 const QString QConnectedDeviceInfo::tag_axis_z = QString("axis_z");
 const QString QConnectedDeviceInfo::order_level = QString("order_level");
+const QString QConnectedDeviceInfo::properties = QString("properties");
 
 QConnectedDeviceInfo::QConnectedDeviceInfo(QObject *parent):
     QScadaBasePrefEntity(parent) {
@@ -74,6 +76,18 @@ QString QConnectedDeviceInfo::formTagValue(QString tag, QString value, bool newL
     lReturn.append(value).append(formTag(tag, true, newLine, 0));
 
     return lReturn;
+}
+
+QString QConnectedDeviceInfo::formProperties(QMultiMap<QString, QVariant> prop)
+{
+    QString rProperties;
+    rProperties = "\t\t\t\t<" + QConnectedDeviceInfo::properties +">\n";
+    for (QString key : prop.keys()) {
+        rProperties += "\t\t\t\t\t<" + key + ">" + prop.value(key).toString() + "</" + key + ">\n";
+    }
+    rProperties += "\t\t\t\t</" + QConnectedDeviceInfo::properties + ">\n";
+
+    return rProperties;
 }
 
 void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
@@ -114,13 +128,13 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
             } else if (lXmlStreamReader.name() == tag_id) {
                 lObjectInfo->setId(lXmlStreamReader.readElementText().toInt());//----------------------
             } else if (lXmlStreamReader.name() == tag_show_background) {
-                lObjectInfo->setShowBackground((bool)lXmlStreamReader.readElementText().toInt());//new
+                lObjectInfo->setShowBackground(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));//new
             }  else if (lXmlStreamReader.name() == tag_show_background_image) {
-                lObjectInfo->setShowBackgroundImage((bool)lXmlStreamReader.readElementText().toInt());//new
+                lObjectInfo->setShowBackgroundImage(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));//new
             } else if (lXmlStreamReader.name() == tag_background_image) {
                 lObjectInfo->setBackGroundImage(lXmlStreamReader.readElementText());//new
             } else if (lXmlStreamReader.name() == tag_is_dynamic) {
-                lObjectInfo->setIsDynamic((bool)lXmlStreamReader.readElementText().toInt());///------
+                lObjectInfo->setIsDynamic(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));///------
             } else if (lXmlStreamReader.name() == tag_geometry_x) {
                 QRect lRect = lObjectInfo->geometry();
                 lRect.setRect(lXmlStreamReader.readElementText().toInt(),
@@ -227,6 +241,9 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
                 rDevices += i.formTagValue(tag_geometry_width, QString::number(object->info()->geometry().width()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_height, QString::number(object->info()->geometry().height()), true, 4);
                 rDevices += i.formTagValue(order_level, QString::number(object->info()->orderLevel()), true, 4);
+                if (object->info()->type() == QScadaObjectTypeQML) {
+                    rDevices += QConnectedDeviceInfo::formProperties(static_cast<QScadaObjectQML*>(object)->QMLProperties());
+                }
                 rDevices += i.formTag(tag_object, true, true, 3);//"\t\t\t</object>\n";
             }
             rDevices += i.formTag(tag_board, true, true, 2);//"\t\t</board>\n";

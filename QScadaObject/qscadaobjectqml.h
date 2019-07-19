@@ -3,16 +3,16 @@
 
 #include "qscadaobject.h"
 
+#include <QMultiMap>
+
 class QQuickItem;
 
 class QScadaObjectQML : public QScadaObject
 {
 public:
 
-    static const char *tagId;
-    static const char *tagFrom;
-    static const char *tagTo;
-    static const char *tagValue;
+    static const char *funcUpdate;
+    static const char *tagMetaData;
 
     explicit QScadaObjectQML(QScadaObjectInfo *,QWidget *parent = nullptr);
 
@@ -25,14 +25,11 @@ public:
     QQuickItem *QMLObject() const;
     void setQMLObject(QQuickItem *qMLObject);
 
-    QStringList metaData() const;
+    QMultiMap<QString, QVariant> QMLProperties() const;
 
 private:
     void resize(int, int);
     void updateQMLGeometry();
-
-    void setFrom(qreal);
-    void setTo(qreal);
 
 protected slots:
     void initFromQML(QScadaObjectInfo *info);
@@ -40,7 +37,6 @@ protected slots:
 
 private:
     QQuickItem *mQMLObject;
-    QStringList mMetaData;
 };
 
 #endif // QSCADAOBJECTQML_H

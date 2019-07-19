@@ -4,11 +4,10 @@
 #include <QQuickWidget>
 #include <QVBoxLayout>
 #include <QQuickItem>
+#include <QJsonObject>
 
-const char *QScadaObjectQML::tagId = "id";
-const char *QScadaObjectQML::tagFrom = "from";
-const char *QScadaObjectQML::tagTo = "to";
-const char *QScadaObjectQML::tagValue = "value";
+const char *QScadaObjectQML::funcUpdate = "update";
+const char *QScadaObjectQML::tagMetaData = "metaData";
 
 QScadaObjectQML::QScadaObjectQML(QScadaObjectInfo *info, QWidget *parent) :
     QScadaObject(info, parent),
@@ -30,7 +29,7 @@ void QScadaObjectQML::setProperty(char *key, QVariant value)
 void QScadaObjectQML::updateValue(QVariant value)
 {
     QVariant rReturn;
-    QMetaObject::invokeMethod(mQMLObject, "update",
+    QMetaObject::invokeMethod(mQMLObject, QScadaObjectQML::funcUpdate,
         Q_RETURN_ARG(QVariant, rReturn),
         Q_ARG(QVariant, value));
 }
@@ -61,16 +60,6 @@ void QScadaObjectQML::updateQMLGeometry()
 }
 
 //private methods
-void QScadaObjectQML::setFrom(qreal from)
-{
-    mQMLObject->setProperty(QScadaObjectQML::tagFrom, QVariant(from));
-}
-
-void QScadaObjectQML::setTo(qreal to)
-{
-    mQMLObject->setProperty(QScadaObjectQML::tagTo, QVariant(to));
-}
-
 void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
 {
     QQuickWidget *lQmlWidget = new QQuickWidget();
@@ -85,9 +74,6 @@ void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
     lLayout->addWidget(lQmlWidget);
 
     this->updateQMLGeometry();
-
-    mMetaData = mQMLObject->property("metaData").toStringList();
-    qDebug() << mMetaData;
 }
 
 void QScadaObjectQML::dynamicStatusChanged(QScadaObjectInfo *)
@@ -95,7 +81,14 @@ void QScadaObjectQML::dynamicStatusChanged(QScadaObjectInfo *)
 
 }
 
-QStringList QScadaObjectQML::metaData() const
+QMultiMap<QString, QVariant> QScadaObjectQML::QMLProperties() const
 {
-    return mMetaData;
+    QMultiMap<QString, QVariant> rProp;
+
+    for (QVariant key : mQMLObject->property(QScadaObjectQML::tagMetaData).toList()) {
+        rProp.insert(key.toString(), mQMLObject->property(key.toByteArray().data()));
+    }
+
+    return rProp;
 }
+

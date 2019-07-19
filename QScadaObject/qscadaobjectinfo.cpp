@@ -11,6 +11,7 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     mShowBackground{true},
     mFrom{0},
     mTo{100},
+    mType{QScadaObjectTypeWidget},
     mUIResourcePath{""}
 {
     setGeometry(QRect(100, 100, 100, 100));
@@ -27,6 +28,7 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mShowBackground{o->showBackground()},
     mFrom{0},
     mTo{100},
+    mType{o->type()},
     mUIResourcePath{""}
 {
 

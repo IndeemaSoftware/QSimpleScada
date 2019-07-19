@@ -88,8 +88,8 @@ private:
 
     QMLInfo mQMLInfo;
 
-    QString mUIResourcePath;
     QScadaObjectType mType;
+    QString mUIResourcePath;
 };
 
 #endif // VOBJECTINFO_H
