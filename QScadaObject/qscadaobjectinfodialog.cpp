@@ -70,6 +70,8 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
         ui->spinBoxY->clear();
         ui->spinBoxWidth->clear();
         ui->spinBoxHeight->clear();
+
+        ui->tableWidget->clear();
     }
 
     ui->checkBoxShowBackground->setEnabled(lEnabled);
