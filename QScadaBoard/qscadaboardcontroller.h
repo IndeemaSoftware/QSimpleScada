@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QList>
+#include <QGridLayout>
 
 #include "../QScadaObject/qscadaobject.h"
 
@@ -32,6 +33,9 @@ public:
 
     void setEditingMode(bool);
 
+    QScadaObjectInfoDialog *getParametersDialod() const;
+    void setParametersDialod(QScadaObjectInfoDialog *parametersDialod);
+
 signals:
     void objectDoubleClicked(QScadaObject*);
 
@@ -54,6 +58,7 @@ private:
     QScadaBoard *mBoard;
     QScadaObjectInfoDialog *mParametersDialod;
     QList<int> mObjectIds;
+    QGridLayout *mMainLayout;
 };
 
 #endif // VVIEWCONFIGURAOT_H

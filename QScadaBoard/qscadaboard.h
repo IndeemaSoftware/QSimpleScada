@@ -8,6 +8,7 @@
 
 class QScadaObjectInfo;
 class QScadaBoardInfo;
+class QScadaBoardController;
 
 class QScadaBoard : public QWidget
 {
@@ -20,9 +21,7 @@ public:
     void initBoard(QScadaBoardInfo *);
 
     QScadaObject *initNewObject(QScadaObjectInfo *);
-    void createNewObject();
     void createNewObject(QScadaObjectInfo *);
-    void createNewObject(int id);
 
     void createQMLObject(int id, QString path);
     void createQMLObject(QString path);
@@ -65,6 +64,7 @@ protected:
 signals:
     void objectDoubleClicked(QScadaObject*);
     void objectSelected(QScadaObject *);
+    void newObjectCreated(QScadaObject *);
 
 private slots:
     void newObjectSelected(int id);

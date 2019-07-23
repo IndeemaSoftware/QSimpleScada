@@ -1,5 +1,6 @@
 #include "qscadaboard.h"
 #include "qscadaboardinfo.h"
+#include "qscadaboardcontroller.h"
 #include "../QScadaObject/qscadaobjectinfo.h"
 #include "../QScadaObject/qscadaobjectqml.h"
 
@@ -59,16 +60,14 @@ QScadaObject *QScadaBoard::initNewObject(QScadaObjectInfo *info)
     connect(rObject, SIGNAL(objectSelected(int)), this , SLOT(newObjectSelected(int)));
     connect(rObject, SIGNAL(objectMove(int,int)), this , SLOT(objectMove(int,int)));
     connect(rObject, SIGNAL(objectResize(int,int)), this , SLOT(objectResize(int,int)));
+    rObject->setSelected(true);//make object selected only after signals are connected to handle highlight of new objects
     rObject->show();
     rObject->update();
     mObjects->append(rObject);
 
-    return rObject;
-}
+    emit newObjectCreated(rObject);
 
-void QScadaBoard::createNewObject()
-{
-    createNewObject(mObjects->count());
+    return rObject;
 }
 
 void QScadaBoard::createNewObject(QScadaObjectInfo *info)
@@ -76,16 +75,6 @@ void QScadaBoard::createNewObject(QScadaObjectInfo *info)
     QScadaObject *lObject = this->initNewObject(info);
 
     bringToFront(lObject);
-}
-
-void QScadaBoard::createNewObject(int id)
-{
-    QScadaObjectInfo *lInfo = new QScadaObjectInfo();
-    lInfo->setId(id);
-    lInfo->setShowBackground(true);
-    lInfo->setType(QScadaObjectTypeWidget);
-
-    createNewObject(lInfo);
 }
 
 void QScadaBoard::createQMLObject(int id, QString path)

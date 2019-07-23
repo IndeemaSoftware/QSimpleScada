@@ -1,5 +1,8 @@
 #include "qscadaboardmanager.h"
 #include "qscadaboard.h"
+#include "qscadaboardcontroller.h"
+
+#include <QWidget>
 
 QScadaBoardManager::QScadaBoardManager(QObject *parent) : QObject(parent)
 {
