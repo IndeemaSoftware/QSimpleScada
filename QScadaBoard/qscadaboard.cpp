@@ -83,8 +83,6 @@ void QScadaBoard::createNewObject(int id)
     QScadaObjectInfo *lInfo = new QScadaObjectInfo();
     lInfo->setId(id);
     lInfo->setShowBackground(true);
-    lInfo->setShowBackgroundImage(false);
-    lInfo->setIsDynamic(true);
     lInfo->setType(QScadaObjectTypeWidget);
 
     createNewObject(lInfo);
@@ -95,8 +93,6 @@ void QScadaBoard::createQMLObject(int id, QString path)
     QScadaObjectInfo *lInfo = new QScadaObjectInfo();
     lInfo->setId(id);
     lInfo->setShowBackground(true);
-    lInfo->setShowBackgroundImage(false);
-    lInfo->setIsDynamic(true);
     lInfo->setType(QScadaObjectTypeQML);
     lInfo->setUIResourcePath(path);
 

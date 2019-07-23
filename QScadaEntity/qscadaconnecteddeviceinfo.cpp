@@ -131,12 +131,6 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
                 lObjectInfo->setId(lXmlStreamReader.readElementText().toInt());//----------------------
             } else if (lXmlStreamReader.name() == tag_show_background) {
                 lObjectInfo->setShowBackground(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));//new
-            }  else if (lXmlStreamReader.name() == tag_show_background_image) {
-                lObjectInfo->setShowBackgroundImage(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));//new
-            } else if (lXmlStreamReader.name() == tag_background_image) {
-                lObjectInfo->setBackGroundImage(lXmlStreamReader.readElementText());//new
-            } else if (lXmlStreamReader.name() == tag_is_dynamic) {
-                lObjectInfo->setIsDynamic(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));///------
             } else if (lXmlStreamReader.name() == tag_geometry_x) {
                 QRect lRect = lObjectInfo->geometry();
                 lRect.setRect(lXmlStreamReader.readElementText().toInt(),
@@ -253,10 +247,7 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
                 rDevices += i.formTag(tag_object, false, true, 3);
                 rDevices += i.formTagValue(tag_title, object->info()->title(), true, 4);
                 rDevices += i.formTagValue(tag_id, QString::number(object->info()->id()), true, 4);
-                rDevices += i.formTagValue(tag_is_dynamic, QString::number(object->info()->isDynamic()), true, 4);
                 rDevices += i.formTagValue(tag_show_background, QString::number(object->info()->showBackground()), true, 4);
-                rDevices += i.formTagValue(tag_show_background_image, QString::number(object->info()->showBackgroundImage()), true, 4);
-                rDevices += i.formTagValue(tag_background_image, object->info()->backGroundImage(), true, 4);
                 rDevices += i.formTagValue(tag_geometry_x, QString::number(object->info()->geometry().x()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_y, QString::number(object->info()->geometry().y()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_width, QString::number(object->info()->geometry().width()), true, 4);

@@ -40,13 +40,13 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>350</height>
+           <height>280</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>350</height>
+           <height>280</height>
           </size>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -93,27 +93,6 @@
            <widget class="QCheckBox" name="checkBoxShowBackground">
             <property name="text">
              <string>Show Backgound</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkBoxDynamic">
-            <property name="text">
-             <string>Dynamic</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkBoxShowBackGroundImage">
-            <property name="text">
-             <string>Show Background Image</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_3">
-            <property name="text">
-             <string>Select Background Image</string>
             </property>
            </widget>
           </item>
@@ -210,7 +189,7 @@
                <x>0</x>
                <y>0</y>
                <width>312</width>
-               <height>165</height>
+               <height>235</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout">

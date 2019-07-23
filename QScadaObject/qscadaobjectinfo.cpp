@@ -4,10 +4,8 @@
 
 QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     QObject(parent),
-    mIsDynamic{false},
     mTitle{"Noname"},
     mOrderLevel{0},
-    mShowBackgroundImage{false},
     mShowBackground{true},
     mType{QScadaObjectTypeWidget},
     mUIResourcePath{""}
@@ -16,13 +14,10 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
 }
 
 QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
-    mIsDynamic{o->isDynamic()},
     mGeometry{o->geometry()},
     mId{o->id()},
     mTitle{o->title()},
     mOrderLevel{o->orderLevel()},
-    mBackGroundImage{o->backGroundImage()},
-    mShowBackgroundImage{o->showBackgroundImage()},
     mShowBackground{o->showBackground()},
     mUIProperties{o->UIProperties()},
     mType{o->type()},
@@ -62,18 +57,6 @@ void QScadaObjectInfo::setGeometry(const QRect &geometry)
     emit geometryChanged(this);
 }
 
-bool QScadaObjectInfo::isDynamic() const
-{
-    return mIsDynamic;
-}
-
-void QScadaObjectInfo::setIsDynamic(bool isDynamic)
-{
-    mIsDynamic = isDynamic;
-
-    emit dynamicStatusChanged(this);
-}
-
 bool QScadaObjectInfo::showBackground() const
 {
     return mShowBackground;
@@ -82,26 +65,6 @@ bool QScadaObjectInfo::showBackground() const
 void QScadaObjectInfo::setShowBackground(bool showBackground)
 {
     mShowBackground = showBackground;
-}
-
-QString QScadaObjectInfo::backGroundImage() const
-{
-    return mBackGroundImage;
-}
-
-void QScadaObjectInfo::setBackGroundImage(const QString &backGroundImage)
-{
-    mBackGroundImage = backGroundImage;
-}
-
-bool QScadaObjectInfo::showBackgroundImage() const
-{
-    return mShowBackgroundImage;
-}
-
-void QScadaObjectInfo::setShowBackgroundImage(bool showBackgroundImage)
-{
-    mShowBackgroundImage = showBackgroundImage;
 }
 
 int QScadaObjectInfo::orderLevel() const

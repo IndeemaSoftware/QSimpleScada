@@ -118,7 +118,6 @@ void QScadaObject::mouseDoubleClickEvent(QMouseEvent *e)
 void QScadaObject::paintEvent(QPaintEvent *e)
 {
     QPainter lPainter(this);
-    QPixmap lBackgroundPixmap(info()->backGroundImage());
     QPen lLinepen(Qt::black);
     lLinepen.setCapStyle(Qt::RoundCap);
     lPainter.setRenderHint(QPainter::Antialiasing,true);

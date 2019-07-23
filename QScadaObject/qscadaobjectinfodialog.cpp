@@ -54,12 +54,8 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
         //General
         connect(mLatestObject, SIGNAL(geometryChanged(QScadaObjectInfo*)), this, SLOT(geometryUpdated(QScadaObjectInfo *)));
         ui->lineEditName->setText(mLatestObject->title());
-        ui->checkBoxDynamic->setChecked(info->isDynamic());
         ui->spinBoxId->setValue(info->id());
         ui->checkBoxShowBackground->setChecked(info->showBackground());
-        ui->checkBoxShowBackGroundImage->setChecked(mLatestObject->showBackgroundImage());
-
-        mMarkerImage = mLatestObject->backGroundImage();
 
         showObjectProperties(info->UIProperties());
         //geometry
@@ -76,9 +72,7 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
         ui->spinBoxHeight->clear();
     }
 
-    ui->checkBoxDynamic->setEnabled(lEnabled);
     ui->checkBoxShowBackground->setEnabled(lEnabled);
-    ui->checkBoxShowBackGroundImage->setEnabled(lEnabled);
     ui->spinBoxId->setEnabled(lEnabled);
 }
 
@@ -103,7 +97,6 @@ void QScadaObjectInfoDialog::on_pushButton_2_pressed()
 
         //general
         mLatestObject->setTitle(ui->lineEditName->text());
-        mLatestObject->setIsDynamic(ui->checkBoxDynamic->isChecked());
         mLatestObject->setId(ui->spinBoxId->value());
 
         //geometry
@@ -114,12 +107,6 @@ void QScadaObjectInfoDialog::on_pushButton_2_pressed()
 
         mLatestObject->setGeometry(QRect(lX, lY, lWidth, lHeight));
         mLatestObject->setShowBackground(ui->checkBoxShowBackground->isChecked());
-        mLatestObject->setShowBackgroundImage(ui->checkBoxShowBackGroundImage->isChecked());
-        //axies
-
-        if (!mMarkerImage.isEmpty()) {
-            mLatestObject->setBackGroundImage(mMarkerImage);
-        }
 
         if (mLatestObject != nullptr) {
             emit savePressed(mLatestObject);
@@ -133,10 +120,4 @@ void QScadaObjectInfoDialog::on_pushButton_pressed()
         emit deletePressed(mLatestObject);
         mLatestObject = nullptr;
     }
-}
-
-void QScadaObjectInfoDialog::on_pushButton_3_clicked()
-{
-    mMarkerImage = QFileDialog::getOpenFileName(this,
-         tr("Open Image"), "/home/vshevchyk", tr("Image Files (*.png *.jpg *.bmp *.jpeg)"));
 }

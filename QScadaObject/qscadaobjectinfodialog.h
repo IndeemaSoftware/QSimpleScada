@@ -30,16 +30,12 @@ private slots:
 
     void on_pushButton_pressed();
 
-    void on_pushButton_3_clicked();
-
 signals:
     void deletePressed(QScadaObjectInfo*);
     void savePressed(QScadaObjectInfo*);
 
 private:
     Ui::QScadaObjectInfoDialog *ui;
-
-    QString mMarkerImage;
 
     QScadaObjectInfo *mLatestObject;
     QMultiMap<QString, QVariant> mProperties;

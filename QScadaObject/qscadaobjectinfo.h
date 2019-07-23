@@ -35,17 +35,8 @@ public:
     QRect geometry() const;
     void setGeometry(const QRect &geometry);
 
-    bool isDynamic() const;
-    void setIsDynamic(bool isDynamic);
-
     bool showBackground() const;
     void setShowBackground(bool showBackground);
-
-    QString backGroundImage() const;
-    void setBackGroundImage(const QString &backGroundImage);
-
-    bool showBackgroundImage() const;
-    void setShowBackgroundImage(bool showBackgroundImage);
 
     int orderLevel() const;
     void setOrderLevel(int value);
@@ -67,14 +58,11 @@ signals:
     void dynamicStatusChanged(QScadaObjectInfo *info);
 
 private:
-    bool mIsDynamic; //by default false
     QRect mGeometry;
     int mId;
     QString mTitle;
     int mOrderLevel;
 
-    QString mBackGroundImage;
-    bool mShowBackgroundImage;
     bool mShowBackground;
 
     QMultiMap<QString, QVariant> mUIProperties;
