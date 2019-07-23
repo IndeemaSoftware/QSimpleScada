@@ -30,6 +30,7 @@ public:
 private:
     void resize(int, int);
     void updateQMLGeometry();
+    void updateQMLProperties();
 
 protected slots:
     void initFromQML(QScadaObjectInfo *info);

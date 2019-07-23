@@ -39,6 +39,7 @@ void QScadaObjectQML::update()
     QScadaObject::update();
 
     this->updateQMLGeometry();
+    this->updateQMLProperties();
 }
 
 QQuickItem *QScadaObjectQML::QMLObject() const
@@ -59,6 +60,13 @@ void QScadaObjectQML::updateQMLGeometry()
     mQMLObject->setHeight(this->height());
 }
 
+void QScadaObjectQML::updateQMLProperties()
+{
+    for (QString property : info()->UIProperties().keys()) {
+        this->setProperty(property, info()->UIProperties().value(property));
+    }
+}
+
 //private methods
 void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
 {
@@ -76,9 +84,7 @@ void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
     if (info->UIProperties().keys().count() == 0) {
         info->setUIProperties(this->QMLProperties());
 ;    } else {
-        for (QString property : info->UIProperties().keys()) {
-            this->setProperty(property, info->UIProperties().value(property));
-        }
+        updateQMLProperties();
     }
 
     this->updateQMLGeometry();

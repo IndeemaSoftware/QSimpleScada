@@ -26,22 +26,20 @@ void QScadaObjectInfoDialog::showObjectProperties(QMultiMap<QString, QVariant> p
 {
     mProperties = properties;
 
-    QTableWidget *lTableWidget = new QTableWidget(this);
-    lTableWidget->setRowCount(properties.count());
-    lTableWidget->setColumnCount(2);
+    ui->tableWidget->setRowCount(properties.count());
+    ui->tableWidget->setColumnCount(2);
     int i = 0;
 
     for (QString key : properties.keys()) {
         QTableWidgetItem *lNewItem = new QTableWidgetItem(key);
         lNewItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
-        lTableWidget->setItem(i, 0, lNewItem);
+        ui->tableWidget->setItem(i, 0, lNewItem);
 
         QTableWidgetItem *lNewValueItem = new QTableWidgetItem(properties.value(key).toString());
-        lTableWidget->setItem(i, 1, lNewValueItem);
+        ui->tableWidget->setItem(i, 1, lNewValueItem);
 
         i++;
     }
-    ui->properties->setWidget(lTableWidget);
 }
 
 void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
@@ -95,6 +93,14 @@ void QScadaObjectInfoDialog::geometryUpdated(QScadaObjectInfo *info)
 void QScadaObjectInfoDialog::on_pushButton_2_pressed()
 {
     if (mLatestObject != nullptr) {
+        //properties
+        for (int i=0; i< ui->tableWidget->rowCount(); i++) {
+            QTableWidgetItem *lKeyItem  = ui->tableWidget->item(i, 0);//taking лун
+            QTableWidgetItem *lValueItem  = ui->tableWidget->item(i, 1);//taking values
+            mProperties.replace(lKeyItem->text(), QVariant::fromValue<QString>(lValueItem->text()));//replacing all values
+        }
+        mLatestObject->setUIProperties(mProperties);
+
         //general
         mLatestObject->setTitle(ui->lineEditName->text());
         mLatestObject->setIsDynamic(ui->checkBoxDynamic->isChecked());
