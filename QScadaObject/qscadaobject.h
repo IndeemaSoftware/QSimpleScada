@@ -33,6 +33,7 @@ public:
     virtual void update();
     virtual void setProperty(char*, QVariant) = 0;
     virtual void updateValue(QVariant) = 0;
+    virtual void updateUIProperties() = 0;
 
 private:
     QScadaObjectAction action() const;

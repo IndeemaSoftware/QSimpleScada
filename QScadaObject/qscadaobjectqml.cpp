@@ -39,7 +39,6 @@ void QScadaObjectQML::update()
     QScadaObject::update();
 
     this->updateQMLGeometry();
-    this->updateQMLProperties();
 }
 
 QQuickItem *QScadaObjectQML::QMLObject() const
@@ -60,8 +59,9 @@ void QScadaObjectQML::updateQMLGeometry()
     mQMLObject->setHeight(this->height());
 }
 
-void QScadaObjectQML::updateQMLProperties()
+void QScadaObjectQML::updateUIProperties()
 {
+    qDebug() << __FUNCTION__;
     for (QString property : info()->UIProperties().keys()) {
         this->setProperty(property, info()->UIProperties().value(property));
     }
@@ -81,13 +81,14 @@ void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
     lLayout->setContentsMargins(0, 0, 0, 0);
     lLayout->addWidget(lQmlWidget);
 
+    this->updateQMLGeometry();
+    //properties should be always read only after geometry was set
     if (info->UIProperties().keys().count() == 0) {
         info->setUIProperties(this->QMLProperties());
+        this->setInfo(info);
 ;    } else {
-        updateQMLProperties();
+        updateUIProperties();
     }
-
-    this->updateQMLGeometry();
 }
 
 void QScadaObjectQML::dynamicStatusChanged(QScadaObjectInfo *)

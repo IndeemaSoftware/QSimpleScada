@@ -281,6 +281,7 @@ void QScadaBoard::updateObjectWithId(int id)
     for (QScadaObject *object : *mObjects) {
         if (id == object->info()->id()) {
             object->update();
+            object->updateUIProperties();
         }
     }
 }

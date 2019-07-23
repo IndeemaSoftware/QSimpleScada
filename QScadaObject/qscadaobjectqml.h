@@ -18,6 +18,7 @@ public:
 
     void setProperty(QString, QVariant);
     void setProperty(char*, QVariant);
+    void updateUIProperties();
     void updateValue(QVariant);
 
     void update();
@@ -30,7 +31,6 @@ public:
 private:
     void resize(int, int);
     void updateQMLGeometry();
-    void updateQMLProperties();
 
 protected slots:
     void initFromQML(QScadaObjectInfo *info);
