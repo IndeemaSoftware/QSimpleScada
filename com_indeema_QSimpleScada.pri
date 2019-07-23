@@ -30,7 +30,8 @@ HEADERS  += \
     $$PWD/QScadaObject/qscadaobjectqml.h \
     $$PWD/qscadaconfig.h
 
-FORMS    += $$PWD/QScadaObject/qscadaobjectinfodialog.ui
+FORMS    += $$PWD/QScadaObject/qscadaobjectinfodialog.ui \
+    $$PWD/QScadaObject/qaxiswidget.ui
 
 
 INCLUDEPATH += $$PWD

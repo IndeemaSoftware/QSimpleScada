@@ -73,8 +73,12 @@ void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
     lLayout->setContentsMargins(0, 0, 0, 0);
     lLayout->addWidget(lQmlWidget);
 
-    for (QString property : info->UIProperties().keys()) {
-        this->setProperty(property, info->UIProperties().value(property));
+    if (info->UIProperties().keys().count() == 0) {
+        info->setUIProperties(this->QMLProperties());
+;    } else {
+        for (QString property : info->UIProperties().keys()) {
+            this->setProperty(property, info->UIProperties().value(property));
+        }
     }
 
     this->updateQMLGeometry();

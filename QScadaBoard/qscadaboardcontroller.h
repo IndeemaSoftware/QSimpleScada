@@ -18,7 +18,7 @@ class QScadaBoardController : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QScadaBoardController(QWidget *parent = 0);
+    explicit QScadaBoardController(QWidget *parent = nullptr);
     ~QScadaBoardController();
 
     void clearBoard(QScadaBoard*);

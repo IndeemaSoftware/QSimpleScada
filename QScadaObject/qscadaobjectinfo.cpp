@@ -24,6 +24,7 @@ QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mBackGroundImage{o->backGroundImage()},
     mShowBackgroundImage{o->showBackgroundImage()},
     mShowBackground{o->showBackground()},
+    mUIProperties{o->UIProperties()},
     mType{o->type()},
     mUIResourcePath{o->uiResourcePath()}
 {
