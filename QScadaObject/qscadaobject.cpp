@@ -250,7 +250,7 @@ void QScadaObject::resize(int x, int y)
 
 void QScadaObject::initUI()
 {
-    setGeometry(100, 100, 100, 100);
+    setGeometry(info()->geometry());
     if (info()->showBackground()) {
         setPalette(QPalette(Qt::transparent));
         setAutoFillBackground(true);
