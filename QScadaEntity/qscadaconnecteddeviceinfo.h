@@ -32,14 +32,10 @@ public:
     //board tags
     static const QString tag_boards;
     static const QString tag_board;
+    static const QString tag_board_id;
     static const QString tag_object;
-    static const QString tag_title;
     static const QString tag_show_background;//new
-    static const QString tag_show_background_image;//new
-    static const QString tag_show_marker;//new
-    static const QString tag_background_image;//new
     static const QString tag_id;
-    static const QString tag_is_dynamic;
     static const QString tag_geometry_x;
     static const QString tag_geometry_y;
     static const QString tag_geometry_width;
@@ -67,7 +63,7 @@ public:
     void initFromXml(const QByteArray &xmlData);
 
     void saveXmlToFile(const QString &filePath);
-    static QString XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceList, QScadaBoardController *);
+    static QString XMLFromDeviceInfo(QList<QScadaDeviceInfo*> deviceList, QScadaBoardController *);
 };
 
 #endif // CONNECTEDDEVICEINFO_H

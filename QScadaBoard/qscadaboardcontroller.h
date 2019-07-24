@@ -23,6 +23,7 @@ public:
     explicit QScadaBoardController(QWidget *parent = nullptr);
     ~QScadaBoardController();
 
+    //this method appends device to list and create all boards in list
     void appendDevice(QScadaDeviceInfo*);
 
     void clearBoard(QScadaBoard*);
@@ -31,6 +32,7 @@ public:
     void initConnectedDevices(const QList<QScadaBoardInfo*>list);
     void initBoardForDeviceIp(QString);
     void updateBoardForDeviceIp(QString);
+    void initBoard(QScadaBoardInfo*);
     QList<QScadaBoard*> getBoardList();
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);
 

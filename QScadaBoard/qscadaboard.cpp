@@ -26,7 +26,14 @@ QScadaBoard::QScadaBoard(int id, QWidget *parent) :
     resetGridPixmap();
 }
 
-QScadaBoard::QScadaBoard(QScadaBoardInfo *boardInfo)
+QScadaBoard::QScadaBoard(QScadaBoardInfo *boardInfo, QWidget *parent):
+    QWidget(parent),
+    mId{boardInfo->id()},
+    mObjects{new QList<QScadaObject*>()},
+    mEditable{false},
+    mShowGrid{true},
+    mGrid{10},
+    mGridPixmap{nullptr}
 {
     this->initBoard(boardInfo);
 }
@@ -170,6 +177,11 @@ void QScadaBoard::objectMove(int, int)
 void QScadaBoard::objectResize(int, int)
 {
     update();
+}
+
+void QScadaBoard::setId(int id)
+{
+    mId = id;
 }
 
 int QScadaBoard::getId() const
@@ -316,8 +328,8 @@ void QScadaBoard::setEditable(bool editable)
 {
     mEditable = editable;
 
-    for (QScadaObject *object : *mObjects) {
-        object->setIsEditable(editable);
+    if (mObjects->count() > 0) {
+
     }
 
     update();

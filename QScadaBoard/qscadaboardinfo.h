@@ -39,7 +39,15 @@ public:
         return rList;
     }
 
+    int id() const{
+        return mId;
+    }
+    void setId(int id){
+        mId = id;
+    }
+
 private:
+    int mId;
     QList<QScadaObjectInfo*> mObjectList;
 };
 #endif // VBOARDINFO_H

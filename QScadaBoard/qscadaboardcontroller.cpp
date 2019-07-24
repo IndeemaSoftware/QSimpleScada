@@ -5,10 +5,12 @@
 #include "qscadaboardinfo.h"
 #include "../QScadaObject/qscadaobjectinfodialog.h"
 #include "../QScadaDevice/qscadadeviceinfo.h"
+#include "../QScadaEntity/qscadaconnecteddeviceinfo.h"
 
 #include <QGridLayout>
 #include <QMenu>
 #include <QDebug>
+#include <QMessageBox>
 
 QScadaBoardController::QScadaBoardController(QWidget *parent) :
     QWidget(parent),
@@ -246,37 +248,81 @@ void QScadaBoardController::setPropertyWithId(QString deviceIp, int boardId, int
 
 void QScadaBoardController::openProject(QString file)
 {
+    if (!file.isEmpty()) {
+        QConnectedDeviceInfo* lConnectedDevceInfo = new QConnectedDeviceInfo();
+        QByteArray lRawData;
+        QFile lFile(file);
+        if (lFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream lStreamFileOut(&lFile);
+            lStreamFileOut.setCodec("UTF-8");
+            lRawData = lStreamFileOut.readAll().toUtf8();
+            lFile.close();
 
+            if (mParametersDialod != nullptr) {
+                mParametersDialod->updateWithObjectInfo(nullptr);
+            }
+            //clear all boards before opening new
+            clearAllBoards();
+            mBoardManager->resetAll();
+
+            lConnectedDevceInfo->initFromXml(lRawData);
+
+            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); ++i) {
+                QScadaDeviceConfig *lConfig = lConnectedDevceInfo->connecteDeviceList.at(i);
+                QScadaDeviceInfo *lInfo = new QScadaDeviceInfo();
+                lInfo->setName(lConfig->name);
+                lInfo->setDomain(lConfig->domain);
+                lInfo->setHost(lConfig->host);
+                lInfo->setIp(lConfig->ip);
+                lInfo->setIpv6(lConfig->ipv6);
+
+                appendDevice(lInfo);
+                for (QScadaBoardInfo *boardInfo : lConfig->boardList) {
+                    if (boardInfo != nullptr) {
+                        mBoard = mBoardManager->initBoardForDeviceIp(lInfo->ip().toString());
+                    }
+                }
+            }
+
+            mBoard->update();
+            } else {
+                qDebug() << "       - Error open preferences file -> " << lFile.fileName();
+            }
+
+            delete lConnectedDevceInfo;
+    } else {
+        qDebug() << "QScadaBoardController::" << __FUNCTION__ << " File name can't be empty";
+    }
 }
 
 void QScadaBoardController::saveProject(QString file)
 {
-//    if (!file.isEmpty()) {
-//        if (!file.contains(".irp")) {
-//            file.append(".irp");
-//        }
+    if (!file.isEmpty()) {
+        if (!file.contains(".irp")) {
+            file.append(".irp");
+        }
 
-//        QString lDevices = QConnectedDeviceInfo::XMLFromDeviceInfo(lList, this);   //<----;
+        QString lDevices = QConnectedDeviceInfo::XMLFromDeviceInfo(mBoardManager->getDevices(), this);   //<----;
 
-//        //create xml for boards of each device
+        //create xml for boards of each device
 
-//        QFile lFile(lFileName);
-//        if (lFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//            QTextStream lOut(&lFile);
-//            lOut.setCodec("UTF-8");
-//            lOut << lDevices;
-//        } else {
-//            QString lMessage(tr("Something went wrong while trying to create file"));
-//            lMessage.append(" ").append(lFileName);
+        QFile lFile(file);
+        if (lFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream lOut(&lFile);
+            lOut.setCodec("UTF-8");
+            lOut << lDevices;
+        } else {
+            QString lMessage(tr("Something went wrong while trying to create file"));
+            lMessage.append(" ").append(file);
 
-//            QMessageBox lMsgBox;
-//            lMsgBox.setText(lMessage);
-//            lMsgBox.exec();
-//        }
-//        lFile.close();
-//    } else {
-//        qDebug() << "QScadaBoardController::" << __FUNCTION__ << " File nmae can't be empty";
-//    }
+            QMessageBox lMsgBox;
+            lMsgBox.setText(lMessage);
+            lMsgBox.exec();
+        }
+        lFile.close();
+    } else {
+        qDebug() << "QScadaBoardController::" << __FUNCTION__ << " File name can't be empty";
+    }
 }
 
 QList<QScadaBoard *> QScadaBoardController::getBoardList()

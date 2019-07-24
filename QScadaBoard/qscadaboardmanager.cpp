@@ -2,6 +2,7 @@
 #include "qscadaboard.h"
 #include "qscadaboardcontroller.h"
 #include "../QScadaDevice/qscadadeviceinfo.h"
+#include "../QScadaBoard/qscadaboardinfo.h"
 
 #include <QWidget>
 
@@ -34,16 +35,30 @@ QScadaBoard* QScadaBoardManager::getBoard(QScadaDeviceInfo *device, int boardId)
 
 QScadaBoard *QScadaBoardManager::initBoardForDeviceIp(QString deviceIp)
 {
+    QScadaBoardInfo *lBoardInfo = new QScadaBoardInfo();
+    lBoardInfo->setId(generateIdForNewBoard());
+    QScadaBoard *rBoard = initBoardForDeviceIp(deviceIp, lBoardInfo);
+
+    return rBoard;
+}
+
+QScadaBoard *QScadaBoardManager::initBoardForDeviceIp(QString deviceIp, QScadaBoardInfo *boardInfo)
+{
     QScadaBoard *rBoard = nullptr;
     QScadaDeviceInfo *lDevice = deviceForIp(deviceIp);
 
     if (lDevice != nullptr) {
-        rBoard = new QScadaBoard(generateIdForNewBoard());
-        mBoards.insert(rBoard->getId(), rBoard);
+        rBoard = initBoardWithInfo(boardInfo);
         lDevice->appendBoardId(rBoard->getId());
     }
 
     return rBoard;
+}
+
+void QScadaBoardManager::resetAll()
+{
+    mDevices.clear();
+    mBoards.clear();
 }
 
 QList<QScadaBoard *> QScadaBoardManager::getBoardListForDeviceIp(QString deviceIp)
@@ -92,6 +107,28 @@ int QScadaBoardManager::generateIdForNewBoard()
     return rId;
 }
 
+QScadaBoard *QScadaBoardManager::initBoardWithId(int id)
+{
+    QScadaBoardInfo *lInfo = new QScadaBoardInfo();
+    lInfo->setId(id);
+    QScadaBoard *rBoard = initBoardWithInfo(lInfo);
+
+    return  rBoard;
+}
+
+QScadaBoard *QScadaBoardManager::initBoardWithInfo(QScadaBoardInfo *boardInfo)
+{
+    QScadaBoard *rBoard = new QScadaBoard(boardInfo);
+    mBoards.insert(rBoard->getId(), rBoard);
+
+    return  rBoard;
+}
+
+QList<QScadaDeviceInfo *> QScadaBoardManager::getDevices() const
+{
+    return mDevices;
+}
+
 void QScadaBoardManager::appendDevice(QScadaDeviceInfo *deviceInfo)
 {
     QScadaDeviceInfo *lDevice = deviceForIp(deviceInfo->ip().toString());
@@ -99,6 +136,9 @@ void QScadaBoardManager::appendDevice(QScadaDeviceInfo *deviceInfo)
     //if device with the same ip address exists appeding will be ignored
     if (lDevice == nullptr) {
         mDevices.append(deviceInfo);
+        for (int id : deviceInfo->boardIds()) {
+            initBoardWithId(id);
+        }
     } else {
         qDebug() << "QScadaBoardManager::" << __FUNCTION__ << " device with ip " << deviceInfo->ip().toString() << " already added";
     }

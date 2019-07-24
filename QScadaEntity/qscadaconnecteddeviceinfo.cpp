@@ -21,14 +21,10 @@ const QString QConnectedDeviceInfo::tag_device_domain = QString("domain");
 
 const QString QConnectedDeviceInfo::tag_boards = QString("boards");
 const QString QConnectedDeviceInfo::tag_board = QString("board");
+const QString QConnectedDeviceInfo::tag_board_id = QString("board_id");
 const QString QConnectedDeviceInfo::tag_object = QString("object");
-const QString QConnectedDeviceInfo::tag_title = QString("title");
 const QString QConnectedDeviceInfo::tag_show_background = QString("show_background");//new
-const QString QConnectedDeviceInfo::tag_show_background_image = QString("show_background_image"); //
-const QString QConnectedDeviceInfo::tag_show_marker = QString("show_marker");//new
-const QString QConnectedDeviceInfo::tag_background_image = QString("background_image");//new
 const QString QConnectedDeviceInfo::tag_id = QString("id");
-const QString QConnectedDeviceInfo::tag_is_dynamic = QString("is_dynamic");
 const QString QConnectedDeviceInfo::tag_geometry_x = QString("geometry_x");
 const QString QConnectedDeviceInfo::tag_geometry_y = QString("geometry_y");
 const QString QConnectedDeviceInfo::tag_geometry_width = QString("geometry_width");
@@ -122,11 +118,13 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
             else if (lXmlStreamReader.name() == tag_board) {
                 lBoard = new QScadaBoardInfo();
                 lDeviceConfig->boardList.append(lBoard);
+            } else if (lXmlStreamReader.name() == tag_board_id) {
+                lBoard->setId(lXmlStreamReader.readElementText().toInt());
             } else if (lXmlStreamReader.name() == tag_object) {
                 lObjectInfo = new QScadaObjectInfo();
                 lBoard->appendObjectInfo(lObjectInfo);
             } else if (lXmlStreamReader.name() == tag_id) {
-                lObjectInfo->setId(lXmlStreamReader.readElementText().toInt());//----------------------
+                lBoard->setId(lXmlStreamReader.readElementText().toInt());//----------------------
             } else if (lXmlStreamReader.name() == tag_show_background) {
                 lObjectInfo->setShowBackground(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));//new
             } else if (lXmlStreamReader.name() == tag_geometry_x) {
@@ -224,23 +222,24 @@ void QConnectedDeviceInfo::saveXmlToFile(const QString &filePath)
     }
 }
 
-QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceList, QScadaBoardController *boardController)
+QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo*> deviceList, QScadaBoardController *boardController)
 {
     //create xml for devices
     QConnectedDeviceInfo i;
     QString rDevices = i.formTag(tag_devices, false, true, 0);
-    for (QScadaDeviceInfo info: deviceList) {
+    for (QScadaDeviceInfo *info: deviceList) {
         rDevices += i.formTag(tag_device, false, true, 1);
-        rDevices += i.formTagValue(tag_device_name, info.name(), true, 2);
-        rDevices += i.formTagValue(tag_device_ip, info.ip().toString(), true, 2);
-        rDevices += i.formTagValue(tag_device_ip_v6, info.ipv6().toString(), true, 2);
-        rDevices += i.formTagValue(tag_device_host, info.host(), true, 2);
-        rDevices += i.formTagValue(tag_device_domain, info.domain(), true, 2);
+        rDevices += i.formTagValue(tag_device_name, info->name(), true, 2);
+        rDevices += i.formTagValue(tag_device_ip, info->ip().toString(), true, 2);
+        rDevices += i.formTagValue(tag_device_ip_v6, info->ipv6().toString(), true, 2);
+        rDevices += i.formTagValue(tag_device_host, info->host(), true, 2);
+        rDevices += i.formTagValue(tag_device_domain, info->domain(), true, 2);
         rDevices += i.formTag(tag_device, true, true, 1);//"\t</device>\n";
 
         rDevices += i.formTag(tag_boards, false, true, 1);
-        for(QScadaBoard *board : boardController->getBoardListForDeviceIp(info.ip().toString())) {
+        for(QScadaBoard *board : boardController->getBoardListForDeviceIp(info->ip().toString())) {
             rDevices += i.formTag(tag_board, false, true, 2);
+            rDevices += i.formTagValue(tag_board_id, QString::number(board->getId()), true, 3);
             for (QScadaObject *object : *board->objects()) {
                 rDevices += i.formTag(tag_object, false, true, 3);
                 rDevices += i.formTagValue(tag_id, QString::number(object->info()->id()), true, 4);

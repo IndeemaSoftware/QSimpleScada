@@ -2,6 +2,7 @@
 #define VBOARD_H
 
 #include "../QScadaObject/qscadaobject.h"
+#include "qscadaboardmanager.h"
 
 #include <QWidget>
 #include <QList>
@@ -12,10 +13,11 @@ class QScadaBoardController;
 
 class QScadaBoard : public QWidget
 {
+    friend QScadaBoardManager;
     Q_OBJECT
 public:
     explicit QScadaBoard(int id, QWidget *parent = nullptr);
-    QScadaBoard(QScadaBoardInfo *);
+    QScadaBoard(QScadaBoardInfo *, QWidget *parent = nullptr);
     ~QScadaBoard();
 
     void initBoard(QScadaBoardInfo *);
@@ -49,7 +51,10 @@ public:
     void resetGridPixmap();
 
     int getId() const;
+
 private:
+    //id can be set only by friend class QScadaBoardmanager
+    void setId(int id);
     void orderObject(QScadaObject *o);
 
 public slots:
