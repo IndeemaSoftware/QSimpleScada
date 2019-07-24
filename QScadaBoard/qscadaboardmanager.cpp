@@ -33,19 +33,15 @@ QScadaBoard* QScadaBoardManager::getBoard(QScadaDeviceInfo *device, int boardId)
     return rBoard;
 }
 
-QScadaBoard *QScadaBoardManager::initBoardForDeviceIp(QString deviceIp)
-{
-    QScadaBoardInfo *lBoardInfo = new QScadaBoardInfo();
-    lBoardInfo->setId(generateIdForNewBoard());
-    QScadaBoard *rBoard = initBoardForDeviceIp(deviceIp, lBoardInfo);
-
-    return rBoard;
-}
-
 QScadaBoard *QScadaBoardManager::initBoardForDeviceIp(QString deviceIp, QScadaBoardInfo *boardInfo)
 {
     QScadaBoard *rBoard = nullptr;
     QScadaDeviceInfo *lDevice = deviceForIp(deviceIp);
+
+    if  (boardInfo == nullptr) {
+        boardInfo = new QScadaBoardInfo();
+        boardInfo->setId(generateIdForNewBoard());
+    }
 
     if (lDevice != nullptr) {
         rBoard = initBoardWithInfo(boardInfo);

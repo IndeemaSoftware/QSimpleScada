@@ -34,8 +34,7 @@ public:
     void resetAllboards();
 
     void initConnectedDevices(const QList<QScadaBoardInfo*>list);
-    void initBoardForDeviceIp(QString);
-    void initBoardForDeviceIp(QString ip, QScadaBoardInfo*);
+    void initBoardForDeviceIp(QString ip, QScadaBoardInfo *info=nullptr);
     void updateBoardForDeviceIp(QString);
     QList<QScadaBoard*> getBoardList();
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);

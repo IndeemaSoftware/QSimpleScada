@@ -77,26 +77,6 @@ void QScadaBoardController::initConnectedDevices(const QList<QScadaBoardInfo *> 
     mBoard->update();
 }
 
-void QScadaBoardController::initBoardForDeviceIp(QString ip)
-{
-    if (mBoard != nullptr
-            && mBoard->isVisible()) {
-        mBoard->hide();
-        disconnect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
-    }
-
-    mBoard = mBoardManager->initBoardForDeviceIp(ip);
-    if (mBoard != nullptr) {
-        mMainLayout->addWidget(mBoard);
-        mBoard->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
-        connect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
-        connect(mBoard, SIGNAL(objectDoubleClicked(QScadaObject*)), this, SLOT(objectDoubleClickedHandler(QScadaObject*)));
-        connect(mBoard, SIGNAL(newObjectCreated(QScadaObject*)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
-    } else {
-        qDebug() << "QScadaBoardController::" << __FUNCTION__<< " No device with ip " << ip << " found";
-    }
-}
-
 void QScadaBoardController::initBoardForDeviceIp(QString ip, QScadaBoardInfo *boardInfo)
 {
     if (mBoard != nullptr

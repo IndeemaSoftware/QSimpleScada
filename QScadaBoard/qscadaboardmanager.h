@@ -17,8 +17,7 @@ public:
 
     QScadaBoard* getBoard(QString deviceIp, int boardId);
     QScadaBoard* getBoard(QScadaDeviceInfo *device, int boardId);
-    QScadaBoard* initBoardForDeviceIp(QString deviceIp);
-    QScadaBoard* initBoardForDeviceIp(QString deviceIp, QScadaBoardInfo*);
+    QScadaBoard* initBoardForDeviceIp(QString deviceIp, QScadaBoardInfo *info=nullptr);
 
     void resetAll();
 

@@ -15,6 +15,8 @@ QScadaObjectInfoDialog::QScadaObjectInfoDialog(QWidget *parent) :
     mLatestObject{nullptr}
 {
     ui->setupUi(this);
+
+    updateWithObjectInfo(nullptr);
 }
 
 QScadaObjectInfoDialog::~QScadaObjectInfoDialog()
