@@ -4,7 +4,6 @@
 
 QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
     QObject(parent),
-    mTitle{"Noname"},
     mOrderLevel{0},
     mShowBackground{true},
     mType{QScadaObjectTypeWidget},
@@ -16,7 +15,6 @@ QScadaObjectInfo::QScadaObjectInfo(QObject *parent) :
 QScadaObjectInfo::QScadaObjectInfo(QScadaObjectInfo *o):
     mGeometry{o->geometry()},
     mId{o->id()},
-    mTitle{o->title()},
     mOrderLevel{o->orderLevel()},
     mShowBackground{o->showBackground()},
     mUIProperties{o->UIProperties()},
@@ -34,16 +32,6 @@ int QScadaObjectInfo::id() const
 void QScadaObjectInfo::setId(int id)
 {
     mId = id;
-}
-
-QString QScadaObjectInfo::title() const
-{
-    return mTitle;
-}
-
-void QScadaObjectInfo::setTitle(const QString &title)
-{
-    mTitle = title;
 }
 
 QRect QScadaObjectInfo::geometry() const

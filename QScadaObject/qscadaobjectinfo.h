@@ -29,9 +29,6 @@ public:
     int id() const;
     void setId(int id);
 
-    QString title() const;
-    void setTitle(const QString &title);
-
     QRect geometry() const;
     void setGeometry(const QRect &geometry);
 
@@ -60,7 +57,6 @@ signals:
 private:
     QRect mGeometry;
     int mId;
-    QString mTitle;
     int mOrderLevel;
 
     bool mShowBackground;

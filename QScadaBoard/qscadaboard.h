@@ -66,7 +66,7 @@ signals:
     void objectSelected(QScadaObject *);
     void newObjectCreated(QScadaObject *);
 
-private slots:
+protected slots:
     void newObjectSelected(int id);
     void objectMove(int x, int y);
     void objectResize(int x, int y);

@@ -44,7 +44,7 @@ private:
     void initUI();
 
 protected:
-    void resize(int x, int y);
+    virtual void resize(int x, int y);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
@@ -57,9 +57,6 @@ signals:
     void objectDoubleClicked(QScadaObject*);
     void objectMove(int x, int y);
     void objectResize(int x, int y);
-
-protected slots:
-    virtual void dynamicStatusChanged(QScadaObjectInfo*) = 0;
 
 private:
     QPoint mPosition;

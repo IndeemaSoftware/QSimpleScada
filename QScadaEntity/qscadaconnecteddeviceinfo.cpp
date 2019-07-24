@@ -125,8 +125,6 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
             } else if (lXmlStreamReader.name() == tag_object) {
                 lObjectInfo = new QScadaObjectInfo();
                 lBoard->appendObjectInfo(lObjectInfo);
-            } else if (lXmlStreamReader.name() == tag_title) {
-                lObjectInfo->setTitle(lXmlStreamReader.readElementText());
             } else if (lXmlStreamReader.name() == tag_id) {
                 lObjectInfo->setId(lXmlStreamReader.readElementText().toInt());//----------------------
             } else if (lXmlStreamReader.name() == tag_show_background) {
@@ -245,7 +243,6 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo> deviceLi
             rDevices += i.formTag(tag_board, false, true, 2);
             for (QScadaObject *object : *board->objects()) {
                 rDevices += i.formTag(tag_object, false, true, 3);
-                rDevices += i.formTagValue(tag_title, object->info()->title(), true, 4);
                 rDevices += i.formTagValue(tag_id, QString::number(object->info()->id()), true, 4);
                 rDevices += i.formTagValue(tag_show_background, QString::number(object->info()->showBackground()), true, 4);
                 rDevices += i.formTagValue(tag_geometry_x, QString::number(object->info()->geometry().x()), true, 4);

@@ -53,7 +53,6 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
     if (mLatestObject != nullptr) {
         //General
         connect(mLatestObject, SIGNAL(geometryChanged(QScadaObjectInfo*)), this, SLOT(geometryUpdated(QScadaObjectInfo *)));
-        ui->lineEditName->setText(mLatestObject->title());
         ui->spinBoxId->setValue(info->id());
         ui->checkBoxShowBackground->setChecked(info->showBackground());
 
@@ -62,8 +61,6 @@ void QScadaObjectInfoDialog::updateWithObjectInfo(QScadaObjectInfo *info)
         geometryUpdated(mLatestObject);
     } else {
         lEnabled = false;
-        //clear title
-        ui->lineEditName->clear();
 
         //geometry
         ui->spinBoxX->clear();
@@ -98,7 +95,6 @@ void QScadaObjectInfoDialog::on_pushButton_2_pressed()
         mLatestObject->setUIProperties(mProperties);
 
         //general
-        mLatestObject->setTitle(ui->lineEditName->text());
         mLatestObject->setId(ui->spinBoxId->value());
 
         //geometry

@@ -123,6 +123,7 @@ void QScadaObject::paintEvent(QPaintEvent *e)
     lPainter.setRenderHint(QPainter::Antialiasing,true);
     lPainter.setPen(lLinepen);
 
+    //draw title
     int lX;
     int lY;
 
@@ -174,7 +175,6 @@ void QScadaObject::update()
     }
 
     setGeometry(info()->geometry());
-    dynamicStatusChanged(info());
 }
 
 bool QScadaObject::selected() const

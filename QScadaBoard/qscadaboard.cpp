@@ -276,7 +276,6 @@ void QScadaBoard::updateValue(int id, QVariant value)
     for (QScadaObject *object : *mObjects) {
         if (id == object->info()->id()) {
             object->updateValue(value);
-            object->update();
         }
     }
 }
@@ -286,7 +285,6 @@ void QScadaBoard::setPropertyWithId(int id, QString property, QVariant value)
     for (QScadaObject *object : *mObjects) {
         if (id == object->info()->id()) {
             object->setProperty(property.toLocal8Bit().data(), value);
-            object->update();
         }
     }
 }

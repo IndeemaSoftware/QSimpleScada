@@ -24,6 +24,8 @@ void QScadaObjectQML::setProperty(QString key, QVariant value)
 void QScadaObjectQML::setProperty(char *key, QVariant value)
 {
     mQMLObject->setProperty(key, value);
+
+    update();
 }
 
 void QScadaObjectQML::updateValue(QVariant value)
@@ -32,6 +34,8 @@ void QScadaObjectQML::updateValue(QVariant value)
     QMetaObject::invokeMethod(mQMLObject, QScadaObjectQML::funcUpdate,
         Q_RETURN_ARG(QVariant, rReturn),
         Q_ARG(QVariant, value));
+
+    update();
 }
 
 void QScadaObjectQML::update()
@@ -91,9 +95,11 @@ void QScadaObjectQML::initFromQML(QScadaObjectInfo *info)
     }
 }
 
-void QScadaObjectQML::dynamicStatusChanged(QScadaObjectInfo *)
+void QScadaObjectQML::resize(int x, int y)
 {
+    QScadaObject::resize(x, y);
 
+    update();
 }
 
 QMultiMap<QString, QVariant> QScadaObjectQML::QMLProperties() const

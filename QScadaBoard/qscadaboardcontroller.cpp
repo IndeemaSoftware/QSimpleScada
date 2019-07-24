@@ -228,4 +228,5 @@ QList<QScadaBoard *> QScadaBoardController::getBoardListForDeviceIp(QString ip)
 void QScadaBoardController::setEditingMode(bool editing)
 {
     mBoard->setEditable(editing);
+    mBoard->setShowGrid(editing);
 }

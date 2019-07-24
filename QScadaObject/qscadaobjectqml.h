@@ -29,12 +29,11 @@ public:
     QMultiMap<QString, QVariant> QMLProperties() const;
 
 private:
-    void resize(int, int);
     void updateQMLGeometry();
 
 protected slots:
     void initFromQML(QScadaObjectInfo *info);
-    void dynamicStatusChanged(QScadaObjectInfo*);
+    void resize(int x, int y);
 
 private:
     QQuickItem *mQMLObject;
