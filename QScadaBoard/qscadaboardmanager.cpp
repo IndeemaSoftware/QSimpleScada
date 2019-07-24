@@ -57,6 +57,15 @@ QScadaBoard *QScadaBoardManager::initBoardForDeviceIp(QString deviceIp, QScadaBo
 
 void QScadaBoardManager::resetAll()
 {
+    for (QScadaBoard * board : mBoards.values()) {
+        board->hide();
+        delete board;
+    }
+
+    for (QScadaDeviceInfo *info : mDevices) {
+        delete info;
+    }
+
     mDevices.clear();
     mBoards.clear();
 }

@@ -26,13 +26,17 @@ public:
     //this method appends device to list and create all boards in list
     void appendDevice(QScadaDeviceInfo*);
 
+    //removes all objects from specific board
     void clearBoard(QScadaBoard*);
+    //removes all objects from all boards
     void clearAllBoards();
+    //removes all devices and boards and it objects
+    void resetAllboards();
 
     void initConnectedDevices(const QList<QScadaBoardInfo*>list);
     void initBoardForDeviceIp(QString);
+    void initBoardForDeviceIp(QString ip, QScadaBoardInfo*);
     void updateBoardForDeviceIp(QString);
-    void initBoard(QScadaBoardInfo*);
     QList<QScadaBoard*> getBoardList();
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);
 
@@ -46,6 +50,7 @@ public:
 
     void openProject(QString file);
     void saveProject(QString file);
+
 
 signals:
     void objectDoubleClicked(QScadaObject*);
@@ -70,7 +75,6 @@ private:
     QScadaObjectInfoDialog *mParametersDialod;
     QList<int> mObjectIds;
     QGridLayout *mMainLayout;
-    QList<QScadaDeviceInfo*> mDevices;
 };
 
 #endif // VVIEWCONFIGURAOT_H

@@ -56,6 +56,13 @@ void QScadaBoardController::clearAllBoards()
     }
 }
 
+void QScadaBoardController::resetAllboards()
+{
+    clearAllBoards();
+    mBoardManager->resetAll();
+    mBoard = nullptr;
+}
+
 void QScadaBoardController::initConnectedDevices(const QList<QScadaBoardInfo *> list)
 {
     for (QScadaBoardInfo *boardInfo : list) {
@@ -79,6 +86,26 @@ void QScadaBoardController::initBoardForDeviceIp(QString ip)
     }
 
     mBoard = mBoardManager->initBoardForDeviceIp(ip);
+    if (mBoard != nullptr) {
+        mMainLayout->addWidget(mBoard);
+        mBoard->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
+        connect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
+        connect(mBoard, SIGNAL(objectDoubleClicked(QScadaObject*)), this, SLOT(objectDoubleClickedHandler(QScadaObject*)));
+        connect(mBoard, SIGNAL(newObjectCreated(QScadaObject*)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
+    } else {
+        qDebug() << "QScadaBoardController::" << __FUNCTION__<< " No device with ip " << ip << " found";
+    }
+}
+
+void QScadaBoardController::initBoardForDeviceIp(QString ip, QScadaBoardInfo *boardInfo)
+{
+    if (mBoard != nullptr
+            && mBoard->isVisible()) {
+        mBoard->hide();
+        disconnect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
+    }
+
+    mBoard = mBoardManager->initBoardForDeviceIp(ip, boardInfo);
     if (mBoard != nullptr) {
         mMainLayout->addWidget(mBoard);
         mBoard->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
@@ -262,8 +289,7 @@ void QScadaBoardController::openProject(QString file)
                 mParametersDialod->updateWithObjectInfo(nullptr);
             }
             //clear all boards before opening new
-            clearAllBoards();
-            mBoardManager->resetAll();
+            resetAllboards();
 
             lConnectedDevceInfo->initFromXml(lRawData);
 
@@ -279,7 +305,7 @@ void QScadaBoardController::openProject(QString file)
                 appendDevice(lInfo);
                 for (QScadaBoardInfo *boardInfo : lConfig->boardList) {
                     if (boardInfo != nullptr) {
-                        mBoard = mBoardManager->initBoardForDeviceIp(lInfo->ip().toString());
+                        initBoardForDeviceIp(lInfo->ip().toString(), boardInfo);
                     }
                 }
             }
