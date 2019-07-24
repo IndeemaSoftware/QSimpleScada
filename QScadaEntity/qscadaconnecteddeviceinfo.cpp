@@ -250,7 +250,7 @@ QString QConnectedDeviceInfo::XMLFromDeviceInfo(QList<QScadaDeviceInfo*> deviceL
                 rDevices += i.formTagValue(tag_geometry_height, QString::number(object->info()->geometry().height()), true, 4);
                 rDevices += i.formTagValue(order_level, QString::number(object->info()->orderLevel()), true, 4);
                 rDevices += i.formTagValue(tag_ui_resource, object->info()->uiResourcePath(), true, 4);
-                if (object->info()->type() == QScadaObjectTypeQML) {
+                if (static_cast<QScadaObjectQML*>(object)->QMLProperties().count() > 0) {
                     rDevices += QConnectedDeviceInfo::formProperties(static_cast<QScadaObjectQML*>(object)->QMLProperties());
                 }
                 rDevices += i.formTag(tag_object, true, true, 3);//"\t\t\t</object>\n";
