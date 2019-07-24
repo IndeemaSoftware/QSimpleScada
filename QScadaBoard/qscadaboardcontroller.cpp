@@ -367,8 +367,8 @@ QList<QScadaBoard *> QScadaBoardController::getBoardListForDeviceIp(QString ip)
 
 void QScadaBoardController::setEditingMode(bool editing)
 {
-    if (mBoard != nullptr) {
-        mBoard->setEditable(editing);
-        mBoard->setShowGrid(editing);
+    for (QScadaBoard *board : mBoardManager->getBoardList()) {
+        board->setEditable(editing);
+        board->setShowGrid(editing);
     }
 }

@@ -328,8 +328,8 @@ void QScadaBoard::setEditable(bool editable)
 {
     mEditable = editable;
 
-    if (mObjects->count() > 0) {
-
+    for (QScadaObject *object : *mObjects) {
+        object->setIsEditable(editable);
     }
 
     update();

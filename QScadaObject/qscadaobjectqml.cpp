@@ -65,7 +65,6 @@ void QScadaObjectQML::updateQMLGeometry()
 
 void QScadaObjectQML::updateUIProperties()
 {
-    qDebug() << __FUNCTION__;
     for (QString property : info()->UIProperties().keys()) {
         this->setProperty(property, info()->UIProperties().value(property));
     }
