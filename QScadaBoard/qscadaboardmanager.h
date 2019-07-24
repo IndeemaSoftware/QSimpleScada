@@ -6,6 +6,7 @@
 
 class QScadaBoard;
 class QScadaBoardController;
+class QScadaDeviceInfo;
 
 class QScadaBoardManager : public QObject
 {
@@ -13,15 +14,23 @@ class QScadaBoardManager : public QObject
 public:
     explicit QScadaBoardManager(QObject *parent = nullptr);
 
-    QScadaBoard* getBoardForDeviceWithIp(QString);
+    QScadaBoard* getBoard(QString deviceIp, int boardId);
+    QScadaBoard* getBoard(QScadaDeviceInfo *device, int boardId);
+    QScadaBoard* initBoardForDeviceIp(QString deviceIp);
 
+    QList<QScadaBoard*> getBoardListForDeviceIp(QString);
     QList<QScadaBoard*> getBoardList();
 
-    QScadaBoardController *getController() const;
-    void setController(QScadaBoardController *controller);
+    //if device with the same ip address exists appeding will be ignored
+    void appendDevice(QScadaDeviceInfo *deviceInfo);
 
 private:
-    QMap<QString, QScadaBoard*> mBoardMap;
+    QScadaDeviceInfo* deviceForIp(QString ip);
+    int generateIdForNewBoard();
+
+private:
+    QMap<int, QScadaBoard*> mBoards;//list of devices with unique id
+    QList<QScadaDeviceInfo*> mDevices;//list of devices
 };
 
 #endif // VBOARDMANAGER_H

@@ -52,7 +52,6 @@ public:
 signals:
     void infoChanged(QScadaObjectInfo *info);
     void geometryChanged(QScadaObjectInfo *info);
-    void dynamicStatusChanged(QScadaObjectInfo *info);
 
 private:
     QRect mGeometry;

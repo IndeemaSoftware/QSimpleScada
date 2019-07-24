@@ -4,6 +4,7 @@
 #include "qscadaboard.h"
 #include "qscadaboardinfo.h"
 #include "../QScadaObject/qscadaobjectinfodialog.h"
+#include "../QScadaDevice/qscadadeviceinfo.h"
 
 #include <QGridLayout>
 #include <QMenu>
@@ -31,6 +32,11 @@ QScadaBoardController::~QScadaBoardController()
     delete mBoardManager;
     delete mParametersDialod;
     delete mBoard;
+}
+
+void QScadaBoardController::appendDevice(QScadaDeviceInfo *deviceInfo)
+{
+    mBoardManager->appendDevice(deviceInfo);
 }
 
 void QScadaBoardController::clearBoard(QScadaBoard* board)
@@ -70,12 +76,16 @@ void QScadaBoardController::initBoardForDeviceIp(QString ip)
         disconnect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
     }
 
-    mBoard = mBoardManager->getBoardForDeviceWithIp(ip);
-    mMainLayout->addWidget(mBoard);
-    mBoard->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
-    connect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
-    connect(mBoard, SIGNAL(objectDoubleClicked(QScadaObject*)), this, SLOT(objectDoubleClickedHandler(QScadaObject*)));
-    connect(mBoard, SIGNAL(newObjectCreated(QScadaObject*)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
+    mBoard = mBoardManager->initBoardForDeviceIp(ip);
+    if (mBoard != nullptr) {
+        mMainLayout->addWidget(mBoard);
+        mBoard->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
+        connect(mBoard, SIGNAL(objectSelected(QScadaObject *)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
+        connect(mBoard, SIGNAL(objectDoubleClicked(QScadaObject*)), this, SLOT(objectDoubleClickedHandler(QScadaObject*)));
+        connect(mBoard, SIGNAL(newObjectCreated(QScadaObject*)), this, SLOT(updateObjectInfoDialog(QScadaObject *)));
+    } else {
+        qDebug() << "QScadaBoardController::" << __FUNCTION__<< " No device with ip " << ip << " found";
+    }
 }
 
 void QScadaBoardController::updateBoardForDeviceIp(QString ip)
@@ -212,6 +222,63 @@ void QScadaBoardController::setParametersDialod(QScadaObjectInfoDialog *paramete
     connect(mParametersDialod, SIGNAL(savePressed(QScadaObjectInfo*)), this, SLOT(updateSavedObject(QScadaObjectInfo *)));
 }
 
+void QScadaBoardController::updateValue(QString deviceIp, int boardId, int id, QVariant value)
+{
+    QScadaBoard *lBoard = mBoardManager->getBoard(deviceIp, boardId);
+
+    if (lBoard != nullptr) {
+        lBoard->updateValue(id, value);
+    } else {
+        qDebug() << "QScadaBoardController::" << __FUNCTION__ << " no available board id" << boardId << " on device with ip " << deviceIp;
+    }
+}
+
+void QScadaBoardController::setPropertyWithId(QString deviceIp, int boardId, int id, QString property, QVariant value)
+{
+    QScadaBoard *lBoard = mBoardManager->getBoard(deviceIp, boardId);
+
+    if (lBoard != nullptr) {
+        lBoard->setPropertyWithId(id, property, value);
+    } else {
+        qDebug() << "QScadaBoardController::" << __FUNCTION__ << " for available device with ip " << deviceIp;
+    }
+}
+
+void QScadaBoardController::openProject(QString file)
+{
+
+}
+
+void QScadaBoardController::saveProject(QString file)
+{
+//    if (!file.isEmpty()) {
+//        if (!file.contains(".irp")) {
+//            file.append(".irp");
+//        }
+
+//        QString lDevices = QConnectedDeviceInfo::XMLFromDeviceInfo(lList, this);   //<----;
+
+//        //create xml for boards of each device
+
+//        QFile lFile(lFileName);
+//        if (lFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+//            QTextStream lOut(&lFile);
+//            lOut.setCodec("UTF-8");
+//            lOut << lDevices;
+//        } else {
+//            QString lMessage(tr("Something went wrong while trying to create file"));
+//            lMessage.append(" ").append(lFileName);
+
+//            QMessageBox lMsgBox;
+//            lMsgBox.setText(lMessage);
+//            lMsgBox.exec();
+//        }
+//        lFile.close();
+//    } else {
+//        qDebug() << "QScadaBoardController::" << __FUNCTION__ << " File nmae can't be empty";
+//    }
+}
+
 QList<QScadaBoard *> QScadaBoardController::getBoardList()
 {
     return mBoardManager->getBoardList();
@@ -220,13 +287,16 @@ QList<QScadaBoard *> QScadaBoardController::getBoardList()
 QList<QScadaBoard *> QScadaBoardController::getBoardListForDeviceIp(QString ip)
 {
     QList<QScadaBoard *> rList;
-    rList.append(mBoardManager->getBoardForDeviceWithIp(ip));
+
+    rList.append(mBoardManager->getBoardListForDeviceIp(ip));
 
     return rList;
 }
 
 void QScadaBoardController::setEditingMode(bool editing)
 {
-    mBoard->setEditable(editing);
-    mBoard->setShowGrid(editing);
+    if (mBoard != nullptr) {
+        mBoard->setEditable(editing);
+        mBoard->setShowGrid(editing);
+    }
 }

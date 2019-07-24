@@ -46,6 +46,9 @@ public:
 
     bool operator<(const QScadaDeviceInfo &deviceInfo);
 
+    QList<int> boardIds() const;
+    void appendBoardId(int);
+
 private:
     QString mName;
     QString	mType;
@@ -57,6 +60,7 @@ private:
     quint16	mPort;
     QScadaStatus mDeviceStatus;
     int mUnitCount;
+    QList<int> mBoardIds;
 };
 
 #endif // VDEVICEINFO_H

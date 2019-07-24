@@ -14,7 +14,7 @@ class QScadaBoard : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QScadaBoard(QWidget *parent = nullptr);
+    explicit QScadaBoard(int id, QWidget *parent = nullptr);
     QScadaBoard(QScadaBoardInfo *);
     ~QScadaBoard();
 
@@ -48,6 +48,7 @@ public:
 
     void resetGridPixmap();
 
+    int getId() const;
 private:
     void orderObject(QScadaObject *o);
 
@@ -72,6 +73,7 @@ protected slots:
     void objectResize(int x, int y);
 
 private:
+    int mId;
     QList<QScadaObject*> *mObjects;
     bool mEditable; //default value false
     bool mShowGrid; //default value true

@@ -14,6 +14,7 @@ class QScadaObject;
 class VUnitModel;
 class QScadaBoardManager;
 class QScadaBoardInfo;
+class QScadaDeviceInfo;
 
 class QScadaBoardController : public QWidget
 {
@@ -21,6 +22,8 @@ class QScadaBoardController : public QWidget
 public:
     explicit QScadaBoardController(QWidget *parent = nullptr);
     ~QScadaBoardController();
+
+    void appendDevice(QScadaDeviceInfo*);
 
     void clearBoard(QScadaBoard*);
     void clearAllBoards();
@@ -35,6 +38,12 @@ public:
 
     QScadaObjectInfoDialog *getParametersDialod() const;
     void setParametersDialod(QScadaObjectInfoDialog *parametersDialod);
+
+    void updateValue(QString deviceIp, int boardId, int id, QVariant value);
+    void setPropertyWithId(QString deviceIp, int boardId, int id, QString property, QVariant value);
+
+    void openProject(QString file);
+    void saveProject(QString file);
 
 signals:
     void objectDoubleClicked(QScadaObject*);
@@ -59,6 +68,7 @@ private:
     QScadaObjectInfoDialog *mParametersDialod;
     QList<int> mObjectIds;
     QGridLayout *mMainLayout;
+    QList<QScadaDeviceInfo*> mDevices;
 };
 
 #endif // VVIEWCONFIGURAOT_H

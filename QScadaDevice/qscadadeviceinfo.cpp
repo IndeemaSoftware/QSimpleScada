@@ -129,3 +129,13 @@ bool QScadaDeviceInfo::operator<(const QScadaDeviceInfo &deviceInfo)
 
     return rValue;
 }
+
+QList<int> QScadaDeviceInfo::boardIds() const
+{
+    return mBoardIds;
+}
+
+void QScadaDeviceInfo::appendBoardId(int boardId)
+{
+    mBoardIds.append(boardId);
+}

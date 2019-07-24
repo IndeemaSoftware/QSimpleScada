@@ -9,8 +9,9 @@
 #include <QPen>
 #include <QDebug>
 
-QScadaBoard::QScadaBoard(QWidget *parent) :
+QScadaBoard::QScadaBoard(int id, QWidget *parent) :
     QWidget(parent),
+    mId{id},
     mObjects{new QList<QScadaObject*>()},
     mEditable{false},
     mShowGrid{true},
@@ -169,6 +170,11 @@ void QScadaBoard::objectMove(int, int)
 void QScadaBoard::objectResize(int, int)
 {
     update();
+}
+
+int QScadaBoard::getId() const
+{
+    return mId;
 }
 
 QList<QScadaObject *> *QScadaBoard::objects() const

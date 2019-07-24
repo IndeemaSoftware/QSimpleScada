@@ -261,7 +261,5 @@ void QScadaObject::initUI()
     setAction(QObjectActionNone);
     setMouseTracking(true);//this not mouseMoveEven is called everytime mouse is moved
 
-    connect(mInfo, SIGNAL(dynamicStatusChanged(QScadaObjectInfo *)), this, SLOT(dynamicStatusChanged(QScadaObjectInfo *)));
-
     setGeometry(info()->geometry());
 }
