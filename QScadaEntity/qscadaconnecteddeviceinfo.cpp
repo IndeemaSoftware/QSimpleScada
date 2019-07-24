@@ -124,7 +124,7 @@ void QConnectedDeviceInfo::initFromXml(const QByteArray &xmlData) {
                 lObjectInfo = new QScadaObjectInfo();
                 lBoard->appendObjectInfo(lObjectInfo);
             } else if (lXmlStreamReader.name() == tag_id) {
-                lBoard->setId(lXmlStreamReader.readElementText().toInt());//----------------------
+                lObjectInfo->setId(lXmlStreamReader.readElementText().toInt());//----------------------
             } else if (lXmlStreamReader.name() == tag_show_background) {
                 lObjectInfo->setShowBackground(static_cast<bool>(lXmlStreamReader.readElementText().toInt()));//new
             } else if (lXmlStreamReader.name() == tag_geometry_x) {
