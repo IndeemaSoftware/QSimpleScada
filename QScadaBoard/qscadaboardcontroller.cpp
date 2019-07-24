@@ -289,13 +289,10 @@ void QScadaBoardController::openProject(QString file)
                     }
                 }
             }
-
-            mBoard->update();
-            } else {
-                qDebug() << "       - Error open preferences file -> " << lFile.fileName();
-            }
-
-            delete lConnectedDevceInfo;
+        } else {
+            qDebug() << "       - Error open preferences file -> " << lFile.fileName();
+        }
+        delete lConnectedDevceInfo;
     } else {
         qDebug() << "QScadaBoardController::" << __FUNCTION__ << " File name can't be empty";
     }

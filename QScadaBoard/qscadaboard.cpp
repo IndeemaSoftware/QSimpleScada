@@ -117,42 +117,44 @@ void QScadaBoard::mousePressEvent(QMouseEvent *event)
 
 void QScadaBoard::paintEvent(QPaintEvent *e)
 {
-    if (mGridPixmap == nullptr) {
-        resetGridPixmap();
-    }
-
-    if ((mGridPixmap->width() != this->width())
-            || (mGridPixmap->height() != this->height())) {
-        delete mGridPixmap;
-        resetGridPixmap();
-    }
-
-    if (mUpdateGridPixmap) {
-        QPainter lPainter(mGridPixmap);
-        mGridPixmap->fill(Qt::white);
-        QPen lLinepen(Qt::darkGray);
-        lLinepen.setCapStyle(Qt::RoundCap);
-        lLinepen.setWidth(1);
-        lPainter.setRenderHint(QPainter::Antialiasing,true);
-        lPainter.setPen(lLinepen);
-
-        int lX = this->width();
-        int lY = this->height();
-
-        mGridPixmap->scaledToWidth(lX);
-        mGridPixmap->scaledToHeight(lY);
-
-        for (int i=0; i<=lX; i++) {
-            for (int j=1; j<=lY; j++) {
-                lPainter.drawPoint(QPoint(mGrid*i, mGrid*j));
-            }
+    if (mShowGrid) {
+        if (mGridPixmap == nullptr) {
+            resetGridPixmap();
         }
 
-        mUpdateGridPixmap = false;
-    }
+        if ((mGridPixmap->width() != this->width())
+                || (mGridPixmap->height() != this->height())) {
+            delete mGridPixmap;
+            resetGridPixmap();
+        }
 
-    QPainter lPainter(this);
-    lPainter.drawPixmap(0, 0, mGridPixmap->width(), mGridPixmap->height(), *mGridPixmap);
+        if (mUpdateGridPixmap) {
+            QPainter lPainter(mGridPixmap);
+            mGridPixmap->fill(Qt::white);
+            QPen lLinepen(Qt::darkGray);
+            lLinepen.setCapStyle(Qt::RoundCap);
+            lLinepen.setWidth(1);
+            lPainter.setRenderHint(QPainter::Antialiasing,true);
+            lPainter.setPen(lLinepen);
+
+            int lX = this->width();
+            int lY = this->height();
+
+            mGridPixmap->scaledToWidth(lX);
+            mGridPixmap->scaledToHeight(lY);
+
+            for (int i=0; i<=lX; i++) {
+                for (int j=1; j<=lY; j++) {
+                    lPainter.drawPoint(QPoint(mGrid*i, mGrid*j));
+                }
+            }
+
+            mUpdateGridPixmap = false;
+        }
+
+        QPainter lPainter(this);
+        lPainter.drawPixmap(0, 0, mGridPixmap->width(), mGridPixmap->height(), *mGridPixmap);
+    }
 
     QWidget::paintEvent(e);
 }
