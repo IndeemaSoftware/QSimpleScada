@@ -184,14 +184,16 @@ bool QScadaObject::selected() const
 
 void QScadaObject::setSelected(bool selected)
 {
-    mSelected = selected;
+    if (mIsEditable) {
+        mSelected = selected;
 
-    if (mSelected) {
-        emit objectSelected(mInfo->id());
+        if (mSelected) {
+            emit objectSelected(mInfo->id());
 
-        mEffect->setBlurRadius(50);
-    } else {
-        mEffect->setBlurRadius(10);
+            mEffect->setBlurRadius(50);
+        } else {
+            mEffect->setBlurRadius(10);
+        }
     }
 }
 
