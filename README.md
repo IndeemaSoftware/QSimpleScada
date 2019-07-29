@@ -28,7 +28,8 @@ First create your device
 
 Then init your board controller. Your boardcontroller object is main contact spot.
 ```cpp
-   QScadaBoardController *mController = new QScadaBoardController();   mController->appendDevice(lDeviceInfo);
+   QScadaBoardController *mController = new QScadaBoardController();   
+   mController->appendDevice(lDeviceInfo);
 ```
 Now init your board
 ```cpp
