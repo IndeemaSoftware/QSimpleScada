@@ -1,5 +1,5 @@
 {
-  "name": "com.indeema.QSimpleScada",
+  "name": "com.indeema.qsimplescada",
   "description": "Qt based simple SCADA framework, with dashboard, static and dynamic components",
   "author": {
     "name": "Indeema Software Inc.",
