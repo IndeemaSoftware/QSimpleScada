@@ -58,7 +58,7 @@ Now just puth controllwe widget to you central widget
 ```
 
 Now your board controller is initialized. Next steps are setting ups widget resources.
-We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start.
+We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start. Read wiki page to know rules on [how to create qml widgets that can be used by QSimpleScada](https://github.com/IndeemaSoftware/QSimpleScada/wiki/How-to-create-QML-Widgets)
 
 To use a widget collection:
 Call the function with url to QML resources to let the controller know the location of QML widgets:
