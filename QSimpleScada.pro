@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += widgets network
+QT += widgets network qml quick quickwidgets
 
 TARGET = QSimpleScada
 TEMPLATE = lib
