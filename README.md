@@ -51,6 +51,16 @@ You can get pointers to specific board by calling methods:
     QList<QScadaBoard*> getBoardList();
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);
 ```
+
+And you can create new object
+```cpp
+    QScadaObject *initNewObject(QScadaObjectInfo *);
+    void createNewObject(QScadaObjectInfo *);
+
+    void createQMLObject(int id, QString path);
+    void createQMLObject(QString path);
+```
+
 Next just make your controller editable or static. That depends on your needs.
 ```cpp
     mController->setEditingMode(true);
