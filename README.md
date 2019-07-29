@@ -13,6 +13,11 @@ Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScad
 
 You can check examples that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
 
+# Structure
+
+One QScadaController could keep many devices with unique ip adresses. Ip address is unique id for each device.
+Each device could have few dashboards, with unie id. On each board you can have many widgets. All that architecture cuold be saved to *.irp file.
+
 # Sample in action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/QSimpleScada%20builder.gif" />
@@ -31,7 +36,7 @@ Then init your board controller. Your boardcontroller object is main contact spo
    QScadaBoardController *mController = new QScadaBoardController();   
    mController->appendDevice(lDeviceInfo);
 ```
-Now init your board
+Now init your board. Board ids are iterators. So if you will create one more board for this device, it id will be 1.
 ```cpp
    mController->initBoardForDeviceIp("127.0.0.1");
 ```
@@ -58,7 +63,7 @@ Now just puth controllwe widget to you central widget
 ```
 
 Now your board controller is initialized. Next steps are setting ups widget resources.
-We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start.
+We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start. Read wiki page to know rules on [how to create qml widgets that can be used by QSimpleScada](https://github.com/IndeemaSoftware/QSimpleScada/wiki/How-to-create-QML-Widgets)
 
 To use a widget collection:
 Call the function with url to QML resources to let the controller know the location of QML widgets:
