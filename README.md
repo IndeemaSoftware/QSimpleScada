@@ -52,7 +52,7 @@ You can get pointers to specific board by calling methods:
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);
 ```
 
-And you can create new object
+And you can create new object by calling method of QScadaBoard object
 ```cpp
     QScadaObject *initNewObject(QScadaObjectInfo *);
     void createNewObject(QScadaObjectInfo *);
