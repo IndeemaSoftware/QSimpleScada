@@ -15,6 +15,7 @@ You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/
 
 # Sample in action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
+<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/QSimpleScada%20builder.gif" />
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/weather.png" />
 # How to start
 
