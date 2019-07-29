@@ -11,7 +11,7 @@ Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScad
 
 # Sample
 
-You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
+You can check examples that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
 
 # Sample in action
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
@@ -19,160 +19,66 @@ You can check example that uses QSimpleScada https://github.com/IndeemaSoftware/
 <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/weather.png" />
 # How to start
 
-Create editable QScadaBoard
-```cpp
-    QScadaBoardController *mController = new QScadaBoardController();
-    mController->initBoardForDeviceIp("127.0.0.0");
-    mController->setEditingMode(true);
+First create your device
 
-    QScadaBoard *mBoard = mController->getBoardListForDeviceIp("127.0.0.0").at(0);
+```cpp
+   QScadaDeviceInfo *lDeviceInfo = new QScadaDeviceInfo();
+   lDeviceInfo->setName("Test Device");
+   lDeviceInfo->setIp(QHostAddress("127.0.0.1"));
+```
+
+Then init your board controller. Your boardcontroller object is main contact spot.
+```cpp
+   QScadaBoardController *mController = new QScadaBoardController();   mController->appendDevice(lDeviceInfo);
+```
+Now init your board
+```cpp
+   mController->initBoardForDeviceIp("127.0.0.1");
 ```
 
 You can connect to signals, to handle events
 ```cpp
 signals:
     void objectDoubleClicked(QScadaObject*);
-    void objectSelected(QScadaObject *);
+```
+You can get pointers to specific board by calling methods:
+```cpp
+    QList<QScadaBoard*> getBoardList();
+    QList<QScadaBoard*> getBoardListForDeviceIp(QString);
+```
+Next just make your controller editable or static. That depends on your needs.
+```cpp
+    mController->setEditingMode(true);
 ```
 
-So now you can create some default QScadaObject on the board
+Now just puth controllwe widget to you central widget
 ```cpp
-mBoard->createNewObject();
-```
-Or create object with specific parameters
-```cpp
-QScadaObjectInfo *lInfo = new QScadaObjectInfo();
-lInfo->setId(2);
-lInfo->setBackGroundImage(":/resources/some_structure.png");
-lInfo->setShowBackgroundImage(true);
-lInfo->setShowMarkers(false);
+   QGridLayout *mainLayout = new QGridLayout(ui->centralWidget);
+   mainLayout->addWidget(mController);
 ```
 
-Creating object with specific parameters could be useful when restoring dashboard from project file.
+Now your board controller is initialized. Next steps are setting ups widget resources.
+We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start.
 
-Also you have possibility to send object to front or to back
+To use a widget collection:
+Call the function with url to QML resources to let the controller know the location of QML widgets:
 ```cpp
-void MainWindow::bringToFront()
-{
-    if (!mBoard->getSeletedObjects().isEmpty()) {
-        QScadaObject *lObject = mBoard->getSeletedObjects().first();
-        mBoard->bringToFront(lObject);
-    }
-}
+    QMLConfig::instance.appendQMLPath(:/com/indeema/eeiot/EEIoT/);
+```
+Path :/com/indeema/eeiot/EEIoT/ is added by default so you don't need to add it manually. If you call appendQMLPath with different path to EEIoT it will replace default path. Also you can add your custom widgets.
 
-void MainWindow::sendToBack()
-{
-    if (!mBoard->getSeletedObjects().isEmpty()) {
-        QScadaObject *lObject = mBoard->getSeletedObjects().first();
-        mBoard->sendToBack(lObject);
-    }
-}
+You can use our simple editor to create your first dashboard https://github.com/IndeemaSoftware/QSimpleScadaSample 
+
+Then set up QScadaBoardController in your app without any devices and boards and call:
+```cpp
+    mController->openProject(QString <file>)
 ```
 
-Also save and open project file
+where <file> is a full path to your project file (*.irp)
+
+For example:
 ```cpp
-void MainWindow::save()
-{
-   if (mBoard->objects()->count() == 0) {
-        QString lMessage(tr("Nothing to be saved"));
-
-        QMessageBox lMsgBox;
-        lMsgBox.setText(lMessage);
-        lMsgBox.exec();
-        return;
-    }
-
-    QFileDialog lDialog(this);
-    lDialog.setFileMode(QFileDialog::AnyFile);
-    lDialog.setAcceptMode(QFileDialog::AcceptSave);
-    lDialog.setDirectory(QDir::currentPath());
-    lDialog.setWindowTitle(tr("Save Project"));
-    lDialog.setNameFilter(tr("iReDS Project (*.irp)"));
-
-    QScadaDeviceInfo lDeviceInfo;
-    lDeviceInfo.setName("Test Device");
-    lDeviceInfo.setIp(QHostAddress("127.0.0.0"));
-    QList<QScadaDeviceInfo> lList;
-    lList.append(lDeviceInfo);
-
-    if (lDialog.exec() == QDialog::Accepted) {
-        QStringList lFiles = lDialog.selectedFiles();
-        if (lFiles.count() > 0) {
-            QString lFileName = lFiles.at(0);
-            if (!lFileName.contains(".irp")) {
-                lFileName.append(".irp");
-            }
-
-            QString lDevices = VConnectedDeviceInfo::XMLFromDeviceInfo(lList, mController);   //<----;
-
-            //create xml for boards of each device
-
-            QFile lFile(lFileName);
-            if (lFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                QTextStream lOut(&lFile);
-                lOut.setCodec("UTF-8");
-                lOut << lDevices;
-            } else {
-                QString lMessage(tr("Something went wrong while trying to create file"));
-                lMessage.append(" ").append(lFileName);
-
-                QMessageBox lMsgBox;
-                lMsgBox.setText(lMessage);
-                lMsgBox.exec();
-            }
-            lFile.close();
-        }
-    }
-
-    mBoard->setEditable(true);
-}
-
-void MainWindow::open()
-{
-    QString lFileName = QFileDialog::getOpenFileName(this,
-        tr("Open Project"), QDir::currentPath(), tr("iReDS Project (*.irp)"));
-
-    if (!lFileName.isEmpty()) {
-        mObjectInfoDialog->updateWithObjectInfo(nullptr);
-
-        for (QScadaObject *object : *mBoard->objects()) {
-                mBoard->deleteObject(object);
-        }
-
-        QConnectedDeviceInfo* lConnectedDevceInfo = new QConnectedDeviceInfo();
-        QByteArray lRawData;
-        QFile lFile(lFileName);
-        if (lFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QTextStream lStreamFileOut(&lFile);
-            lStreamFileOut.setCodec("UTF-8");
-            lRawData = lStreamFileOut.readAll().toUtf8();
-            lFile.close();
-
-            lConnectedDevceInfo->initFromXml(lRawData);
-
-            QScadaObjectInfo *info;
-            for (int i = 0; i < lConnectedDevceInfo->connecteDeviceList.count(); i++) {
-                for (QScadaBoardInfo *boardInfo : lConnectedDevceInfo->connecteDeviceList.at(i)->boardList) {
-                    if (boardInfo != nullptr) {
-                        mBoard->setEditable(false);
-                        //reading all objects in reverce to have in correct layers
-                        for (int j = boardInfo->objectList().count()-1; j >=0; j--) {
-                            info = boardInfo->objectList().at(j);
-                            mBoard->createNewObject(info);
-                        }
-                    }
-                }
-            }
-
-            mBoard->update();
-            mBoard->setEditable(true);
-        } else {
-            qDebug() << "       - Error open preferences file -> " << lFile.fileName();
-        }
-
-        delete lConnectedDevceInfo;
-    }
-}
+    mController->openProject(QString <file>)
 ```
 
 ## Communication and Support
