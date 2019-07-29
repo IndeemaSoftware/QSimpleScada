@@ -10,14 +10,14 @@
     "url": "https://github.com/IndeemaSoftware/QSimpleScada.git"
   },
   "version": {
-    "label": "0.9.0",
+    "label": "0.9.1",
     "revision": "",
     "fingerprint": ""
   },
   "dependencies": [
-    "com.indeema.eeiot@0.1.1"
+    "com.indeema.eeiot@0.2.1"
   ],
   "license": "MIT",
   "pri_filename": "com_indeema_QSimpleScada.pri",
-  "webpage": ""
+  "webpage": "https://indeema.com"
 }
