@@ -1,29 +1,65 @@
+  <img src="https://i.imgur.com/VDz3b4Y.png" />
+
 # QSimpleScada
-Qt/C++ based simple SCADA library, with dashboard, static and dynamic components. By using QSimpleScada library you can build complex SCADA uis for your needs.
+Qt/C++ based simple SCADA library for your IoT projects. We created QSimpleScada to speed up and simplify visualising any data, so we (and you) can concentrate on developing automation algorithms that rock. It completely handles connection to and editing of widgets. Using QSimpleScada, you can easily create a visualization of IoT data with static and dynamic components. After you are satisfied with the layout, save the generated .xml file and use it in your project.
 
-# Minimum requirements
+Library is created with Qt/C++ and basic widget is based on C++. There is interface for QML, so you can independently create individual widgets on QML (as when creating classic QML UIs) and upload them to your app on a go. 
+
+<p>
+    <a href="https://github.com/IndeemaSoftware/QSimpleScada/blob/master/LICENSE.md">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" /> </a>
+   <img src="https://img.shields.io/badge/keywords-qpm%2C%20Qt%2C%20C%2B%2B%2C%20library%2C%20SCADA-green" />
+   <img src="https://img.shields.io/badge/qt-%3E%3D5.8-blue" />
+</p>
+
+## Installing 
+### Minimum requirements
 Qt 5.8
+### Using qpm:
+To install via qpm, run:
+```
+qpm install com.indeema.qsimplescada
+```
+And add:
+```
+ include (../vendor/vendor.pri)
+ ```
+To *.pro file of your project. 
 
-# Installing with qpm
-Just use qpm (https://www.qpm.io/) to install QSimpleScada in your project. Run qpm install com.indeema.QSimpleScada . in *.pro file include(vendor/Vendor.pri)
+As a bonus, try out our preset of widgets:
+```
+qpm install com.indeema.eeiot
+```
+### From GitHub:
+To clone the repo, go to:
+https://github.com/IndeemaSoftware/QSimpleScada
+To also add preconfigured widgets, clone:
+https://github.com/IndeemaSoftware/EEIoT
 
-Or Compile QSimpleScada with QSimpleScada pro file, you will receive QSimpleScadaLib folder with compiled windows or macos libs.
+And add:
+```include($$PWD/com/indeema/QSimpleScada/com_indeema_QSimpleScada.pri)
+include($$PWD/com/indeema/eeiot/com_indeema_eeiot.pri)
+```
+To the* *.pro* file. You'll receive QSimpleScadaLib folder with compiled Windows or MacOS libs.
 
-# Sample
+### Using binary release:
+https://github.com/IndeemaSoftware/QSimpleScada/releases
 
-You can check examples that uses QSimpleScada https://github.com/IndeemaSoftware/QSimpleScadaSample
+## Structure
 
-# Structure
+One QScadaController can keep many devices with unique IP addresses. IP address is a unique id for each device.
+Each device can have several dashboards with unique ids. On each board, you can set up many widgets. You can save the architecture to a* *.irp* file.
 
-One QScadaController could keep many devices with unique ip adresses. Ip address is unique id for each device.
-Each device could have few dashboards, with unie id. On each board you can have many widgets. All that architecture cuold be saved to *.irp file.
+## Sample of usage
 
-# Sample in action
-<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" />
-<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/QSimpleScada%20builder.gif" />
-# How to start
+You can check examples of QSimpleScada use at https://github.com/IndeemaSoftware/QSimpleScadaSample
+#### How the dynamic components look in the sample
+<img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/qsimplescada.gif" width="430" /> <img src="https://github.com/IndeemaSoftware/QSimpleScada/blob/Assets/QSimpleScada%20builder.gif" width="400" />
 
-First create your device
+
+# Using QSimpleScada
+
+1. Create your device:
 
 ```cpp
    QScadaDeviceInfo *lDeviceInfo = new QScadaDeviceInfo();
@@ -31,28 +67,28 @@ First create your device
    lDeviceInfo->setIp(QHostAddress("127.0.0.1"));
 ```
 
-Then init your board controller. Your boardcontroller object is main contact spot.
+2.  Init your board controller. Your boardcontroller object is the main contact spot.
 ```cpp
    QScadaBoardController *mController = new QScadaBoardController();   
    mController->appendDevice(lDeviceInfo);
 ```
-Now init your board. Board ids are iterators. So if you will create one more board for this device, it id will be 1.
+3. Init your board. Board ids are iterators. So if you will create one more board for this device, its id will be 1.
 ```cpp
    mController->initBoardForDeviceIp("127.0.0.1");
 ```
 
-You can connect to signals, to handle events
+* To handle events, you can connect to signals:
 ```cpp
 signals:
     void objectDoubleClicked(QScadaObject*);
 ```
-You can get pointers to specific board by calling methods:
+* You can get pointers to specific board by calling methods:
 ```cpp
     QList<QScadaBoard*> getBoardList();
     QList<QScadaBoard*> getBoardListForDeviceIp(QString);
 ```
 
-And you can create new object by calling method of QScadaBoard object
+* And you can create new object by calling method of QScadaBoard object:
 ```cpp
     QScadaObject *initNewObject(QScadaObjectInfo *);
     void createNewObject(QScadaObjectInfo *);
@@ -61,26 +97,26 @@ And you can create new object by calling method of QScadaBoard object
     void createQMLObject(QString path);
 ```
 
-Next just make your controller editable or static. That depends on your needs.
+4. Define the editable or static type for your controller:
 ```cpp
     mController->setEditingMode(true);
 ```
 
-Now just puth controllwe widget to you central widget
+5. Include your controller widget to you central widget:
 ```cpp
    QGridLayout *mainLayout = new QGridLayout(ui->centralWidget);
    mainLayout->addWidget(mController);
 ```
 
-Now your board controller is initialized. Next steps are setting ups widget resources.
-We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start. Read wiki page to know rules on [how to create qml widgets that can be used by QSimpleScada](https://github.com/IndeemaSoftware/QSimpleScada/wiki/How-to-create-QML-Widgets)
+Now your board controller is initialized. Next steps are setting up the widget resources.
+We’ve also developed a EEIoT library with a set of preconfigured widgets. You can download it at https://github.com/IndeemaSoftware/EEIoT and try it out as a start. Read wiki page to know the rules on [how to create qml widgets that can be used by QSimpleScada](https://github.com/IndeemaSoftware/QSimpleScada/wiki/How-to-create-QML-Widgets)
 
-To use a widget collection:
-Call the function with url to QML resources to let the controller know the location of QML widgets:
+**To use a widget collection**:
+Call the function with QML resources url to let the controller know the location of QML widgets:
 ```cpp
     QMLConfig::instance.appendQMLPath(:/com/indeema/eeiot/EEIoT/);
 ```
-Path :/com/indeema/eeiot/EEIoT/ is added by default so you don't need to add it manually. If you call appendQMLPath with different path to EEIoT it will replace default path. Also you can add your custom widgets.
+Path ```:/com/indeema/eeiot/EEIoT/``` is added by default, so you don't need to add it manually. If you call ```appendQMLPath``` with different path to EEIoT, it will replace the default path. Also you can add your own custom widgets.
 
 You can use our simple editor to create your first dashboard https://github.com/IndeemaSoftware/QSimpleScadaSample 
 
@@ -96,25 +132,14 @@ For example:
     mController->openProject(QString <file>)
 ```
 
-## Communication and Support
-If you encounter an issue or you have any comments or propositions with using the QSimpleScada library then you can reach us in several different ways:
-- Having difficulties with using QSimpleScada you can write at [Stackoverflow](https://stackoverflow.com/) or at [Qt forum](https://forum.qt.io). Don't forget about specifing the **QSimpleScada** tag. You will be helped by the community of this resource or our specialists will help you with an answer.
-
-- If you find a bug and want to tell us about it - specify it in the section [Issues](https://github.com/IndeemaSoftware/QSimpleScada/issues).
-In this section, we only consider bugs and ignore any questions relating to the support.
-
-- For additional assistance with your project - please contact us at **support@indeema.com** and specify **QSimpleScada** in the subject line.
-
-- You can also follow our news at [@IndeemaSoftware](https://twitter.com/IndeemaSoftware) or on our [blog](https://indeema.com/blog).
-
-- For further questions on cooperation, simply email us at **support@indeema.com**.
+## Support
+* If you have suggestions, feedback, or encounter any issues, write to [Stackoverflow](https://stackoverflow.com/), [Qt forum](https://forum.qt.io) with **QSimpleScada** tag, or contact us at support@indeema.com. 
+* If you find a bug, create an [issue](https://github.com/IndeemaSoftware/QSimpleScada/issues). 
+* To learn more about our [IoT expertise](https://indeema.com/services/iot), visit https://indeema.com, follow our news at [@IndeemaSoftware](https://twitter.com/IndeemaSoftware) or subscribe to our [blog](https://indeema.com/blog).
 
 ## License
-**QSimpleScada** works under the MIT license. For more information see [here](https://github.com/IndeemaSoftware/QSimpleScada/blob/master/LICENSE).
-
-## Terms
-**QSimpleScada** is released for testing purposes only. We make no guarantees with respect to its function. By using this software you agree that Indeema is not liable for any damage to your system and data.
-
-To know more about us and our [IoT expertise](https://indeema.com/services/iot), visit our website http://indeema.com
+[MIT license](https://github.com/IndeemaSoftware/QSimpleScada/blob/master/LICENSE)
+Copyright 2019 © [Indeema Software](https://indeema.com).
+#### Developed by Volodymyr Shevchyk
 
 
