@@ -132,6 +132,18 @@ For example:
     mController->openProject(QString <file>)
 ```
 
+## Set up flexible connection, streaming, and visualization of widget data
+
+```cpp
+mController->updateValue(deviceIp, boardId, Id, value);
+```
+Where:
+* __deviceIp__ - QString, the IP address of the monitored device (for example, "192.168.1.1");
+* __boardId__ - integer, unique ID of a dashboard (since 1 device may contain several dashboards);
+* __Id__ - integer, unique ID of a widget;
+* __value__ - QString, the value for updating. Its type is undefined, so that you can flexibly build widgets and stream any data.
+
+
 ## Support
 * If you have suggestions, feedback, or encounter any issues, write to [Stackoverflow](https://stackoverflow.com/), [Qt forum](https://forum.qt.io) with **QSimpleScada** tag, or contact us at support@indeema.com. 
 * If you find a bug, create an [issue](https://github.com/IndeemaSoftware/QSimpleScada/issues). 
