@@ -141,7 +141,7 @@ Where:
 * __deviceIp__ - QString, the IP address of the monitored device (for example, "192.168.1.1");
 * __boardId__ - integer, unique ID of a dashboard (since 1 device may contain several dashboards);
 * __Id__ - integer, unique ID of a widget;
-* __value__ - QString, the value for updating. Its type is undefined, so that you can flexibly build widgets and stream any data.
+* __value__ - QVariant, the value you're monitoring on a widget. Its type is undefined (QVariant), so that you can flexibly stream any data  when builing different widgets on a board.
 
 
 ## Support
