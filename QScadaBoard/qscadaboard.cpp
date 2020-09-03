@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QDebug>
+#include <QMouseEvent>
 
 QScadaBoard::QScadaBoard(int id, QWidget *parent) :
     QWidget(parent),
